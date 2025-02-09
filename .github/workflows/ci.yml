@@ -53,7 +53,7 @@ jobs:
           cache: "poetry"
 
       - name: poetry
-        run: pip install poetry==1.8.5 setuptools && poetry run python -m pip install -U pip
+        run: pip install poetry==1.8.5 setuptools
 
       - name: python
         uses: actions/setup-python@v5
