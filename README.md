@@ -1,7 +1,7 @@
 # Chimera
-Chimera is a Python package for distributed machine learning.
+`Chimera` is a Python package for distributed machine learning (DML).
 
-It supports the following types of distributed machine learning:
+It supports the following types of DML:
 
 - Data Parallelism: data distributed between the workers. Each worker has a copy of the model. This case includes Distributed SGD (Stochastic Gradient Descent) for generic neural network architectures.
 - Model Parallelism: model distributed between the workers. Each worker has a copy of the dataset. This case includes Distributed Ensemble Learning with generic weak learners from the `scikit-learn` package. 
