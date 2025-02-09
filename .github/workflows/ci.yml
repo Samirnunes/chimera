@@ -5,6 +5,8 @@ on:
     branches: [ "main" ]
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'
+  pull_request:
+    branches: [ "main" ]
 
   workflow_dispatch:
 
@@ -14,15 +16,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: cache-pypoetry
-        uses: actions/cache@v4
+      - name: python
+        uses: actions/setup-python@v5
         with:
-          path: ~/.cache/pypoetry
-          key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            poetry-${{ runner.os }}-
+          python-version: "3.12.6"
+          cache: "poetry"
 
-      - name: python-poetry
+      - name: poetry
         run: pip install poetry==1.8.5 setuptools && poetry run python -m pip install -U pip
 
       - name: install-deps
@@ -34,13 +34,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: cache-pypoetry
-        uses: actions/cache@v4
+      - name: python
+        uses: actions/setup-python@v5
         with:
-          path: ~/.cache/pypoetry
-          key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            poetry-${{ runner.os }}-
+          python-version: "3.12.6"
+          cache: "poetry"
 
       - name: pre-commit
         run: poetry run pre-commit run -a -v
