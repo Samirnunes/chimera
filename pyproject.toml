@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "chimera"
+version = "0.1.0"
+description = ""
+authors = ["Samir Nunes da Silva"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12.6"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+pytest-cov = "^5.0.0"
+ipykernel = "^6.29.5"
+pytest-asyncio = "^0.24.0"
+isort = "^5.13.2"
+black = "^24.10.0"
+mypy = "^1.13.0"
+pre-commit = "^4.0.1"
+pytest-deadfixtures = "^2.2.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
