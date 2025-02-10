@@ -8,6 +8,8 @@ packages = [{include = "chimera", from="src"}]
 
 [tool.poetry.dependencies]
 python = "^3.12.6"
+pydantic = "^2.10.6"
+pydantic-settings = "^2.7.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.2"
