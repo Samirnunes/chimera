@@ -3,7 +3,7 @@ import subprocess
 from typing import List
 
 
-class WorkersStarter:
+class WorkersRunner:
     _DOCKERFILE_NAME = "Dockerfile.worker"
     _IMAGE_NAME = "chimera-worker:latest"
     _NETWORK_NAME = "chimera-network"
@@ -12,11 +12,11 @@ class WorkersStarter:
     _GATEWAY = f"{_NETWORK_PREFIX}.1"
     _CONTAINER_PORT = "80"
 
-    def run(self, number_of_nodes: int, cpu_shares: List[int] = []) -> None:
+    def run(self, workers: int, cpu_shares: List[int] = []) -> None:
         if not cpu_shares:
-            cpu_shares = [2] * number_of_nodes
+            cpu_shares = [2] * workers
 
-        if number_of_nodes != len(cpu_shares):
+        if workers != len(cpu_shares):
             raise ValueError(
                 "Number of nodes and CPU relative weights must be equal"
             )
@@ -24,7 +24,7 @@ class WorkersStarter:
         self._create_network()
         self._build_docker_image()
 
-        for i in range(number_of_nodes):
+        for i in range(workers):
             self._run_container(f"node_{i}", cpu_shares[i], i)
 
     def _create_network(self) -> None:

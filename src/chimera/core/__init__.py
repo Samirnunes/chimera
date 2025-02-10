@@ -1,1 +1,1 @@
-from .workers.handler import WorkersStarter as WorkersStarter
+from .workers.runner import WorkersRunner as WorkersRunner

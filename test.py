@@ -1,3 +1,3 @@
-from chimera.core import WorkersStarter
+from chimera.core import WorkersRunner
 
-WorkersStarter().run(3)
+WorkersRunner().run(3)
