@@ -2,15 +2,16 @@ import os
 import subprocess
 from typing import List
 
+from .config import ContainerConfig, NetworkConfig
+
 
 class WorkersRunner:
     _DOCKERFILE_NAME = "Dockerfile.worker"
     _IMAGE_NAME = "chimera-worker:latest"
-    _NETWORK_NAME = "chimera-network"
-    _NETWORK_PREFIX = "192.168.10"
-    _SUBNET = f"{_NETWORK_PREFIX}.0/23"
-    _GATEWAY = f"{_NETWORK_PREFIX}.1"
-    _CONTAINER_PORT = "80"
+
+    def __init__(self) -> None:
+        self._network_config = NetworkConfig()
+        self._container_config = ContainerConfig()
 
     def run(self, workers: int, cpu_shares: List[int] = []) -> None:
         if not cpu_shares:
@@ -33,9 +34,9 @@ class WorkersRunner:
             "network",
             "create",
             "--driver=bridge",
-            f"--subnet={self._SUBNET}",
-            f"--gateway={self._GATEWAY}",
-            self._NETWORK_NAME,
+            f"--subnet={self._network_config.CHIMERA_NETWORK_PREFIX}.0/{self._network_config.CHIMERA_NETWORK_SUBNET_MASK}",
+            f"--gateway={self._network_config.CHIMERA_NETWORK_PREFIX}.1",
+            self._network_config.CHIMERA_NETWORK_NAME,
         ]
         print(os.popen(" ".join(cmd)).read())
 
@@ -59,18 +60,20 @@ class WorkersRunner:
         """Run a Docker container using CLI"""
 
         host_port = 8080 + node_number
-        container_ip = f"{self._NETWORK_PREFIX}.{node_number + 2}"
+        container_ip = (
+            f"{self._network_config.CHIMERA_NETWORK_PREFIX}.{node_number + 2}"
+        )
 
         cmd = [
             "docker",
             "run",
             "-d",
             "-p",
-            f"{host_port}:{self._CONTAINER_PORT}",
+            f"{host_port}:{self._container_config.CHIMERA_WORKERS_CONTAINER_PORT}",
             "--name",
             container_name,
             "--network",
-            self._NETWORK_NAME,
+            self._network_config.CHIMERA_NETWORK_NAME,
             "--ip",
             container_ip,
             "--cpu-shares",
