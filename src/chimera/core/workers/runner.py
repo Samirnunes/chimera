@@ -26,7 +26,7 @@ class WorkersRunner:
         self._build_docker_image()
 
         for i in range(workers):
-            self._run_container(f"node_{i}", cpu_shares[i], i)
+            self._run_container(cpu_shares[i], i)
 
     def _create_network(self) -> None:
         cmd = [
@@ -54,11 +54,10 @@ class WorkersRunner:
         ]
         print(os.popen(" ".join(cmd)).read())
 
-    def _run_container(
-        self, container_name: str, cpu_shares: int, node_number: int
-    ) -> None:
+    def _run_container(self, cpu_shares: int, node_number: int) -> None:
         """Run a Docker container using CLI"""
 
+        container_name = f"node_{node_number}"
         host_port = 8080 + node_number
         container_ip = (
             f"{self._network_config.CHIMERA_NETWORK_PREFIX}.{node_number + 2}"
