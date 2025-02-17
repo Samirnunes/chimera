@@ -1,6 +1,5 @@
 # AI Project
 secrets/
-data/
 chroma/
 Dockerfile.local
 .prompts/
