@@ -1,10 +1,8 @@
 FROM --platform=linux/amd64 python:3.12.6-slim
 
-ENV PORT 80
-ENV APP_NAME chimera
 ENV WORKDIR /app
 
-ENV PYTHONPATH ${WORKDIR}/src
+ENV PYTHONPATH ${WORKDIR}/chimera_nodes
 ENV PYTHONUNBUFFERED 1
 
 WORKDIR ${WORKDIR}
@@ -23,6 +21,12 @@ RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=/opt/poetry POETRY
     poetry config virtualenvs.path --unset && \
     poetry config virtualenvs.in-project true
 
+# Create data folder
+RUN mkdir -p data
+
+# Move training data from data/${NODE} to data folder in container
+COPY ./data/${NODE}/X_train.csv ./data/${NODE}/y_train.csv ./data/
+
 # Copy poetry.lock* in case it doesn't exist in the repo
 COPY ./pyproject.toml ./poetry.lock* ./
 
@@ -32,4 +36,4 @@ RUN poetry lock --no-update && \
 
 COPY . ./
 
-CMD ["/bin/bash", "-c", "poetry run python src/${APP_NAME}/api/app.py"]
+CMD ["/bin/bash", "-c", "poetry run python chimera_nodes/${NODE}.py"]
