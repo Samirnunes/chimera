@@ -1,23 +1,34 @@
-from typing import List
+import ast
+from typing import Any, List
 
-from pydantic_settings import BaseSettings
+from pydantic import field_validator
+from pydantic_settings import BaseSettings, NoDecode
+from typing_extensions import Annotated
 
 
-class _NetworkConfig(BaseSettings):
+class NetworkConfig(BaseSettings):
     CHIMERA_NETWORK_NAME: str = "chimera-network"
     CHIMERA_NETWORK_PREFIX: str = "192.168.10"
     CHIMERA_NETWORK_SUBNET_MASK: str = "23"
 
 
-class _WorkersConfig(BaseSettings):
-    CHIMERA_WORKERS_NODES_NAMES: List[
-        str
+class WorkersConfig(BaseSettings):
+    CHIMERA_WORKERS_NODES_NAMES: Annotated[
+        List[str], NoDecode
     ]  # must be the filenames when nodes are defined
-    CHIMERA_WORKERS_CPU_SHARES: List[int]
-    CHIMERA_WORKERS_HOST_PORTS: List[int]
+    CHIMERA_WORKERS_CPU_SHARES: Annotated[List[int], NoDecode] = [2]
+    CHIMERA_WORKERS_HOST_PORTS: Annotated[List[int], NoDecode] = [8080]
     CHIMERA_WORKERS_CONTAINER_PORT: str = "80"
     CHIMERA_WORKERS_HOST: str = "0.0.0.0"
 
-
-NETWORK_CONFIG = _NetworkConfig()
-WORKERS_CONFIG = _WorkersConfig()
+    @field_validator(
+        "CHIMERA_WORKERS_NODES_NAMES",
+        "CHIMERA_WORKERS_CPU_SHARES",
+        "CHIMERA_WORKERS_HOST_PORTS",
+        mode="before",
+    )
+    @classmethod
+    def parse_lists(cls, v: Any) -> List[str]:
+        if isinstance(v, str):
+            return ast.literal_eval(v)
+        return v

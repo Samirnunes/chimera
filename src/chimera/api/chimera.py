@@ -1,13 +1,14 @@
-from . import DOCKERFILE_NAME, SERVICES
 from ..parallelism.data import Ensemble
-from ..workers.server import WorkerServerHandler
+from ..workers.server import WorkersServersHandler
+from . import DOCKERFILE_NAME
 
 
 class Chimera:
     def __init__(self) -> None:
-        self._workers = WorkerServerHandler()
+        self._services = {"ensemble": Ensemble()}
+        self._workers = WorkersServersHandler()
 
     def serve(self, service: str, port: int) -> None:
         self._workers.serve_all(DOCKERFILE_NAME)
-        service: Ensemble = SERVICES[service.lower()]
+        service: Ensemble = self._services[service.lower()]
         service.serve(port)
