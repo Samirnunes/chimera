@@ -1,5 +1,4 @@
 import os
-import subprocess
 
 from chimera.api.container import TRAIN_FEATURES_FILENAME, TRAIN_LABELS_FILENAME
 
@@ -123,8 +122,4 @@ class WorkersServersHandler:
             str(cpu_shares),
             image_name,
         ]
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        if result.returncode == 0:
-            print(f"Container {container_name} started: {result.stdout.strip()}")
-        else:
-            print(f"Failed to start {container_name}: {result.stderr}")
+        print(os.popen(" ".join(cmd)).read())

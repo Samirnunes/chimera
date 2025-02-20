@@ -122,8 +122,8 @@ class ClassificationNode(_DataParallelismNode):
         def fit() -> JSONResponse:
             try:
                 self._classifier.fit(
-                    pd.read_csv("data/X_train.csv"),
-                    pd.read_csv("data/y_train.csv"),
+                    pd.read_csv("{DATA_FOLDER}/X_train.csv"),
+                    pd.read_csv("{DATA_FOLDER}/y_train.csv"),
                 )
                 return build_json_response(FitOutput(fit="ok"))
             except Exception as e:

@@ -36,7 +36,7 @@ class Ensemble:
         self._aggregator = _EnsembleAggregator()
         self._workers_config = WorkersConfig()
 
-    def serve(self, port: int = 8100) -> None:
+    def serve(self, port: int = 8080) -> None:
         app = FastAPI()
         app.include_router(self._predict_router())
         app.include_router(self._fit_router())
@@ -50,7 +50,8 @@ class Ensemble:
             try:
                 responses = [
                     requests.post(
-                        url=f"http://{self._workers_config.CHIMERA_WORKERS_NODES_NAMES[i]}:{self._workers_config.CHIMERA_WORKERS_HOST_PORTS[i]}{NODE_PREDICT_PATH}"
+                        url=f"http://localhost:{self._workers_config.CHIMERA_WORKERS_HOST_PORTS[i]}{NODE_PREDICT_PATH}",
+                        json=predict_input,
                     )
                     for i in range(
                         len(self._workers_config.CHIMERA_WORKERS_NODES_NAMES)
@@ -76,7 +77,7 @@ class Ensemble:
                     len(self._workers_config.CHIMERA_WORKERS_NODES_NAMES)
                 ):
                     requests.post(
-                        url=f"http://{self._workers_config.CHIMERA_WORKERS_NODES_NAMES[i]}:{self._workers_config.CHIMERA_WORKERS_HOST_PORTS[i]}{NODE_FIT_PATH}"
+                        url=f"http://localhost:{self._workers_config.CHIMERA_WORKERS_HOST_PORTS[i]}{NODE_FIT_PATH}"
                     )
                 return build_json_response(FitOutput(fit="ok"))
             except Exception as e:

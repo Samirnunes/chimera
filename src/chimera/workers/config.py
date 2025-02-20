@@ -17,7 +17,7 @@ class WorkersConfig(BaseSettings):
         List[str], NoDecode
     ]  # must be the filenames when nodes are defined
     CHIMERA_WORKERS_CPU_SHARES: Annotated[List[int], NoDecode] = [2]
-    CHIMERA_WORKERS_HOST_PORTS: Annotated[List[int], NoDecode] = [8080]
+    CHIMERA_WORKERS_HOST_PORTS: Annotated[List[int], NoDecode] = [8081]
     CHIMERA_WORKERS_CONTAINER_PORT: str = "80"
     CHIMERA_WORKERS_HOST: str = "0.0.0.0"
 
