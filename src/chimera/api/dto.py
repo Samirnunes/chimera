@@ -8,7 +8,7 @@ class PredictInput(BaseModel):
 
 
 class PredictOutput(BaseModel):
-    predictions: List
+    y_pred: List
 
 
 class FitOutput(BaseModel):

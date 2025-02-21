@@ -54,12 +54,10 @@ class RegressionNode(_DataParallelismNode):
         @router.post(CHIMERA_NODE_PREDICT_PATH)
         def predict(predict_input: PredictInput) -> JSONResponse:
             try:
-                predictions: np.ndarray = self._regressor.predict(
+                y_pred: np.ndarray = self._regressor.predict(
                     pd.DataFrame.from_dict(predict_input.X)
                 )
-                return build_json_response(
-                    PredictOutput(predictions=list(predictions))
-                )
+                return build_json_response(PredictOutput(y_pred=list(y_pred)))
             except Exception as e:
                 return build_error_response(e)
 
@@ -93,12 +91,10 @@ class ClassificationNode(_DataParallelismNode):
         @router.post(CHIMERA_NODE_PREDICT_PATH)
         def predict(node_input: PredictInput) -> JSONResponse:
             try:
-                predictions: np.ndarray = self._classifier.predict_proba(
+                y_pred: np.ndarray = self._classifier.predict_proba(
                     pd.DataFrame.from_dict(node_input.X)
                 )
-                return build_json_response(
-                    PredictOutput(predictions=list(predictions))
-                )
+                return build_json_response(PredictOutput(y_pred=list(y_pred)))
             except Exception as e:
                 return build_error_response(e)
 

@@ -25,10 +25,10 @@ from ...api import (
 
 class _EnsembleAggregator:
     def aggregate(self, responses: List[Response]) -> np.ndarray:
-        predictions: np.ndarray = np.array(
-            [json.loads(response.text)["predictions"] for response in responses]
+        y_pred: np.ndarray = np.array(
+            [json.loads(response.text)["y_pred"] for response in responses]
         )
-        return np.mean(predictions, axis=0)
+        return np.mean(y_pred, axis=0)
 
 
 class Ensemble:
@@ -58,9 +58,7 @@ class Ensemble:
                     )
                 ]
                 return build_json_response(
-                    PredictOutput(
-                        predictions=list(self._aggregator.aggregate(responses))
-                    )
+                    PredictOutput(y_pred=list(self._aggregator.aggregate(responses)))
                 )
             except Exception as e:
                 return build_error_response(e)
