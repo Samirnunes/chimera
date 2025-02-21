@@ -13,7 +13,9 @@ class NetworkConfig(BaseSettings):
 
 
 class WorkersConfig(BaseSettings):
-    CHIMERA_WORKERS_NODES_NAMES: Annotated[List[str], NoDecode]
+    CHIMERA_WORKERS_NODES_NAMES: Annotated[
+        List[str], NoDecode
+    ]  # the names must be equal to the filenames inside chimera_nodes folder
     CHIMERA_WORKERS_CPU_SHARES: Annotated[List[int], NoDecode] = [2]
     CHIMERA_WORKERS_MAPPED_PORTS: Annotated[List[int], NoDecode] = [8082]
     CHIMERA_WORKERS_HOST: str = "0.0.0.0"
