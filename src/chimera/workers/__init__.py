@@ -1,1 +1,1 @@
-from .server import WorkersServersHandler as WorkersServersHandler
+from .handler import WorkersHandler as WorkersHandler

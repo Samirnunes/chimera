@@ -23,18 +23,18 @@ from ...api import (
 )
 
 
-class _EnsembleAggregator:
-    def aggregate(self, responses: List[Response]) -> np.ndarray:
+class _MeanAggregator:
+    def run(self, responses: List[Response]) -> np.ndarray:
         y_pred: np.ndarray = np.array(
             [json.loads(response.text)["y_pred"] for response in responses]
         )
         return np.mean(y_pred, axis=0)
 
 
-class Ensemble:
+class DistributedAggregation:
     def __init__(self) -> None:
-        self._aggregator = _EnsembleAggregator()
         self._workers_config = WorkersConfig()
+        self._aggregator = _MeanAggregator()
 
     def serve(self, port: int = 8080) -> None:
         app = FastAPI()
@@ -58,7 +58,7 @@ class Ensemble:
                     )
                 ]
                 return build_json_response(
-                    PredictOutput(y_pred=list(self._aggregator.aggregate(responses)))
+                    PredictOutput(y_pred=list(self._aggregator.run(responses)))
                 )
             except Exception as e:
                 return build_error_response(e)

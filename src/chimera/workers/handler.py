@@ -6,7 +6,7 @@ from ..api import CHIMERA_DATA_FOLDER, CHIMERA_DOCKERFILE_NAME, CHIMERA_NODES_FO
 from .config import NetworkConfig, WorkersConfig
 
 
-class WorkersServersHandler:
+class WorkersHandler:
     def __init__(self) -> None:
         self._network_config = NetworkConfig()
         self._workers_config = WorkersConfig()

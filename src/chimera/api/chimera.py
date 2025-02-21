@@ -1,13 +1,14 @@
-from ..parallelism.data import Ensemble
-from ..workers.server import WorkersServersHandler
+from typing import Literal
+
+from ..parallelism.hybrid import DistributedAggregation
+from ..workers.handler import WorkersHandler
 
 
 class Chimera:
     def __init__(self) -> None:
-        self._services = {"ensemble": Ensemble()}
-        self._workers = WorkersServersHandler()
+        self._services = {"aggregation": DistributedAggregation()}
+        self._workers_handler = WorkersHandler()
 
-    def serve(self, service: str, port: int = 8081) -> None:
-        self._workers.serve_all()
-        service: Ensemble = self._services[service.lower()]
-        service.serve(port)
+    def serve(self, service: Literal["aggregation"], port: int = 8081) -> None:
+        self._workers_handler.serve_all()
+        self._services[service.lower()].serve(port)

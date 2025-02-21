@@ -1,8 +1,8 @@
 from sklearn.tree import DecisionTreeRegressor
 
-from chimera.parallelism.data import RegressionNode
+from chimera.parallelism.hybrid import BootstrapRegressionNode
 
-node = RegressionNode(DecisionTreeRegressor())
+node = BootstrapRegressionNode(DecisionTreeRegressor())
 
 if __name__ == "__main__":
     node.serve()
