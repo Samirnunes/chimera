@@ -13,18 +13,16 @@ class NetworkConfig(BaseSettings):
 
 
 class WorkersConfig(BaseSettings):
-    CHIMERA_WORKERS_NODES_NAMES: Annotated[
-        List[str], NoDecode
-    ]  # must be the filenames when nodes are defined
+    CHIMERA_WORKERS_NODES_NAMES: Annotated[List[str], NoDecode]
     CHIMERA_WORKERS_CPU_SHARES: Annotated[List[int], NoDecode] = [2]
-    CHIMERA_WORKERS_HOST_PORTS: Annotated[List[int], NoDecode] = [8081]
-    CHIMERA_WORKERS_CONTAINER_PORT: str = "80"
+    CHIMERA_WORKERS_MAPPED_PORTS: Annotated[List[int], NoDecode] = [8082]
     CHIMERA_WORKERS_HOST: str = "0.0.0.0"
+    CHIMERA_WORKERS_PORT: int = 80
 
     @field_validator(
         "CHIMERA_WORKERS_NODES_NAMES",
         "CHIMERA_WORKERS_CPU_SHARES",
-        "CHIMERA_WORKERS_HOST_PORTS",
+        "CHIMERA_WORKERS_MAPPED_PORTS",
         mode="before",
     )
     @classmethod

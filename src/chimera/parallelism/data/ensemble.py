@@ -11,10 +11,10 @@ from requests.models import Response  # type: ignore
 from chimera.workers.config import WorkersConfig  # type: ignore
 
 from ...api import (
-    ENSEMBLE_FIT_PATH,
-    ENSEMBLE_PREDICT_PATH,
-    NODE_FIT_PATH,
-    NODE_PREDICT_PATH,
+    CHIMERA_ENSEMBLE_FIT_PATH,
+    CHIMERA_ENSEMBLE_PREDICT_PATH,
+    CHIMERA_NODE_FIT_PATH,
+    CHIMERA_NODE_PREDICT_PATH,
     FitOutput,
     PredictInput,
     PredictOutput,
@@ -45,12 +45,12 @@ class Ensemble:
     def _predict_router(self) -> APIRouter:
         router = APIRouter()
 
-        @router.post(ENSEMBLE_PREDICT_PATH)
+        @router.post(CHIMERA_ENSEMBLE_PREDICT_PATH)
         def predict(predict_input: PredictInput) -> JSONResponse:
             try:
                 responses = [
                     requests.post(
-                        url=f"http://localhost:{self._workers_config.CHIMERA_WORKERS_HOST_PORTS[i]}{NODE_PREDICT_PATH}",
+                        url=f"http://localhost:{self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS[i]}{CHIMERA_NODE_PREDICT_PATH}",
                         json=predict_input,
                     )
                     for i in range(
@@ -70,14 +70,14 @@ class Ensemble:
     def _fit_router(self) -> APIRouter:
         router = APIRouter()
 
-        @router.post(ENSEMBLE_FIT_PATH)
+        @router.post(CHIMERA_ENSEMBLE_FIT_PATH)
         def fit() -> JSONResponse:
             try:
                 for i in range(
                     len(self._workers_config.CHIMERA_WORKERS_NODES_NAMES)
                 ):
                     requests.post(
-                        url=f"http://localhost:{self._workers_config.CHIMERA_WORKERS_HOST_PORTS[i]}{NODE_FIT_PATH}"
+                        url=f"http://localhost:{self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS[i]}{CHIMERA_NODE_FIT_PATH}"
                     )
                 return build_json_response(FitOutput(fit="ok"))
             except Exception as e:

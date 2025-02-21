@@ -2,7 +2,7 @@ import os
 
 from chimera.api.container import TRAIN_FEATURES_FILENAME, TRAIN_LABELS_FILENAME
 
-from ..api import DATA_FOLDER, DOCKERFILE_NAME
+from ..api import CHIMERA_DATA_FOLDER, CHIMERA_DOCKERFILE_NAME
 from .config import NetworkConfig, WorkersConfig
 
 
@@ -12,10 +12,18 @@ class WorkersServersHandler:
         self._workers_config = WorkersConfig()
 
     def serve_all(self) -> None:
+        self._sanity_checks()
+        self._create_network()
+
+        for i in range(len(self._workers_config.CHIMERA_WORKERS_NODES_NAMES)):
+            self._build_docker_image(i)
+            self._run_container(i)
+
+    def _sanity_checks(self) -> None:
         if len(self._workers_config.CHIMERA_WORKERS_NODES_NAMES) != len(
             self._workers_config.CHIMERA_WORKERS_CPU_SHARES
         ) or len(self._workers_config.CHIMERA_WORKERS_NODES_NAMES) != len(
-            self._workers_config.CHIMERA_WORKERS_HOST_PORTS
+            self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS
         ):
             raise ValueError(
                 "Number of nodes, number of hosts names and CPU relative weights must be equal"
@@ -30,20 +38,6 @@ class WorkersServersHandler:
                 "All CPU_SHARES values must be integers and greater than or equal to 2."
             )
 
-        self._create_network()
-
-        for i in range(len(self._workers_config.CHIMERA_WORKERS_NODES_NAMES)):
-            self._build_docker_image(
-                self._workers_config.CHIMERA_WORKERS_NODES_NAMES[i],
-                self._workers_config.CHIMERA_WORKERS_HOST_PORTS[i],
-            )
-            self._run_container(
-                self._workers_config.CHIMERA_WORKERS_NODES_NAMES[i],
-                self._workers_config.CHIMERA_WORKERS_CPU_SHARES[i],
-                self._workers_config.CHIMERA_WORKERS_HOST_PORTS[i],
-                i,
-            )
-
     def _create_network(self) -> None:
         cmd = [
             "docker",
@@ -56,17 +50,16 @@ class WorkersServersHandler:
         ]
         print(os.popen(" ".join(cmd)).read())
 
-    def _build_docker_image(self, node_name: str, host_port: int) -> None:
+    def _build_docker_image(self, i: int) -> None:
+        node_name = self._workers_config.CHIMERA_WORKERS_NODES_NAMES[i]
         image_name = node_name
         cmd = [
             "docker",
             "build",
             "--build-arg",
-            f"NODE={node_name}",
+            f"CHIMERA_NODE_NAME={node_name}",
             "--build-arg",
-            f"PORT={host_port}",
-            "--build-arg",
-            f"DATA_FOLDER={DATA_FOLDER}",
+            f"CHIMERA_DATA_FOLDER={CHIMERA_DATA_FOLDER}",
             "--build-arg",
             f"TRAIN_FEATURES_FILENAME={TRAIN_FEATURES_FILENAME}",
             "--build-arg",
@@ -76,36 +69,33 @@ class WorkersServersHandler:
             "--build-arg",
             f"CHIMERA_WORKERS_CPU_SHARES={self._workers_config.CHIMERA_WORKERS_CPU_SHARES}",
             "--build-arg",
-            f"CHIMERA_WORKERS_HOST_PORTS={self._workers_config.CHIMERA_WORKERS_HOST_PORTS}",
+            f"CHIMERA_WORKERS_MAPPED_PORTS={self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS}",
             "--build-arg",
-            f"CHIMERA_WORKERS_CONTAINER_PORT={self._workers_config.CHIMERA_WORKERS_CONTAINER_PORT}",
+            f"CHIMERA_WORKERS_PORT={self._workers_config.CHIMERA_WORKERS_PORT}",
             "--build-arg",
             f"CHIMERA_WORKERS_HOST={self._workers_config.CHIMERA_WORKERS_HOST}",
-            "--network",
-            "host",
             "-f",
-            DOCKERFILE_NAME,
+            CHIMERA_DOCKERFILE_NAME,
             "-t",
             image_name,
             ".",
         ]
         print(os.popen(" ".join(cmd)).read())
 
-    def _run_container(
-        self, node_name: str, cpu_shares: int, host_port: int, node_number: int
-    ) -> None:
+    def _run_container(self, i: int) -> None:
+        node_name = self._workers_config.CHIMERA_WORKERS_NODES_NAMES[i]
         container_name = node_name
         image_name = node_name
-        container_ip = (
-            f"{self._network_config.CHIMERA_NETWORK_PREFIX}.{node_number + 2}"
-        )
+        cpu_shares = self._workers_config.CHIMERA_WORKERS_CPU_SHARES[i]
+        host_port = self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS[i]
+        container_ip = f"{self._network_config.CHIMERA_NETWORK_PREFIX}.{i + 2}"
 
         cmd = [
             "docker",
             "run",
             "-d",
             "-p",
-            f"{host_port}:{self._workers_config.CHIMERA_WORKERS_CONTAINER_PORT}",
+            f"{self._workers_config.CHIMERA_WORKERS_HOST}:{host_port}:{self._workers_config.CHIMERA_WORKERS_PORT}/tcp",
             "--name",
             container_name,
             "--network",

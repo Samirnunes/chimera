@@ -1,6 +1,4 @@
-import inspect
 from abc import ABC, abstractmethod
-from types import FrameType
 
 import numpy as np
 import pandas as pd
@@ -10,9 +8,9 @@ from fastapi.responses import JSONResponse
 from sklearn.base import ClassifierMixin, RegressorMixin
 
 from ...api import (
-    DATA_FOLDER,
-    NODE_FIT_PATH,
-    NODE_PREDICT_PATH,
+    CHIMERA_DATA_FOLDER,
+    CHIMERA_NODE_FIT_PATH,
+    CHIMERA_NODE_PREDICT_PATH,
     FitOutput,
     PredictInput,
     PredictOutput,
@@ -27,22 +25,13 @@ class _DataParallelismNode(ABC):
         self._workers_config = WorkersConfig()
 
     def serve(self) -> None:
-        frame: FrameType | None = inspect.currentframe()
-        if frame is None:
-            raise ValueError
-        filename: str = inspect.getsourcefile(frame.f_back)  # type: ignore
-
         app = FastAPI()
         app.include_router(self._predict_router())
         app.include_router(self._fit_router())
         uvicorn.run(
             app,
             host=self._workers_config.CHIMERA_WORKERS_HOST,
-            port=self._workers_config.CHIMERA_WORKERS_HOST_PORTS[
-                self._workers_config.CHIMERA_WORKERS_NODES_NAMES.index(
-                    filename.replace(".py", "").split("/")[-1]
-                )
-            ],
+            port=self._workers_config.CHIMERA_WORKERS_PORT,
         )
 
     @abstractmethod
@@ -62,7 +51,7 @@ class RegressionNode(_DataParallelismNode):
     def _predict_router(self) -> APIRouter:
         router = APIRouter()
 
-        @router.post(NODE_PREDICT_PATH)
+        @router.post(CHIMERA_NODE_PREDICT_PATH)
         def predict(predict_input: PredictInput) -> JSONResponse:
             try:
                 predictions: np.ndarray = self._regressor.predict(
@@ -79,12 +68,12 @@ class RegressionNode(_DataParallelismNode):
     def _fit_router(self) -> APIRouter:
         router = APIRouter()
 
-        @router.post(NODE_FIT_PATH)
+        @router.post(CHIMERA_NODE_FIT_PATH)
         def fit() -> JSONResponse:
             try:
                 self._regressor.fit(
-                    pd.read_csv(f"{DATA_FOLDER}/X_train.csv"),
-                    pd.read_csv(f"{DATA_FOLDER}/y_train.csv"),
+                    pd.read_csv(f"{CHIMERA_DATA_FOLDER}/X_train.csv"),
+                    pd.read_csv(f"{CHIMERA_DATA_FOLDER}/y_train.csv"),
                 )
                 return build_json_response(FitOutput(fit="ok"))
             except Exception as e:
@@ -101,7 +90,7 @@ class ClassificationNode(_DataParallelismNode):
     def _predict_router(self) -> APIRouter:
         router = APIRouter()
 
-        @router.post(NODE_PREDICT_PATH)
+        @router.post(CHIMERA_NODE_PREDICT_PATH)
         def predict(node_input: PredictInput) -> JSONResponse:
             try:
                 predictions: np.ndarray = self._classifier.predict_proba(
@@ -118,7 +107,7 @@ class ClassificationNode(_DataParallelismNode):
     def _fit_router(self) -> APIRouter:
         router = APIRouter()
 
-        @router.post(NODE_FIT_PATH)
+        @router.post(CHIMERA_NODE_FIT_PATH)
         def fit() -> JSONResponse:
             try:
                 self._classifier.fit(
