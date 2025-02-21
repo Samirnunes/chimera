@@ -2,7 +2,7 @@ import os
 
 from chimera.api.container import TRAIN_FEATURES_FILENAME, TRAIN_LABELS_FILENAME
 
-from ..api import CHIMERA_DATA_FOLDER, CHIMERA_DOCKERFILE_NAME
+from ..api import CHIMERA_DATA_FOLDER, CHIMERA_DOCKERFILE_NAME, CHIMERA_NODES_FOLDER
 from .config import NetworkConfig, WorkersConfig
 
 
@@ -58,6 +58,8 @@ class WorkersServersHandler:
             "build",
             "--build-arg",
             f"CHIMERA_NODE_NAME={node_name}",
+            "--build-arg",
+            f"CHIMERA_NODES_FOLDER={CHIMERA_NODES_FOLDER}",
             "--build-arg",
             f"CHIMERA_DATA_FOLDER={CHIMERA_DATA_FOLDER}",
             "--build-arg",

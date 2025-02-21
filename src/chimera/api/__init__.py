@@ -1,5 +1,6 @@
 from .container import CHIMERA_DATA_FOLDER as CHIMERA_DATA_FOLDER
 from .container import CHIMERA_DOCKERFILE_NAME as CHIMERA_DOCKERFILE_NAME
+from .container import CHIMERA_NODES_FOLDER as CHIMERA_NODES_FOLDER
 from .container import TRAIN_FEATURES_FILENAME as TRAIN_FEATURES_FILENAME
 from .container import TRAIN_LABELS_FILENAME as TRAIN_LABELS_FILENAME
 from .dto import FitOutput as FitOutput
