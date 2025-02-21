@@ -1,4 +1,4 @@
-import os
+import subprocess
 
 from chimera.api.container import TRAIN_FEATURES_FILENAME, TRAIN_LABELS_FILENAME
 
@@ -48,7 +48,7 @@ class WorkersHandler:
             f"--gateway={self._network_config.CHIMERA_NETWORK_PREFIX}.1",
             self._network_config.CHIMERA_NETWORK_NAME,
         ]
-        print(os.popen(" ".join(cmd)).read())
+        subprocess.run(cmd, check=True)
 
     def _build_docker_image(self, i: int) -> None:
         node_name = self._workers_config.CHIMERA_WORKERS_NODES_NAMES[i]
@@ -82,7 +82,7 @@ class WorkersHandler:
             image_name,
             ".",
         ]
-        print(os.popen(" ".join(cmd)).read())
+        subprocess.run(cmd, check=True)
 
     def _run_container(self, i: int) -> None:
         node_name = self._workers_config.CHIMERA_WORKERS_NODES_NAMES[i]
@@ -108,4 +108,4 @@ class WorkersHandler:
             str(cpu_shares),
             image_name,
         ]
-        print(os.popen(" ".join(cmd)).read())
+        subprocess.run(cmd, check=True)
