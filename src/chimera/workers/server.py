@@ -2,7 +2,7 @@ import os
 
 from chimera.api.container import TRAIN_FEATURES_FILENAME, TRAIN_LABELS_FILENAME
 
-from ..api import DATA_FOLDER
+from ..api import DATA_FOLDER, DOCKERFILE_NAME
 from .config import NetworkConfig, WorkersConfig
 
 
@@ -11,10 +11,7 @@ class WorkersServersHandler:
         self._network_config = NetworkConfig()
         self._workers_config = WorkersConfig()
 
-    def serve_all(
-        self,
-        dockerfile_name: str,
-    ) -> None:
+    def serve_all(self) -> None:
         if len(self._workers_config.CHIMERA_WORKERS_NODES_NAMES) != len(
             self._workers_config.CHIMERA_WORKERS_CPU_SHARES
         ) or len(self._workers_config.CHIMERA_WORKERS_NODES_NAMES) != len(
@@ -39,7 +36,6 @@ class WorkersServersHandler:
             self._build_docker_image(
                 self._workers_config.CHIMERA_WORKERS_NODES_NAMES[i],
                 self._workers_config.CHIMERA_WORKERS_HOST_PORTS[i],
-                dockerfile_name,
             )
             self._run_container(
                 self._workers_config.CHIMERA_WORKERS_NODES_NAMES[i],
@@ -60,9 +56,7 @@ class WorkersServersHandler:
         ]
         print(os.popen(" ".join(cmd)).read())
 
-    def _build_docker_image(
-        self, node_name: str, host_port: int, dockerfile_name: str
-    ) -> None:
+    def _build_docker_image(self, node_name: str, host_port: int) -> None:
         image_name = node_name
         cmd = [
             "docker",
@@ -90,7 +84,7 @@ class WorkersServersHandler:
             "--network",
             "host",
             "-f",
-            dockerfile_name,
+            DOCKERFILE_NAME,
             "-t",
             image_name,
             ".",

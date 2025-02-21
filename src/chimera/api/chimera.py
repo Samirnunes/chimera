@@ -1,6 +1,5 @@
 from ..parallelism.data import Ensemble
 from ..workers.server import WorkersServersHandler
-from . import DOCKERFILE_NAME
 
 
 class Chimera:
@@ -9,6 +8,6 @@ class Chimera:
         self._workers = WorkersServersHandler()
 
     def serve(self, service: str, port: int = 8080) -> None:
-        self._workers.serve_all(DOCKERFILE_NAME)
+        self._workers.serve_all()
         service: Ensemble = self._services[service.lower()]
         service.serve(port)
