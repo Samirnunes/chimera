@@ -1,5 +1,0 @@
-CHIMERA_DOCKERFILE_NAME = "Dockerfile.node"
-CHIMERA_NODES_FOLDER = "chimera_nodes"
-CHIMERA_DATA_FOLDER = "chimera_data"
-TRAIN_FEATURES_FILENAME = "X_train"
-TRAIN_LABELS_FILENAME = "y_train"

@@ -1,12 +1,16 @@
 import subprocess
 
-from chimera.api.container import TRAIN_FEATURES_FILENAME, TRAIN_LABELS_FILENAME
+from .configs import NetworkConfig, WorkersConfig
+from .constants import (
+    CHIMERA_DATA_FOLDER,
+    CHIMERA_DOCKERFILE_NAME,
+    CHIMERA_TRAIN_FEATURES_FILENAME,
+    CHIMERA_TRAIN_LABELS_FILENAME,
+    CHIMERA_WORKERS_FOLDER,
+)
 
-from ..api import CHIMERA_DATA_FOLDER, CHIMERA_DOCKERFILE_NAME, CHIMERA_NODES_FOLDER
-from .config import NetworkConfig, WorkersConfig
 
-
-class WorkersHandler:
+class ContainersHandler:
     def __init__(self) -> None:
         self._network_config = NetworkConfig()
         self._workers_config = WorkersConfig()
@@ -39,6 +43,24 @@ class WorkersHandler:
             )
 
     def _create_network(self) -> None:
+        check_cmd = [
+            "docker",
+            "network",
+            "ls",
+            "--filter",
+            f"name={self._network_config.CHIMERA_NETWORK_NAME}",
+            "--format",
+            "{{.Name}}",
+        ]
+
+        result = subprocess.run(check_cmd, capture_output=True, text=True)
+
+        if self._network_config.CHIMERA_NETWORK_NAME in result.stdout.split():
+            print(
+                f"Network {self._network_config.CHIMERA_NETWORK_NAME} already exists. Skipping creation."
+            )
+            return
+
         cmd = [
             "docker",
             "network",
@@ -57,15 +79,15 @@ class WorkersHandler:
             "docker",
             "build",
             "--build-arg",
-            f"CHIMERA_NODE_NAME={node_name}",
+            f"CHIMERA_WORKERS_NODE_NAME={node_name}",
             "--build-arg",
-            f"CHIMERA_NODES_FOLDER={CHIMERA_NODES_FOLDER}",
+            f"CHIMERA_WORKERS_FOLDER={CHIMERA_WORKERS_FOLDER}",
             "--build-arg",
             f"CHIMERA_DATA_FOLDER={CHIMERA_DATA_FOLDER}",
             "--build-arg",
-            f"TRAIN_FEATURES_FILENAME={TRAIN_FEATURES_FILENAME}",
+            f"TRAIN_FEATURES_FILENAME={CHIMERA_TRAIN_FEATURES_FILENAME}",
             "--build-arg",
-            f"TRAIN_LABELS_FILENAME={TRAIN_LABELS_FILENAME}",
+            f"TRAIN_LABELS_FILENAME={CHIMERA_TRAIN_LABELS_FILENAME}",
             "--build-arg",
             f"CHIMERA_WORKERS_NODES_NAMES={self._workers_config.CHIMERA_WORKERS_NODES_NAMES}",
             "--build-arg",

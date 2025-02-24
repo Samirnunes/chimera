@@ -1,14 +1,14 @@
 from typing import Literal
 
-from ..parallelism.hybrid import DistributedAggregation
-from ..workers.handler import WorkersHandler
+from ..containers.handler import ContainersHandler
+from ..nodes.masters import AggregationMaster
 
 
 class Chimera:
     def __init__(self) -> None:
-        self._services = {"aggregation": DistributedAggregation()}
-        self._workers_handler = WorkersHandler()
+        self._masters = {"aggregation": AggregationMaster()}
+        self._workers_handler = ContainersHandler()
 
-    def serve(self, service: Literal["aggregation"], port: int = 8081) -> None:
+    def serve(self, master: Literal["aggregation"], port: int = 8081) -> None:
         self._workers_handler.serve_all()
-        self._services[service.lower()].serve(port)
+        self._masters[master.lower()].serve(port)

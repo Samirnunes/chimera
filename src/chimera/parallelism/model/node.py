@@ -1,2 +1,0 @@
-class NeuralNetworkNode:
-    pass

@@ -8,19 +8,15 @@ from fastapi import APIRouter, FastAPI
 from fastapi.responses import JSONResponse
 from sklearn.base import ClassifierMixin, RegressorMixin
 
-from ...api import (
+from ...api.constants import CHIMERA_NODE_FIT_PATH, CHIMERA_NODE_PREDICT_PATH
+from ...api.dto import FitOutput, PredictInput, PredictOutput
+from ...api.response import build_error_response, build_json_response
+from ...containers.configs import WorkersConfig
+from ...containers.constants import (
     CHIMERA_DATA_FOLDER,
-    CHIMERA_NODE_FIT_PATH,
-    CHIMERA_NODE_PREDICT_PATH,
-    TRAIN_FEATURES_FILENAME,
-    TRAIN_LABELS_FILENAME,
-    FitOutput,
-    PredictInput,
-    PredictOutput,
-    build_error_response,
-    build_json_response,
+    CHIMERA_TRAIN_FEATURES_FILENAME,
+    CHIMERA_TRAIN_LABELS_FILENAME,
 )
-from ...workers.config import WorkersConfig
 
 
 class _Bootstrap:
@@ -55,7 +51,7 @@ class _Bootstrap:
         return X_bootstrap, y_bootstrap
 
 
-class _BootstrapNode(ABC):
+class _BootstrapWorker(ABC):
     def __init__(self) -> None:
         self._workers_config = WorkersConfig()
         self._bootstrap = _Bootstrap()
@@ -79,7 +75,7 @@ class _BootstrapNode(ABC):
         raise NotImplementedError
 
 
-class BootstrapRegressionNode(_BootstrapNode):
+class BootstrapRegressionWorker(_BootstrapWorker):
     def __init__(self, regressor: RegressorMixin) -> None:
         super().__init__()
         self._regressor: RegressorMixin = regressor
@@ -106,10 +102,10 @@ class BootstrapRegressionNode(_BootstrapNode):
         def fit() -> JSONResponse:
             try:
                 X_train = pd.read_csv(
-                    f"{CHIMERA_DATA_FOLDER}/{TRAIN_FEATURES_FILENAME}.csv"
+                    f"{CHIMERA_DATA_FOLDER}/{CHIMERA_TRAIN_FEATURES_FILENAME}.csv"
                 )
                 y_train = pd.read_csv(
-                    f"{CHIMERA_DATA_FOLDER}/{TRAIN_LABELS_FILENAME}.csv"
+                    f"{CHIMERA_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}.csv"
                 )
                 self._regressor.fit(*self._bootstrap.run(X_train, y_train))
                 return build_json_response(FitOutput(fit="ok"))
@@ -119,7 +115,7 @@ class BootstrapRegressionNode(_BootstrapNode):
         return router
 
 
-class BootstrapClassificationNode(_BootstrapNode):
+class BootstrapClassificationWorker(_BootstrapWorker):
     def __init__(self, classifier: ClassifierMixin) -> None:
         super().__init__()
         self._classifier: ClassifierMixin = classifier
@@ -146,10 +142,10 @@ class BootstrapClassificationNode(_BootstrapNode):
         def fit() -> JSONResponse:
             try:
                 X_train = pd.read_csv(
-                    f"{CHIMERA_DATA_FOLDER}/{TRAIN_FEATURES_FILENAME}.csv"
+                    f"{CHIMERA_DATA_FOLDER}/{CHIMERA_TRAIN_FEATURES_FILENAME}.csv"
                 )
                 y_train = pd.read_csv(
-                    f"{CHIMERA_DATA_FOLDER}/{TRAIN_LABELS_FILENAME}.csv"
+                    f"{CHIMERA_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}.csv"
                 )
                 self._classifier.fit(*self._bootstrap.run(X_train, y_train))
                 return build_json_response(FitOutput(fit="ok"))

@@ -8,19 +8,15 @@ from fastapi import APIRouter, FastAPI
 from fastapi.responses import JSONResponse
 from requests.models import Response  # type: ignore
 
-from chimera.workers.config import WorkersConfig  # type: ignore
-
-from ...api import (
+from ...api.constants import (
     CHIMERA_ENSEMBLE_FIT_PATH,
     CHIMERA_ENSEMBLE_PREDICT_PATH,
     CHIMERA_NODE_FIT_PATH,
     CHIMERA_NODE_PREDICT_PATH,
-    FitOutput,
-    PredictInput,
-    PredictOutput,
-    build_error_response,
-    build_json_response,
 )
+from ...api.dto import FitOutput, PredictInput, PredictOutput
+from ...api.response import build_error_response, build_json_response
+from ...containers.configs import WorkersConfig  # type: ignore
 
 
 class _MeanAggregator:
@@ -31,7 +27,7 @@ class _MeanAggregator:
         return np.mean(y_pred, axis=0)
 
 
-class DistributedAggregation:
+class AggregationMaster:
     def __init__(self) -> None:
         self._workers_config = WorkersConfig()
         self._aggregator = _MeanAggregator()
