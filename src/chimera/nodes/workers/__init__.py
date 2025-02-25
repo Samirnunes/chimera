@@ -1,2 +1,2 @@
-from .bootstrap import BootstrapClassificationWorker as BootstrapClassificationWorker
-from .bootstrap import BootstrapRegressionWorker as BootstrapRegressionWorker
+from .prediction import ClassificationWorker as ClassificationWorker
+from .prediction import RegressionWorker as RegressionWorker

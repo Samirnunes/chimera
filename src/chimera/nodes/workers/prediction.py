@@ -19,7 +19,7 @@ from ...containers.constants import (
 )
 
 
-class _Bootstrap:
+class _Bootstrapper:
     def __init__(self, random_state: int = 0) -> None:
         self.random_state = np.random.RandomState(random_state)
 
@@ -51,34 +51,55 @@ class _Bootstrap:
         return X_bootstrap, y_bootstrap
 
 
-class _BootstrapWorker(ABC):
-    def __init__(self) -> None:
+class _PredictionWorker(ABC):
+    def __init__(
+        self, predictor: RegressorMixin | ClassifierMixin, bootstrap: bool = False
+    ) -> None:
+        self._predictor = predictor
+        self._bootstrap = bootstrap
+
         self._workers_config = WorkersConfig()
-        self._bootstrap = _Bootstrap()
+        self._bootstrapper = _Bootstrapper()
 
     def serve(self) -> None:
         app = FastAPI()
-        app.include_router(self._predict_router())
         app.include_router(self._fit_router())
+        app.include_router(self._predict_router())
         uvicorn.run(
             app,
             host=self._workers_config.CHIMERA_WORKERS_HOST,
             port=self._workers_config.CHIMERA_WORKERS_PORT,
         )
 
+    def _fit_router(self) -> APIRouter:
+        router = APIRouter()
+
+        @router.post(CHIMERA_NODE_FIT_PATH)
+        def fit() -> JSONResponse:
+            try:
+                X_train = pd.read_csv(
+                    f"{CHIMERA_DATA_FOLDER}/{CHIMERA_TRAIN_FEATURES_FILENAME}.csv"
+                )
+                y_train = pd.read_csv(
+                    f"{CHIMERA_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}.csv"
+                )
+                if self._bootstrap:
+                    X_train, y_train = self._bootstrapper.run(X_train, y_train)
+                self._predictor.fit(X_train, y_train)
+                return build_json_response(FitOutput(fit="ok"))
+            except Exception as e:
+                return build_error_response(e)
+
+        return router
+
     @abstractmethod
     def _predict_router(self) -> APIRouter:
         raise NotImplementedError
 
-    @abstractmethod
-    def _fit_router(self) -> APIRouter:
-        raise NotImplementedError
 
-
-class BootstrapRegressionWorker(_BootstrapWorker):
-    def __init__(self, regressor: RegressorMixin) -> None:
-        super().__init__()
-        self._regressor: RegressorMixin = regressor
+class RegressionWorker(_PredictionWorker):
+    def __init__(self, regressor: RegressorMixin, bootstrap: bool = False) -> None:
+        super().__init__(regressor, bootstrap)
 
     def _predict_router(self) -> APIRouter:
         router = APIRouter()
@@ -86,7 +107,7 @@ class BootstrapRegressionWorker(_BootstrapWorker):
         @router.post(CHIMERA_NODE_PREDICT_PATH)
         def predict(predict_input: PredictInput) -> JSONResponse:
             try:
-                y_pred: np.ndarray = self._regressor.predict(
+                y_pred: np.ndarray = self._predictor.predict(
                     pd.DataFrame.from_dict(predict_input.X)
                 )
                 return build_json_response(PredictOutput(y_pred=list(y_pred)))
@@ -95,30 +116,10 @@ class BootstrapRegressionWorker(_BootstrapWorker):
 
         return router
 
-    def _fit_router(self) -> APIRouter:
-        router = APIRouter()
 
-        @router.post(CHIMERA_NODE_FIT_PATH)
-        def fit() -> JSONResponse:
-            try:
-                X_train = pd.read_csv(
-                    f"{CHIMERA_DATA_FOLDER}/{CHIMERA_TRAIN_FEATURES_FILENAME}.csv"
-                )
-                y_train = pd.read_csv(
-                    f"{CHIMERA_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}.csv"
-                )
-                self._regressor.fit(*self._bootstrap.run(X_train, y_train))
-                return build_json_response(FitOutput(fit="ok"))
-            except Exception as e:
-                return build_error_response(e)
-
-        return router
-
-
-class BootstrapClassificationWorker(_BootstrapWorker):
-    def __init__(self, classifier: ClassifierMixin) -> None:
-        super().__init__()
-        self._classifier: ClassifierMixin = classifier
+class ClassificationWorker(_PredictionWorker):
+    def __init__(self, classifier: ClassifierMixin, bootstrap: bool = False) -> None:
+        super().__init__(classifier, bootstrap)
 
     def _predict_router(self) -> APIRouter:
         router = APIRouter()
@@ -126,29 +127,10 @@ class BootstrapClassificationWorker(_BootstrapWorker):
         @router.post(CHIMERA_NODE_PREDICT_PATH)
         def predict(node_input: PredictInput) -> JSONResponse:
             try:
-                y_pred: np.ndarray = self._classifier.predict_proba(
+                y_pred: np.ndarray = self._predictor.predict_proba(
                     pd.DataFrame.from_dict(node_input.X)
                 )
                 return build_json_response(PredictOutput(y_pred=list(y_pred)))
-            except Exception as e:
-                return build_error_response(e)
-
-        return router
-
-    def _fit_router(self) -> APIRouter:
-        router = APIRouter()
-
-        @router.post(CHIMERA_NODE_FIT_PATH)
-        def fit() -> JSONResponse:
-            try:
-                X_train = pd.read_csv(
-                    f"{CHIMERA_DATA_FOLDER}/{CHIMERA_TRAIN_FEATURES_FILENAME}.csv"
-                )
-                y_train = pd.read_csv(
-                    f"{CHIMERA_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}.csv"
-                )
-                self._classifier.fit(*self._bootstrap.run(X_train, y_train))
-                return build_json_response(FitOutput(fit="ok"))
             except Exception as e:
                 return build_error_response(e)
 
