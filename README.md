@@ -15,4 +15,6 @@ The communication between workers is made by message passing via the TCP protoco
 
 ## Some Implementations Examples
 
-![Random Forest](../images/random_forest.png)
+<p align="center">
+    <img width="600" src="./images/random_forest.png" alt="Random Forest">
+<p>
