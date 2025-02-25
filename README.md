@@ -13,7 +13,9 @@ The implementation is Docker-based, that is, it uses docker containers to act as
 
 The communication between workers is made by message passing via the TCP protocol.
 
-## Some Implementations Examples
+## Examples
+
+### Random Forest
 
 <p align="center">
     <img width="600" src="./images/random_forest.png" alt="Random Forest">
