@@ -5,14 +5,8 @@ Dockerfile.local
 .prompts/
 
 # Common Files
-*.pdf
-*.docx
 *.csv
 *.parquet
-*.txt
-*.jpg
-*.jpeg
-*.png
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
