@@ -15,4 +15,4 @@ The communication between workers is made by message passing via the TCP protoco
 
 ## Some Implementations Examples
 
-![Random Forest](./images/random_forest.png)
+![Random Forest](../images/random_forest.png)
