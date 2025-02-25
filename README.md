@@ -18,5 +18,5 @@ The client-master and master-workers communications are made via REST APIs. Besi
 ### Random Forest
 
 <p align="center">
-    <img width="600" src="./images/random_forest.png" alt="Random Forest">
+    <img width="900" src="./images/random_forest.png" alt="Random Forest">
 <p>
