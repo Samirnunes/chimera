@@ -2,8 +2,8 @@ import subprocess
 
 from .configs import NetworkConfig, WorkersConfig
 from .constants import (
-    CHIMERA_DATA_FOLDER,
     CHIMERA_DOCKERFILE_NAME,
+    CHIMERA_TRAIN_DATA_FOLDER,
     CHIMERA_TRAIN_FEATURES_FILENAME,
     CHIMERA_TRAIN_LABELS_FILENAME,
     CHIMERA_WORKERS_FOLDER,
@@ -11,12 +11,28 @@ from .constants import (
 
 
 class ContainersHandler:
+    """
+    Manages the creation and execution of Docker containers for Chimera workers.
+    """
+
     def __init__(self) -> None:
+        """
+        Initializes the ContainersHandler with NetworkConfig and WorkersConfig.
+        """
         self._network_config = NetworkConfig()
         self._workers_config = WorkersConfig()
 
     def serve_all(self) -> None:
-        self._sanity_checks()
+        """
+        Creates the Chimera network and starts all worker containers.
+
+        This method performs the following actions:
+        1. Creates the Docker network specified in NetworkConfig.
+        2. Iterates through the worker configurations in WorkersConfig.
+        3. Builds the Docker image for each worker.
+        4. Runs the Docker container for each worker.
+        5. Adds DNS entries to each worker's /etc/hosts file to allow inter-container communication.
+        """
         self._create_network()
 
         for i in range(len(self._workers_config.CHIMERA_WORKERS_NODES_NAMES)):
@@ -24,26 +40,13 @@ class ContainersHandler:
             self._run_container(i)
             self._add_dns_entries_to_container(i)
 
-    def _sanity_checks(self) -> None:
-        if len(self._workers_config.CHIMERA_WORKERS_NODES_NAMES) != len(
-            self._workers_config.CHIMERA_WORKERS_CPU_SHARES
-        ) or len(self._workers_config.CHIMERA_WORKERS_NODES_NAMES) != len(
-            self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS
-        ):
-            raise ValueError(
-                "Number of nodes, number of hosts names and CPU relative weights must be equal"
-            )
-        if any(
-            [
-                not (isinstance(cpu_shares, int) and cpu_shares >= 2)
-                for cpu_shares in self._workers_config.CHIMERA_WORKERS_CPU_SHARES
-            ]
-        ):
-            raise ValueError(
-                "All CPU_SHARES values must be integers and greater than or equal to 2."
-            )
-
     def _create_network(self) -> None:
+        """
+        Creates the Docker network if it doesn't already exist.
+
+        This method checks if a network with the name specified in NetworkConfig exists.
+        If not, it creates a new bridge network with the specified subnet and gateway.
+        """
         check_cmd = [
             "docker",
             "network",
@@ -74,6 +77,12 @@ class ContainersHandler:
         subprocess.run(cmd, check=True)
 
     def _build_docker_image(self, i: int) -> None:
+        """
+        Builds the Docker image for a specific worker.
+
+        Args:
+            i: The index of the worker in the WorkersConfig list.
+        """
         node_name = self._workers_config.CHIMERA_WORKERS_NODES_NAMES[i]
         image_name = node_name
         cmd = [
@@ -84,7 +93,7 @@ class ContainersHandler:
             "--build-arg",
             f"CHIMERA_WORKERS_FOLDER={CHIMERA_WORKERS_FOLDER}",
             "--build-arg",
-            f"CHIMERA_DATA_FOLDER={CHIMERA_DATA_FOLDER}",
+            f"CHIMERA_DATA_FOLDER={CHIMERA_TRAIN_DATA_FOLDER}",
             "--build-arg",
             f"TRAIN_FEATURES_FILENAME={CHIMERA_TRAIN_FEATURES_FILENAME}",
             "--build-arg",
@@ -108,6 +117,12 @@ class ContainersHandler:
         subprocess.run(cmd, check=True)
 
     def _run_container(self, i: int) -> None:
+        """
+        Runs the Docker container for a specific worker.
+
+        Args:
+            i: The index of the worker in the WorkersConfig list.
+        """
         node_name = self._workers_config.CHIMERA_WORKERS_NODES_NAMES[i]
         container_name = node_name
         image_name = node_name
@@ -136,7 +151,12 @@ class ContainersHandler:
         subprocess.run(cmd, check=True)
 
     def _add_dns_entries_to_container(self, i: int) -> None:
-        """Adds DNS entries for all workers to each worker's /etc/hosts file."""
+        """
+        Adds DNS entries for all workers to a specific worker's /etc/hosts file.
+
+        Args:
+            i: The index of the worker in the WorkersConfig list.
+        """
         container_name = self._workers_config.CHIMERA_WORKERS_NODES_NAMES[i]
         for j in range(len(self._workers_config.CHIMERA_WORKERS_NODES_NAMES)):
             if i == j:

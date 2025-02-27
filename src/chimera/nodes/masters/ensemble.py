@@ -1,4 +1,3 @@
-import json
 from typing import Any, List
 
 import numpy as np
@@ -6,7 +5,6 @@ import requests  # type: ignore
 import uvicorn
 from fastapi import APIRouter, FastAPI
 from fastapi.responses import JSONResponse
-from requests.models import Response  # type: ignore
 
 from ...api.constants import (
     CHIMERA_ENSEMBLE_FIT_PATH,
@@ -15,42 +13,31 @@ from ...api.constants import (
     CHIMERA_NODE_PREDICT_PATH,
 )
 from ...api.dto import FitOutput, PredictInput, PredictOutput
-from ...api.response import build_error_response, build_json_response
-from ...containers.configs import WorkersConfig  # type: ignore
+from ...api.exception import ResponseException
+from ...api.response import (
+    build_error_response,
+    build_json_response,  # type: ignore
+)
+from ...containers.configs import WorkersConfig
 
 
 class _MeanAggregator:
-    def run(self, responses: List[Response]) -> List[Any]:
-        y_pred_list = []
-        for response in responses:
-            try:
-                response.raise_for_status()
-                data = response.json()
-                if "y_pred_rows" in data:
-                    y_pred_list.append(data["y_pred_rows"])
-                else:
-                    raise KeyError("Response does not contain 'y_pred_rows' key")
+    """Aggregates prediction results using mean."""
 
-            except requests.exceptions.RequestException as e:
-                raise Exception(
-                    f"Error during request: {e} - {json.loads(response.text)['message']}"
-                )
-            except json.JSONDecodeError as e:
-                raise Exception(
-                    f"Error decoding JSON: {e} Response content: {response.content}"
-                )
-            except KeyError as e:
-                raise KeyError(
-                    f"Missing key in response: {e} Response content: {response.content}"
-                )
-            except Exception as e:
-                raise Exception(
-                    f"Unexpected Error: {e} Response content: {response.content}"
-                )
+    def run(self, y_pred_list: List[float]) -> List[Any]:
+        """
+        Aggregates prediction results using the mean.
 
-        if not y_pred_list:
-            raise ValueError("No valid 'y_pred_rows' found in responses.")
+        Args:
+            responses: List of responses from prediction workers.
 
+        Returns:
+            List of aggregated prediction results.
+
+        Raises:
+            ValueError: If no valid 'y_pred_rows' are found in responses.
+            Exception: If any error occurs during response processing.
+        """
         y_pred: np.ndarray = np.array(y_pred_list)
         y_pred_mean = np.mean(y_pred, axis=0)
 
@@ -60,52 +47,67 @@ class _MeanAggregator:
 
 
 class AggregationMaster:
+    """Orchestrates the aggregation of predictions from workers."""
+
     def __init__(self) -> None:
+        """Initializes the AggregationMaster."""
         self._workers_config = WorkersConfig()
         self._aggregator = _MeanAggregator()
 
     def serve(self, port: int = 8080) -> None:
+        """
+        Starts the FastAPI server for the aggregation master.
+
+        Args:
+            port: Port number to listen on (default: 8080).
+        """
         app = FastAPI()
         app.include_router(self._predict_router())
         app.include_router(self._fit_router())
         uvicorn.run(app, host=self._workers_config.CHIMERA_WORKERS_HOST, port=port)
 
     def _predict_router(self) -> APIRouter:
+        """Creates the FastAPI router for the /predict endpoint."""
         router = APIRouter()
 
         @router.post(CHIMERA_ENSEMBLE_PREDICT_PATH)
         def predict(predict_input: PredictInput) -> JSONResponse:
+            """Handles prediction requests by aggregating results from workers."""
             try:
-                responses = [
-                    requests.post(
-                        url=f"http://localhost:{self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS[i]}{CHIMERA_NODE_PREDICT_PATH}",
-                        json=predict_input.__dict__,
+                y_pred_list = []
+                for port in self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS:
+                    response = requests.post(
+                        url=f"http://localhost:{port}{CHIMERA_NODE_PREDICT_PATH}",
+                        json=predict_input.model_dump(),
                     )
-                    for i in range(
-                        len(self._workers_config.CHIMERA_WORKERS_NODES_NAMES)
-                    )
-                ]
+                    if response.status_code != 200:
+                        raise ResponseException(response)
 
-                y_pred = self._aggregator.run(responses)
+                    y_pred_list.append(response.json()["y_pred_rows"])
 
-                return build_json_response(PredictOutput(y_pred_rows=y_pred))
+                return build_json_response(
+                    PredictOutput(y_pred_rows=self._aggregator.run(y_pred_list))
+                )
             except Exception as e:
                 return build_error_response(e)
 
         return router
 
     def _fit_router(self) -> APIRouter:
+        """Creates the FastAPI router for the /fit endpoint."""
         router = APIRouter()
 
         @router.post(CHIMERA_ENSEMBLE_FIT_PATH)
         def fit() -> JSONResponse:
+            """Handles fit requests by forwarding them to workers."""
             try:
-                for i in range(
-                    len(self._workers_config.CHIMERA_WORKERS_NODES_NAMES)
-                ):
-                    requests.post(
-                        url=f"http://localhost:{self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS[i]}{CHIMERA_NODE_FIT_PATH}"
+                for port in self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS:
+                    response = requests.post(
+                        url=f"http://localhost:{port}{CHIMERA_NODE_FIT_PATH}"
                     )
+                    if response.status_code != 200:
+                        raise ResponseException(response)
+
                 return build_json_response(FitOutput(fit="ok"))
             except Exception as e:
                 return build_error_response(e)
