@@ -108,3 +108,10 @@ class WorkersConfig(BaseSettings):
         if len(v) != len(set(v)):
             raise ValueError("Node names must be unique.")
         return v
+
+
+CHIMERA_DOCKERFILE_NAME = "Dockerfile.worker"
+CHIMERA_WORKERS_FOLDER = "chimera_workers"
+CHIMERA_TRAIN_DATA_FOLDER = "chimera_train_data"
+CHIMERA_TRAIN_FEATURES_FILENAME = "X_train.csv"
+CHIMERA_TRAIN_LABELS_FILENAME = "y_train.csv"

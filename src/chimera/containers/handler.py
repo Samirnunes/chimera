@@ -1,12 +1,13 @@
 import subprocess
 
-from .configs import NetworkConfig, WorkersConfig
-from .constants import (
+from .configs import (
     CHIMERA_DOCKERFILE_NAME,
     CHIMERA_TRAIN_DATA_FOLDER,
     CHIMERA_TRAIN_FEATURES_FILENAME,
     CHIMERA_TRAIN_LABELS_FILENAME,
     CHIMERA_WORKERS_FOLDER,
+    NetworkConfig,
+    WorkersConfig,
 )
 
 

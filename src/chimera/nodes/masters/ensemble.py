@@ -6,7 +6,7 @@ import uvicorn
 from fastapi import APIRouter, FastAPI
 from fastapi.responses import JSONResponse
 
-from ...api.constants import (
+from ...api.configs import (
     CHIMERA_ENSEMBLE_FIT_PATH,
     CHIMERA_ENSEMBLE_PREDICT_PATH,
     CHIMERA_NODE_FIT_PATH,

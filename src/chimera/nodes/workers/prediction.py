@@ -8,14 +8,14 @@ from fastapi import APIRouter, FastAPI
 from fastapi.responses import JSONResponse
 from sklearn.base import ClassifierMixin, RegressorMixin
 
-from ...api.constants import CHIMERA_NODE_FIT_PATH, CHIMERA_NODE_PREDICT_PATH
+from ...api.configs import CHIMERA_NODE_FIT_PATH, CHIMERA_NODE_PREDICT_PATH
 from ...api.dto import FitOutput, PredictInput, PredictOutput, load_csv_as_fit_input
 from ...api.response import build_error_response, build_json_response
-from ...containers.configs import WorkersConfig
-from ...containers.constants import (
+from ...containers.configs import (
     CHIMERA_TRAIN_DATA_FOLDER,
     CHIMERA_TRAIN_FEATURES_FILENAME,
     CHIMERA_TRAIN_LABELS_FILENAME,
+    WorkersConfig,
 )
 
 
