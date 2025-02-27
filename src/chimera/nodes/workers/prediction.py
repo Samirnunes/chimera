@@ -17,6 +17,7 @@ from ...containers.constants import (
     CHIMERA_TRAIN_FEATURES_FILENAME,
     CHIMERA_TRAIN_LABELS_FILENAME,
 )
+from .utils import load_csv_as_fit_input
 
 
 class _Bootstrapper:
@@ -31,22 +32,8 @@ class _Bootstrapper:
 
         n_rows = len(X)
         row_indices = self.random_state.choice(n_rows, size=n_rows, replace=True)
-        X_bootstrap_rows = X.iloc[row_indices].reset_index(drop=True)
-        y_bootstrap_rows = y.iloc[row_indices].reset_index(drop=True)
-
-        n_cols_X = X_bootstrap_rows.shape[1]
-        col_indices_X = self.random_state.choice(
-            n_cols_X, size=n_cols_X, replace=True
-        )
-        X_bootstrap = X_bootstrap_rows.iloc[:, col_indices_X].copy()
-        X_bootstrap.columns = [X.columns[i] for i in col_indices_X]
-
-        n_cols_y = y_bootstrap_rows.shape[1]
-        col_indices_y = self.random_state.choice(
-            n_cols_y, size=n_cols_y, replace=True
-        )
-        y_bootstrap = y_bootstrap_rows.iloc[:, col_indices_y].copy()
-        y_bootstrap.columns = [y.columns[i] for i in col_indices_y]
+        X_bootstrap = X.iloc[row_indices].reset_index(drop=True)
+        y_bootstrap = y.iloc[row_indices].reset_index(drop=True)
 
         return X_bootstrap, y_bootstrap
 
@@ -77,15 +64,23 @@ class _PredictionWorker(ABC):
         @router.post(CHIMERA_NODE_FIT_PATH)
         def fit() -> JSONResponse:
             try:
-                X_train = pd.read_csv(
-                    f"{CHIMERA_DATA_FOLDER}/{CHIMERA_TRAIN_FEATURES_FILENAME}.csv"
+                fit_input = load_csv_as_fit_input(
+                    f"{CHIMERA_DATA_FOLDER}/{CHIMERA_TRAIN_FEATURES_FILENAME}",
+                    f"{CHIMERA_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}",
                 )
-                y_train = pd.read_csv(
-                    f"{CHIMERA_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}.csv"
+
+                X_train = pd.DataFrame(
+                    fit_input.X_train_rows, columns=fit_input.X_train_columns
                 )
+                y_train = pd.DataFrame(
+                    fit_input.y_train_rows, columns=fit_input.y_train_columns
+                )
+
                 if self._bootstrap:
                     X_train, y_train = self._bootstrapper.run(X_train, y_train)
+
                 self._predictor.fit(X_train, y_train)
+
                 return build_json_response(FitOutput(fit="ok"))
             except Exception as e:
                 return build_error_response(e)
@@ -107,10 +102,18 @@ class RegressionWorker(_PredictionWorker):
         @router.post(CHIMERA_NODE_PREDICT_PATH)
         def predict(predict_input: PredictInput) -> JSONResponse:
             try:
+                X_pred_rows = np.array(predict_input.X_pred_rows)
+                X_pred_columns = predict_input.X_pred_columns
+
                 y_pred: np.ndarray = self._predictor.predict(
-                    pd.DataFrame.from_dict(predict_input.X)
+                    pd.DataFrame(X_pred_rows, columns=X_pred_columns)
                 )
-                return build_json_response(PredictOutput(y_pred=list(y_pred)))
+
+                return build_json_response(
+                    PredictOutput(
+                        y_pred_rows=list(y_pred), y_pred_columns=X_pred_columns
+                    )
+                )
             except Exception as e:
                 return build_error_response(e)
 
@@ -125,12 +128,18 @@ class ClassificationWorker(_PredictionWorker):
         router = APIRouter()
 
         @router.post(CHIMERA_NODE_PREDICT_PATH)
-        def predict(node_input: PredictInput) -> JSONResponse:
+        def predict(predict_input: PredictInput) -> JSONResponse:
             try:
+                X_pred_rows = predict_input.X_pred_rows
+                X_pred_columns = predict_input.X_pred_columns
                 y_pred: np.ndarray = self._predictor.predict_proba(
-                    pd.DataFrame.from_dict(node_input.X)
+                    pd.DataFrame(X_pred_rows, columns=X_pred_columns)
                 )
-                return build_json_response(PredictOutput(y_pred=list(y_pred)))
+                return build_json_response(
+                    PredictOutput(
+                        y_pred_rows=list(y_pred), y_pred_columns=X_pred_columns
+                    )
+                )
             except Exception as e:
                 return build_error_response(e)
 

@@ -7,4 +7,4 @@ os.environ["CHIMERA_WORKERS_CPU_SHARES"] = "[2, 2, 2, 2]"
 os.environ["CHIMERA_WORKERS_MAPPED_PORTS"] = "[81, 82, 83, 84]"
 
 
-Chimera().serve("aggregation", 8081)
+Chimera().serve("aggregation", 8082)

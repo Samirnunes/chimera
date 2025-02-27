@@ -45,7 +45,7 @@ RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=/opt/poetry POETRY
 RUN mkdir -p ${CHIMERA_DATA_FOLDER}
 
 # Move training data from data/${NODE} to data folder in container
-COPY ./${CHIMERA_DATA_FOLDER}/${CHIMERA_WORKERS_NODE_NAME}/${TRAIN_FEATURES_FILENAME}.csv ./${CHIMERA_DATA_FOLDER}/${CHIMERA_WORKERS_NODE_NAME}/${TRAIN_LABELS_FILENAME}.csv ./${CHIMERA_DATA_FOLDER}/
+COPY ./${CHIMERA_DATA_FOLDER}/${CHIMERA_WORKERS_NODE_NAME}/${TRAIN_FEATURES_FILENAME} ./${CHIMERA_DATA_FOLDER}/${CHIMERA_WORKERS_NODE_NAME}/${TRAIN_LABELS_FILENAME} ./${CHIMERA_DATA_FOLDER}/
 
 # Copy poetry.lock* in case it doesn't exist in the repo
 COPY ./pyproject.toml ./poetry.lock* ./
