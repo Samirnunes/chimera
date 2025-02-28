@@ -42,4 +42,15 @@ def build_error_response(
 
 
 def get_response_message(response: Response) -> str:
+    """
+    Extracts the 'message' field from a JSON response.
+
+    Assumes the response body is a JSON object with a 'message' key.
+
+    Args:
+        response: The requests.Response object containing the JSON response.
+
+    Returns:
+        The value of the 'message' field as a string.
+    """
     return response.json()["message"]
