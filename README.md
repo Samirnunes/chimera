@@ -15,8 +15,14 @@ The client-master and master-workers communications are made via REST APIs. Besi
 
 ## Examples
 
-### Random Forest
+### Distributed Bagging (Bootstrap Aggregating)
 
 <p align="center">
-    <img width="900" src="./images/random_forest.png" alt="Random Forest">
+    <img width="900" src="./images/distributed_bagging.png" alt="Distributed Bagging">
+<p>
+
+### Distributed SGD (Stochastic Gradient Descent)
+
+<p align="center">
+    <img width="900" src="./images/distributed_sgd.png" alt="Distributed SGD">
 <p>
