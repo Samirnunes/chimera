@@ -13,7 +13,7 @@
 
 Docker containers act as Workers. To run the created distributed system, it will be given a standardized interface named `Chimera`, on which a Master type and a port must be selected for the server in the host machine.
 
-The client-master and master-workers communications are made via REST APIs when endpoints are called. Otherwise, message passing via the TCP protocol in the transport layer is used to exchange informations between master and workers - for example, when gradients in the distributed SGD need to be exchanged.
+The client-master and master-workers communications are made via REST APIs when endpoints are called.
 
 ## Examples
 

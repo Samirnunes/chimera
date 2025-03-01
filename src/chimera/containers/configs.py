@@ -69,7 +69,7 @@ class WorkersConfig(BaseSettings):
     """List of names for the Chimera worker nodes."""
     CHIMERA_WORKERS_CPU_SHARES: Annotated[List[int], NoDecode] = [2]
     """List of CPU shares for each worker node."""
-    CHIMERA_WORKERS_MAPPED_PORTS: Annotated[List[int], NoDecode] = [8082]
+    CHIMERA_WORKERS_MAPPED_PORTS: Annotated[List[int], NoDecode] = [101]
     """List of host ports to map to each worker's container port."""
     CHIMERA_WORKERS_HOST: str = "0.0.0.0"
     """Host IP address to bind the worker's port to."""
