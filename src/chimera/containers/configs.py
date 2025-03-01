@@ -78,6 +78,7 @@ class WorkersConfig(BaseSettings):
     CHIMERA_WORKERS_ENDPOINTS_MAX_RETRIES: int = 0
     """Maximum number of retries for worker endpoints."""
     CHIMERA_WORKERS_ENDPOINTS_TIMEOUT: float = 100.0
+    """Timeout for worker endpoints."""
 
     @field_validator(
         "CHIMERA_WORKERS_NODES_NAMES",
