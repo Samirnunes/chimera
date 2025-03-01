@@ -2,7 +2,6 @@ import ast
 import ipaddress
 from typing import Any, List
 
-import numpy as np
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, NoDecode
 from typing_extensions import Annotated
@@ -78,7 +77,7 @@ class WorkersConfig(BaseSettings):
     """Container port for the Chimera workers."""
     CHIMERA_WORKERS_ENDPOINTS_MAX_RETRIES: int = 0
     """Maximum number of retries for worker endpoints."""
-    CHIMERA_WORKERS_ENDPOINTS_TIMEOUT: float = np.inf
+    CHIMERA_WORKERS_ENDPOINTS_TIMEOUT: float = 100.0
 
     @field_validator(
         "CHIMERA_WORKERS_NODES_NAMES",
