@@ -32,7 +32,7 @@ class FitInput(BaseModel):
     @classmethod
     def normalize_columns(cls, columns: List[str]) -> List[str]:
         """Normalizes column names to lowercase and removes whitespace."""
-        return sorted([column.lower().strip() for column in columns])
+        return [column.lower().strip() for column in columns]
 
 
 class FitOutput(BaseModel):
@@ -58,7 +58,7 @@ class PredictInput(BaseModel):
     @classmethod
     def normalize_columns(cls, columns: List[str]) -> List[str]:
         """Normalizes column names to lowercase and removes whitespace."""
-        return sorted([column.lower().strip() for column in columns])
+        return [column.lower().strip() for column in columns]
 
 
 class PredictOutput(BaseModel):

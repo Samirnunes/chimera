@@ -1,1 +1,1 @@
-from .api.chimera import Chimera as Chimera
+from .api.chimera import run as run

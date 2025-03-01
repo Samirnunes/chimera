@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Tuple
+from typing import List, Tuple
 
 import numpy as np
 import pandas as pd
@@ -8,7 +8,10 @@ from fastapi import APIRouter, FastAPI
 from fastapi.responses import JSONResponse
 from sklearn.base import ClassifierMixin, RegressorMixin
 
-from ...api.configs import CHIMERA_NODE_FIT_PATH, CHIMERA_NODE_PREDICT_PATH
+from ...api.configs import (
+    CHIMERA_MODEL_WORKER_FIT_PATH,
+    CHIMERA_MODEL_WORKER_PREDICT_PATH,
+)
 from ...api.dto import FitOutput, PredictInput, PredictOutput, load_csv_as_fit_input
 from ...api.response import build_error_response, build_json_response
 from ...containers.configs import (
@@ -21,7 +24,7 @@ from ...containers.configs import (
 
 class _Bootstrapper:
     """
-    Helper class for bootstrapping training data.  Creates bootstrap samples from input data.
+    Helper class for bootstrapping training data. Creates bootstrap samples from input data.
     """
 
     def __init__(self, random_state: int = 0) -> None:
@@ -57,16 +60,16 @@ class _Bootstrapper:
         return X_bootstrap, y_bootstrap
 
 
-class _PredictionWorker(ABC):
+class _ModelWorker(ABC):
     """
-    Abstract base class for Chimera prediction workers.  Handles fitting and prediction logic.
+    Abstract base class for Chimera model workers. Handles fitting and prediction logic.
     """
 
     def __init__(
         self, predictor: RegressorMixin | ClassifierMixin, bootstrap: bool = False
     ) -> None:
         """
-        Initializes the _PredictionWorker.
+        Initializes the _ModelWorker.
 
         Args:
             predictor: The scikit-learn predictor model (RegressorMixin or ClassifierMixin).
@@ -78,9 +81,11 @@ class _PredictionWorker(ABC):
         self._workers_config = WorkersConfig()
         self._bootstrapper = _Bootstrapper()
 
+        self._fit_columns: List[str] = []
+
     def serve(self) -> None:
         """
-        Starts the FastAPI server for the prediction worker.
+        Starts the FastAPI server for the model worker.
         """
         app = FastAPI()
         app.include_router(self._fit_router())
@@ -100,10 +105,10 @@ class _PredictionWorker(ABC):
         """
         router = APIRouter()
 
-        @router.post(CHIMERA_NODE_FIT_PATH)
+        @router.post(CHIMERA_MODEL_WORKER_FIT_PATH)
         def fit() -> JSONResponse:
             """
-            Fits the prediction model using training data loaded from CSV files.
+            Fits the model using training data loaded from CSV files.
             """
             try:
                 fit_input = load_csv_as_fit_input(
@@ -132,7 +137,7 @@ class _PredictionWorker(ABC):
     @abstractmethod
     def _predict_router(self) -> APIRouter:
         """
-        Abstract method to create the prediction router.  Must be implemented by subclasses.
+        Abstract method to create the prediction router. Must be implemented by subclasses.
 
         Returns:
             The FastAPI router for making predictions.
@@ -140,7 +145,7 @@ class _PredictionWorker(ABC):
         raise NotImplementedError
 
 
-class RegressionWorker(_PredictionWorker):
+class RegressionWorker(_ModelWorker):
     """
     Chimera worker for regression tasks.
     """
@@ -164,7 +169,7 @@ class RegressionWorker(_PredictionWorker):
         """
         router = APIRouter()
 
-        @router.post(CHIMERA_NODE_PREDICT_PATH)
+        @router.post(CHIMERA_MODEL_WORKER_PREDICT_PATH)
         def predict(predict_input: PredictInput) -> JSONResponse:
             """
             Makes a regression prediction using the fitted model.
@@ -188,7 +193,7 @@ class RegressionWorker(_PredictionWorker):
         return router
 
 
-class ClassificationWorker(_PredictionWorker):
+class ClassificationWorker(_ModelWorker):
     """
     Chimera worker for classification tasks.
     """
@@ -212,7 +217,7 @@ class ClassificationWorker(_PredictionWorker):
         """
         router = APIRouter()
 
-        @router.post(CHIMERA_NODE_PREDICT_PATH)
+        @router.post(CHIMERA_MODEL_WORKER_PREDICT_PATH)
         def predict(predict_input: PredictInput) -> JSONResponse:
             """
             Makes a classification prediction using the fitted model.  Returns prediction probabilities.

@@ -41,7 +41,7 @@ def build_error_response(
     )
 
 
-def get_response_message(response: Response) -> str:
+def get_error_response_message(response: Response) -> str:
     """
     Extracts the 'message' field from a JSON response.
 

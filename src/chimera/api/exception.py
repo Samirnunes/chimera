@@ -1,6 +1,6 @@
 from requests import Response  # type: ignore
 
-from .response import get_response_message
+from .response import get_error_response_message
 
 
 class ResponseException(Exception):
@@ -28,13 +28,13 @@ class ResponseException(Exception):
         """
         Returns a string representation of the exception.
 
-        This method delegates to the `get_response_message` function to format
+        This method delegates to the `get_error_response_message` function to format
         the underlying response object into a descriptive error message.
 
         Returns:
             A string describing the error based on the HTTP response.
         """
         try:
-            return get_response_message(self._response) + "\n" + self._message
+            return get_error_response_message(self._response) + "\n" + self._message
         except Exception:
             return self._message

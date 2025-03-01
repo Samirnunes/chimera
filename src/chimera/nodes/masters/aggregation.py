@@ -9,10 +9,10 @@ from fastapi.responses import JSONResponse
 from requests.adapters import HTTPAdapter  # type: ignore
 
 from ...api.configs import (
-    CHIMERA_ENSEMBLE_FIT_PATH,
-    CHIMERA_ENSEMBLE_PREDICT_PATH,
-    CHIMERA_NODE_FIT_PATH,
-    CHIMERA_NODE_PREDICT_PATH,
+    CHIMERA_AGGREGATION_MASTER_FIT_PATH,
+    CHIMERA_AGGREGATION_MASTER_PREDICT_PATH,
+    CHIMERA_MODEL_WORKER_FIT_PATH,
+    CHIMERA_MODEL_WORKER_PREDICT_PATH,
 )
 from ...api.dto import FitOutput, PredictInput, PredictOutput
 from ...api.exception import ResponseException
@@ -21,6 +21,7 @@ from ...api.response import (
     build_json_response,  # type: ignore
 )
 from ...containers.configs import WorkersConfig
+from .base import Master
 
 
 class _MeanAggregator:
@@ -48,7 +49,7 @@ class _MeanAggregator:
         return list(y_pred_mean)
 
 
-class AggregationMaster:
+class AggregationMaster(Master):
     """Orchestrates the aggregation of predictions from workers."""
 
     def __init__(self) -> None:
@@ -86,7 +87,7 @@ class AggregationMaster:
                     ),
                 )
                 response = requests.post(
-                    url=f"{prefix}{CHIMERA_NODE_PREDICT_PATH}",
+                    url=f"{prefix}{CHIMERA_MODEL_WORKER_PREDICT_PATH}",
                     json=predict_input.model_dump(),
                     timeout=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_TIMEOUT,
                 )
@@ -98,7 +99,7 @@ class AggregationMaster:
             except Exception as e:
                 print(f"Error fetching prediction from worker at port {port}: {e}")
 
-        @router.post(CHIMERA_ENSEMBLE_PREDICT_PATH)
+        @router.post(CHIMERA_AGGREGATION_MASTER_PREDICT_PATH)
         def predict(predict_input: PredictInput) -> JSONResponse:
             """Handles prediction requests by aggregating results from workers."""
             try:
@@ -131,7 +132,7 @@ class AggregationMaster:
         """Creates the FastAPI router for the /fit endpoint."""
         router = APIRouter()
 
-        def _fetch_fit_from_worker(port: int, results: list) -> None:
+        def _fetch_fit_from_worker(port: int, results: List) -> None:
             """Fetches fit from a worker and stores the result."""
             try:
                 s = requests.Session()
@@ -143,7 +144,7 @@ class AggregationMaster:
                     ),
                 )
                 response = s.post(
-                    url=f"{prefix}{CHIMERA_NODE_FIT_PATH}",
+                    url=f"{prefix}{CHIMERA_MODEL_WORKER_FIT_PATH}",
                     timeout=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_TIMEOUT,
                 )
                 if response.status_code == 200:
@@ -153,7 +154,7 @@ class AggregationMaster:
             except Exception as e:
                 print(f"Error fetching fit from worker at port {port}: {e}")
 
-        @router.post(CHIMERA_ENSEMBLE_FIT_PATH)
+        @router.post(CHIMERA_AGGREGATION_MASTER_FIT_PATH)
         def fit() -> JSONResponse:
             """Handles fit requests by forwarding them to workers."""
             try:

@@ -1,2 +1,2 @@
-from .prediction import ClassificationWorker as ClassificationWorker
-from .prediction import RegressionWorker as RegressionWorker
+from .model import ClassificationWorker as ClassificationWorker
+from .model import RegressionWorker as RegressionWorker
