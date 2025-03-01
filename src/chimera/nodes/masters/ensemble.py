@@ -1,3 +1,4 @@
+import threading
 from typing import Any, List
 
 import numpy as np
@@ -5,6 +6,7 @@ import requests  # type: ignore
 import uvicorn
 from fastapi import APIRouter, FastAPI
 from fastapi.responses import JSONResponse
+from requests.adapters import HTTPAdapter  # type: ignore
 
 from ...api.configs import (
     CHIMERA_ENSEMBLE_FIT_PATH,
@@ -70,23 +72,55 @@ class AggregationMaster:
         """Creates the FastAPI router for the /predict endpoint."""
         router = APIRouter()
 
+        def _fetch_predict_from_worker(
+            port: int, predict_input: PredictInput, results: list
+        ) -> None:
+            """Fetches prediction from a worker and stores the result."""
+            try:
+                s = requests.Session()
+                prefix = f"http://localhost:{port}"
+                s.mount(
+                    prefix,
+                    HTTPAdapter(
+                        max_retries=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_MAX_RETRIES
+                    ),
+                )
+                response = requests.post(
+                    url=f"{prefix}{CHIMERA_NODE_PREDICT_PATH}",
+                    json=predict_input.model_dump(),
+                    timeout=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_TIMEOUT,
+                )
+                if response.status_code == 200:
+                    results.append(response.json()["y_pred_rows"])
+                else:
+                    raise ResponseException(response)
+
+            except Exception as e:
+                print(f"Error fetching prediction from worker at port {port}: {e}")
+
         @router.post(CHIMERA_ENSEMBLE_PREDICT_PATH)
         def predict(predict_input: PredictInput) -> JSONResponse:
             """Handles prediction requests by aggregating results from workers."""
             try:
-                y_pred_list = []
+                threads: List[threading.Thread] = []
+                results: List[Any] = []
                 for port in self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS:
-                    response = requests.post(
-                        url=f"http://localhost:{port}{CHIMERA_NODE_PREDICT_PATH}",
-                        json=predict_input.model_dump(),
+                    thread = threading.Thread(
+                        target=_fetch_predict_from_worker,
+                        args=(port, predict_input, results),
                     )
-                    if response.status_code != 200:
-                        raise ResponseException(response)
+                    threads.append(thread)
+                    thread.start()
 
-                    y_pred_list.append(response.json()["y_pred_rows"])
+                for thread in threads:
+                    thread.join()
+
+                if len(results) == 0:
+                    message = "All predict responses from workers failed."
+                    raise ResponseException(requests.Response(), message)
 
                 return build_json_response(
-                    PredictOutput(y_pred_rows=self._aggregator.run(y_pred_list))
+                    PredictOutput(y_pred_rows=self._aggregator.run(results))
                 )
             except Exception as e:
                 return build_error_response(e)
@@ -97,16 +131,47 @@ class AggregationMaster:
         """Creates the FastAPI router for the /fit endpoint."""
         router = APIRouter()
 
+        def _fetch_fit_from_worker(port: int, results: list) -> None:
+            """Fetches fit from a worker and stores the result."""
+            try:
+                s = requests.Session()
+                prefix = f"http://localhost:{port}"
+                s.mount(
+                    prefix,
+                    HTTPAdapter(
+                        max_retries=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_MAX_RETRIES
+                    ),
+                )
+                response = s.post(
+                    url=f"{prefix}{CHIMERA_NODE_FIT_PATH}",
+                    timeout=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_TIMEOUT,
+                )
+                if response.status_code == 200:
+                    results.append("ok")
+                else:
+                    raise ResponseException(response)
+            except Exception as e:
+                print(f"Error fetching fit from worker at port {port}: {e}")
+
         @router.post(CHIMERA_ENSEMBLE_FIT_PATH)
         def fit() -> JSONResponse:
             """Handles fit requests by forwarding them to workers."""
             try:
+                threads: List[threading.Thread] = []
+                results: List = []
                 for port in self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS:
-                    response = requests.post(
-                        url=f"http://localhost:{port}{CHIMERA_NODE_FIT_PATH}"
+                    thread = threading.Thread(
+                        target=_fetch_fit_from_worker, args=(port, results)
                     )
-                    if response.status_code != 200:
-                        raise ResponseException(response)
+                    threads.append(thread)
+                    thread.start()
+
+                for thread in threads:
+                    thread.join()
+
+                if len(results) == 0:
+                    message = "All fit responses from workers failed."
+                    raise ResponseException(requests.Response(), message)
 
                 return build_json_response(FitOutput(fit="ok"))
             except Exception as e:

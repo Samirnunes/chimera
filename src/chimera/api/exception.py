@@ -13,7 +13,7 @@ class ResponseException(Exception):
     extracting and formatting the response message.
     """
 
-    def __init__(self, response: Response) -> None:
+    def __init__(self, response: Response, message: str = "") -> None:
         """
         Initializes the ResponseException with a given HTTP response.
 
@@ -22,6 +22,7 @@ class ResponseException(Exception):
                       that caused the exception.
         """
         self._response = response
+        self._message = message
 
     def __str__(self) -> str:
         """
@@ -33,4 +34,7 @@ class ResponseException(Exception):
         Returns:
             A string describing the error based on the HTTP response.
         """
-        return get_response_message(self._response)
+        try:
+            return get_response_message(self._response) + "\n" + self._message
+        except Exception:
+            return self._message
