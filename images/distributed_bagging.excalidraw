@@ -23,11 +23,11 @@
       "index": "b0g",
       "roundness": null,
       "seed": 1751072688,
-      "version": 1616,
-      "versionNonce": 1256238355,
+      "version": 1657,
+      "versionNonce": 1033213114,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740782991450,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "text": "    Distributed Bagging \n(Bootstrap Aggregating) \n                     ",
@@ -62,8 +62,8 @@
         "type": 2
       },
       "seed": 220276560,
-      "version": 588,
-      "versionNonce": 536140635,
+      "version": 632,
+      "versionNonce": 1069984742,
       "isDeleted": false,
       "boundElements": [
         {
@@ -111,7 +111,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false
     },
@@ -135,11 +135,11 @@
       "index": "b0m8",
       "roundness": null,
       "seed": 384666448,
-      "version": 386,
-      "versionNonce": 719150037,
+      "version": 444,
+      "versionNonce": 104263034,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "text": "Aggregation \nMaster",
@@ -174,8 +174,8 @@
         "type": 3
       },
       "seed": 805103952,
-      "version": 721,
-      "versionNonce": 18266107,
+      "version": 765,
+      "versionNonce": 1326726950,
       "isDeleted": false,
       "boundElements": [
         {
@@ -191,7 +191,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false
     },
@@ -215,11 +215,11 @@
       "index": "b0nV",
       "roundness": null,
       "seed": 1971090352,
-      "version": 477,
-      "versionNonce": 1254955317,
+      "version": 521,
+      "versionNonce": 179252794,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "text": "Client",
@@ -254,8 +254,8 @@
         "type": 2
       },
       "seed": 613983568,
-      "version": 1112,
-      "versionNonce": 1729364123,
+      "version": 1156,
+      "versionNonce": 500001382,
       "isDeleted": false,
       "boundElements": [
         {
@@ -271,7 +271,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false
     },
@@ -295,11 +295,11 @@
       "index": "b0w",
       "roundness": null,
       "seed": 452426576,
-      "version": 834,
-      "versionNonce": 1151216277,
+      "version": 878,
+      "versionNonce": 2145474298,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "text": "Bootstrap\nWorker 1",
@@ -334,11 +334,11 @@
         "type": 2
       },
       "seed": 723988304,
-      "version": 738,
-      "versionNonce": 2074031419,
+      "version": 882,
+      "versionNonce": 1790913958,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "points": [
@@ -390,11 +390,11 @@
         "type": 2
       },
       "seed": 1859492272,
-      "version": 576,
-      "versionNonce": 2030440437,
+      "version": 706,
+      "versionNonce": 105932730,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "points": [
@@ -446,11 +446,11 @@
         "type": 2
       },
       "seed": 652202416,
-      "version": 546,
-      "versionNonce": 236639707,
+      "version": 676,
+      "versionNonce": 320243942,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "points": [
@@ -502,11 +502,11 @@
         "type": 2
       },
       "seed": 1426306480,
-      "version": 489,
-      "versionNonce": 369772885,
+      "version": 619,
+      "versionNonce": 908025978,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "points": [
@@ -558,11 +558,11 @@
         "type": 2
       },
       "seed": 1615706448,
-      "version": 398,
-      "versionNonce": 1570333307,
+      "version": 528,
+      "versionNonce": 1180728358,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "points": [
@@ -614,11 +614,11 @@
         "type": 2
       },
       "seed": 1522462032,
-      "version": 387,
-      "versionNonce": 1828738741,
+      "version": 517,
+      "versionNonce": 722551098,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "points": [
@@ -670,11 +670,11 @@
         "type": 2
       },
       "seed": 730733392,
-      "version": 587,
-      "versionNonce": 584932123,
+      "version": 717,
+      "versionNonce": 982124390,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "points": [
@@ -726,11 +726,11 @@
         "type": 2
       },
       "seed": 1895241040,
-      "version": 585,
-      "versionNonce": 143505429,
+      "version": 715,
+      "versionNonce": 277416442,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "points": [
@@ -782,11 +782,11 @@
         "type": 2
       },
       "seed": 1824187728,
-      "version": 537,
-      "versionNonce": 1515798459,
+      "version": 667,
+      "versionNonce": 1608526502,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "points": [
@@ -838,11 +838,11 @@
         "type": 2
       },
       "seed": 1859040592,
-      "version": 542,
-      "versionNonce": 44559733,
+      "version": 672,
+      "versionNonce": 764000954,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "points": [
@@ -894,11 +894,11 @@
         "type": 3
       },
       "seed": 343988560,
-      "version": 1124,
-      "versionNonce": 1311739995,
+      "version": 1169,
+      "versionNonce": 353363430,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false
     },
@@ -924,11 +924,11 @@
         "type": 2
       },
       "seed": 206246320,
-      "version": 566,
-      "versionNonce": 445937365,
+      "version": 610,
+      "versionNonce": 1890997114,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "points": [
@@ -970,11 +970,11 @@
         "type": 2
       },
       "seed": 796659536,
-      "version": 672,
-      "versionNonce": 1613942011,
+      "version": 716,
+      "versionNonce": 1529231654,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "points": [
@@ -1014,11 +1014,11 @@
       "index": "b1F",
       "roundness": null,
       "seed": 231583664,
-      "version": 157,
-      "versionNonce": 183030837,
+      "version": 201,
+      "versionNonce": 2085737530,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "text": "HTTP Request",
@@ -1051,11 +1051,11 @@
       "index": "b1G",
       "roundness": null,
       "seed": 41493328,
-      "version": 143,
-      "versionNonce": 333804955,
+      "version": 187,
+      "versionNonce": 160441446,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694715,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "text": "JSON Response",
@@ -1088,11 +1088,11 @@
       "index": "b1W",
       "roundness": null,
       "seed": 521776560,
-      "version": 107,
-      "versionNonce": 529171861,
+      "version": 151,
+      "versionNonce": 843005178,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694716,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "text": "Communication: REST APIs",
@@ -1127,8 +1127,8 @@
         "type": 2
       },
       "seed": 846318928,
-      "version": 1180,
-      "versionNonce": 1484393019,
+      "version": 1224,
+      "versionNonce": 35301286,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1144,7 +1144,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1740780694716,
+      "updated": 1740842510396,
       "link": null,
       "locked": false
     },
@@ -1168,11 +1168,11 @@
       "index": "b1Y",
       "roundness": null,
       "seed": 1667998544,
-      "version": 835,
-      "versionNonce": 196020981,
+      "version": 879,
+      "versionNonce": 1073843642,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694716,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "text": "Bootstrap\nWorker 2",
@@ -1207,8 +1207,8 @@
         "type": 2
       },
       "seed": 1778843056,
-      "version": 1191,
-      "versionNonce": 315820763,
+      "version": 1235,
+      "versionNonce": 1693631206,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1224,7 +1224,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1740780694716,
+      "updated": 1740842510396,
       "link": null,
       "locked": false
     },
@@ -1248,11 +1248,11 @@
       "index": "b1a",
       "roundness": null,
       "seed": 1706805168,
-      "version": 842,
-      "versionNonce": 2145117269,
+      "version": 886,
+      "versionNonce": 716949114,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694716,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "text": "Bootstrap\nWorker 3",
@@ -1287,8 +1287,8 @@
         "type": 2
       },
       "seed": 1941721520,
-      "version": 1172,
-      "versionNonce": 1736636283,
+      "version": 1216,
+      "versionNonce": 1151694374,
       "isDeleted": false,
       "boundElements": [
         {
@@ -1304,7 +1304,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1740780694716,
+      "updated": 1740842510396,
       "link": null,
       "locked": false
     },
@@ -1328,11 +1328,11 @@
       "index": "b1c",
       "roundness": null,
       "seed": 900111280,
-      "version": 822,
-      "versionNonce": 2145817013,
+      "version": 866,
+      "versionNonce": 1529931578,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1740780694716,
+      "updated": 1740842510396,
       "link": null,
       "locked": false,
       "text": "Bootstrap\nWorker 4",
@@ -1342,78 +1342,6 @@
       "verticalAlign": "middle",
       "containerId": "VYFftviofX1Vpoy_r19o-",
       "originalText": "Bootstrap Worker 4",
-      "autoResize": true,
-      "lineHeight": 1.35
-    },
-    {
-      "id": "ZxrDnpp9N3TOxvlZKQmWy",
-      "type": "rectangle",
-      "x": 2353.1104062436943,
-      "y": -7684.436111513081,
-      "width": 1116.666768391925,
-      "height": 883.800048828125,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "#e9ecef",
-      "fillStyle": "solid",
-      "strokeWidth": 4,
-      "strokeStyle": "solid",
-      "roughness": 0,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "b1d",
-      "roundness": {
-        "type": 3
-      },
-      "seed": 298998779,
-      "version": 728,
-      "versionNonce": 222530043,
-      "isDeleted": false,
-      "boundElements": [
-        {
-          "type": "text",
-          "id": "Sd9mIcbCv2IkIxb1I9_S2"
-        }
-      ],
-      "updated": 1740780992469,
-      "link": null,
-      "locked": false
-    },
-    {
-      "id": "Sd9mIcbCv2IkIxb1I9_S2",
-      "type": "text",
-      "x": 2358.1104062436943,
-      "y": -7582.736087099019,
-      "width": 1096.4375,
-      "height": 680.4,
-      "angle": 0,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "#e9ecef",
-      "fillStyle": "solid",
-      "strokeWidth": 4,
-      "strokeStyle": "solid",
-      "roughness": 0,
-      "opacity": 100,
-      "groupIds": [],
-      "frameId": null,
-      "index": "b1e",
-      "roundness": null,
-      "seed": 1748842427,
-      "version": 1218,
-      "versionNonce": 1854225595,
-      "isDeleted": false,
-      "boundElements": [],
-      "updated": 1740780991957,
-      "link": null,
-      "locked": false,
-      "text": "1) Client makes a request to the Aggregation Master, which\nredirects it to each Worker.\n\n2) Each Worker receives the request for an action:\n    \n    - fit: trains the local model in the local dataset. Before fit, the\nWorker bootstraps (samples with reposition) the local dataset.\nThen, it uses the collected samples to fit the local model. When the\nprocess is finished, Master sends an \"ok\" to the Client.\n     \n    - predict: makes inference on new data by calculating, in the\nAggregation Master, the mean of the predictions of each Worker's\nlocal model's predictions.\n        ",
-      "fontSize": 36,
-      "fontFamily": 6,
-      "textAlign": "left",
-      "verticalAlign": "middle",
-      "containerId": "ZxrDnpp9N3TOxvlZKQmWy",
-      "originalText": "1) Client makes a request to the Aggregation Master, which redirects it to each Worker.\n\n2) Each Worker receives the request for an action:\n    \n    - fit: trains the local model in the local dataset. Before fit, the Worker bootstraps (samples with reposition) the local dataset. Then, it uses the collected samples to fit the local model. When the process is finished, Master sends an \"ok\" to the Client.\n     \n    - predict: makes inference on new data by calculating, in the Aggregation Master, the mean of the predictions of each Worker's local model's predictions.\n        ",
       "autoResize": true,
       "lineHeight": 1.35
     }
