@@ -1,1 +1,3 @@
-docker stop $(docker ps -aq) ; docker rm $(docker ps -aq) ; docker rmi $(docker images -aq) -f ; poetry run python random_forest.py
+docker stop $(docker ps -aq) ; docker rm $(docker ps -aq) ; docker rmi $(docker images -aq) -f ; poetry run python example_random_forest.py
+
+docker stop $(docker ps -aq) ; docker rm $(docker ps -aq) ; docker rmi $(docker images -aq) -f ; poetry run python example_linear_regression.py

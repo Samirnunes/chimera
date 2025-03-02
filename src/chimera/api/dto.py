@@ -1,3 +1,4 @@
+from shutil import ReadError
 from typing import Any, List
 
 import pandas as pd
@@ -44,6 +45,31 @@ class FitOutput(BaseModel):
     """A simple confirmation message indicating successful fit."""
 
 
+class FitStepInput(BaseModel):
+    weights: List[float]
+    bias: List[float]
+
+
+class FitStepOutput(BaseModel):
+    weights_gradients: List[float]
+    bias_gradient: List[float]
+
+
+class FitRequestDataSampleOutput(BaseModel):
+    X_train_sample_columns: Annotated[List[str], NoDecode]
+    X_train_sample_rows: List[List[serializable]]
+    y_train_sample_columns: Annotated[List[str], NoDecode]
+    y_train_sample_rows: List[List[serializable]]
+
+    @field_validator(
+        "X_train_sample_columns", "y_train_sample_columns", mode="before"
+    )
+    @classmethod
+    def normalize_columns(cls, columns: List[str]) -> List[str]:
+        """Normalizes column names to lowercase and removes whitespace."""
+        return [column.lower().strip() for column in columns]
+
+
 class PredictInput(BaseModel):
     """
     Data transfer object (DTO) for the predict operation. Contains prediction data.
@@ -86,7 +112,30 @@ def load_csv_as_fit_input(x_train_path: str, y_train_path: str) -> FitInput:
 
     return FitInput(
         X_train_columns=list(X_train_df.columns),
-        X_train_rows=X_train_df.astype(object).values.tolist(),
+        X_train_rows=list(X_train_df.values),
         y_train_columns=list(y_train_df.columns),
-        y_train_rows=y_train_df.astype(object).values.tolist(),
+        y_train_rows=list(y_train_df.values),
+    )
+
+
+def load_csv_sample(
+    x_train_path: str, y_train_path: str
+) -> FitRequestDataSampleOutput:
+    rows = [200, 100, 50, 25, 10, 5, 2]
+
+    for row in rows:
+        try:
+            X_train_sample = pd.read_csv(x_train_path, nrows=row)
+            y_train_sample = pd.read_csv(y_train_path, nrows=row)
+            break
+        except Exception:
+            if row == rows[-1]:
+                raise ReadError()
+            continue
+
+    return FitRequestDataSampleOutput(
+        X_train_sample_columns=list(X_train_sample.columns),
+        X_train_sample_rows=list(X_train_sample.values),
+        y_train_sample_columns=list(y_train_sample.columns),
+        y_train_sample_rows=list(y_train_sample.values),
     )

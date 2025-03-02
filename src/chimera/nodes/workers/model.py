@@ -66,16 +66,16 @@ class _ModelWorker(ABC):
     """
 
     def __init__(
-        self, predictor: RegressorMixin | ClassifierMixin, bootstrap: bool = False
+        self, model: RegressorMixin | ClassifierMixin, bootstrap: bool = False
     ) -> None:
         """
         Initializes the _ModelWorker.
 
         Args:
-            predictor: The scikit-learn predictor model (RegressorMixin or ClassifierMixin).
+            model: The scikit-learn predictor model (RegressorMixin or ClassifierMixin).
             bootstrap: Whether to use bootstrapping for model training (default: False).
         """
-        self._predictor = predictor
+        self._model = model
         self._bootstrap = bootstrap
 
         self._workers_config = WorkersConfig()
@@ -126,7 +126,7 @@ class _ModelWorker(ABC):
                 if self._bootstrap:
                     X_train, y_train = self._bootstrapper.run(X_train, y_train)
 
-                self._predictor.fit(X_train, y_train)
+                self._model.fit(X_train, y_train)
 
                 return build_json_response(FitOutput(fit="ok"))
             except Exception as e:
@@ -178,7 +178,7 @@ class RegressionWorker(_ModelWorker):
                 X_pred_rows = predict_input.X_pred_rows
                 X_pred_columns = predict_input.X_pred_columns
 
-                y_pred: np.ndarray = self._predictor.predict(
+                y_pred: np.ndarray = self._model.predict(
                     pd.DataFrame(X_pred_rows, columns=X_pred_columns)
                 )
 
@@ -226,7 +226,7 @@ class ClassificationWorker(_ModelWorker):
                 X_pred_rows = predict_input.X_pred_rows
                 X_pred_columns = predict_input.X_pred_columns
 
-                y_pred: np.ndarray = self._predictor.predict_proba(
+                y_pred: np.ndarray = self._model.predict_proba(
                     pd.DataFrame(X_pred_rows, columns=X_pred_columns)
                 )
 

@@ -13,7 +13,7 @@ def build_json_response(model: BaseModel) -> JSONResponse:
     Returns:
         A FastAPI JSONResponse object with the serialized model data and a 200 status code.
     """
-    return JSONResponse(model.__dict__, 200)
+    return JSONResponse(model.model_dump(), 200)
 
 
 def build_error_response(
