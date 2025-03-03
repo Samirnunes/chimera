@@ -35,12 +35,28 @@ MODEL_TYPE = Type[SGDRegressor | SGDClassifier]
 
 
 class SGDWorker:
+    """
+    Implements a Stochastic Gradient Descent (SGD) worker node for Chimera.
+
+    This class handles the training process for a single worker node using
+    SGD, communicating with the master node to receive model parameters and
+    return gradients.
+    """
+
     def __init__(
         self,
         model: Literal["regressor", "classifier"],
         *args: Any,
         **kwargs: Any,
     ) -> None:
+        """
+        Initializes the SGDWorker.
+
+        Args:
+            model: The type of model to use ("regressor" or "classifier").
+            *args: Additional positional arguments passed to the model constructor.
+            **kwargs: Additional keyword arguments passed to the model constructor.
+        """
         self._model: MODEL_TYPE = MODELS_MAP[model](*args, **kwargs)
         self._weights: np.ndarray
         self._bias: float
@@ -61,6 +77,9 @@ class SGDWorker:
         )
 
     def _receive_parameters(self) -> None:
+        """
+        (Not implemented)  Placeholder for receiving parameters from the master.
+        """
         pass
 
     def _fit_router(self) -> APIRouter:
@@ -75,7 +94,7 @@ class SGDWorker:
         @router.get(CHIMERA_SGD_WORKER_FIT_REQUEST_DATA_SAMPLE_PATH)
         def request_data_sample() -> JSONResponse:
             """
-            Returns the number of columns in the training data.
+            Returns a sample of the training data.
             """
             try:
                 return build_json_response(
@@ -90,7 +109,7 @@ class SGDWorker:
         @router.post(CHIMERA_SGD_WORKER_FIT_STEP_PATH)
         def fit_step(fit_step_input: FitStepInput) -> JSONResponse:
             """
-            Fits the model using training data loaded from CSV files.
+            Performs a single step of the SGD fitting process.
             """
             try:
                 if not self._partially_fitted:

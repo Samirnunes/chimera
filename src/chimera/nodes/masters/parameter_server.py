@@ -28,6 +28,13 @@ from .base import Master
 
 
 class ParameterServerMaster(Master):
+    """
+    Implements a Parameter Server master node for Chimera.
+
+    This class manages the model parameters and coordinates the training process
+    with worker nodes using a parameter server architecture.
+    """
+
     def __init__(
         self,
         model: Literal["regressor", "classifier"],
@@ -35,12 +42,27 @@ class ParameterServerMaster(Master):
         *args: Any,
         **kwargs: Any,
     ) -> None:
+        """
+        Initializes the ParameterServerMaster.
+
+        Args:
+            model: The type of model to use ("regressor" or "classifier").
+            epsilon: The convergence threshold for the training process.
+            *args: Additional positional arguments passed to the model constructor.
+            **kwargs: Additional keyword arguments passed to the model constructor.
+        """
         kwargs.pop("eta0", None)
         self._workers_config = WorkersConfig()
         self._model: MODEL_TYPE = MODELS_MAP[model](*args, **kwargs, eta0=1e-20)
         self._epsilon = epsilon
 
     def serve(self, port: int = 8080) -> None:
+        """
+        Starts the parameter server master.
+
+        Args:
+            port: The port number to listen on.  Defaults to 8080.
+        """
         app = FastAPI()
         app.include_router(self._predict_router())
         app.include_router(self._fit_router())
@@ -52,7 +74,7 @@ class ParameterServerMaster(Master):
 
         @router.post(CHIMERA_PARAMETER_SERVER_MASTER_PREDICT_PATH)
         def predict(predict_input: PredictInput) -> JSONResponse:
-            """Handles prediction."""
+            """Handles prediction requests."""
             try:
                 return build_json_response(
                     PredictOutput(
@@ -80,7 +102,7 @@ class ParameterServerMaster(Master):
             weights_gradients: List[List[float]],
             bias_gradients: List[float],
         ) -> None:
-            """Fetches fit from a worker and stores the result."""
+            """Fetches a single fit step from a worker."""
             try:
                 s = requests.Session()
                 prefix = f"http://localhost:{port}"
@@ -109,6 +131,7 @@ class ParameterServerMaster(Master):
                 print(f"Error fetching fit from worker at port {port}: {e}")
 
         def _request_data_sample() -> Tuple:
+            """Requests a data sample from a worker."""
             for port in self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS:
                 s = requests.Session()
                 prefix = f"http://localhost:{port}"
@@ -135,9 +158,10 @@ class ParameterServerMaster(Master):
 
         @router.post(CHIMERA_PARAMETER_SERVER_MASTER_FIT_PATH)
         def fit() -> JSONResponse:
-            """Handles fit requests by forwarding them to workers."""
+            """Handles the complete fit process."""
 
             def _fit_step() -> Tuple[np.ndarray, np.ndarray]:
+                """Performs a single step of the iterative fitting process."""
                 threads: List[threading.Thread] = []
                 weights_gradients: List[List[float]] = []
                 bias_gradients: List[float] = []

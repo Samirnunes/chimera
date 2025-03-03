@@ -46,20 +46,40 @@ class FitOutput(BaseModel):
 
 
 class FitStepInput(BaseModel):
+    """
+    Data transfer object (DTO) for a single step in the fitting process.  Contains weights and bias.
+    """
+
     weights: List[float]
+    """List of weights for the model."""
     bias: List[float]
+    """List of bias terms for the model."""
 
 
 class FitStepOutput(BaseModel):
+    """
+    Data transfer object (DTO) for the output of a single fit step. Contains gradients.
+    """
+
     weights_gradients: List[float]
+    """List of gradients for the weights."""
     bias_gradient: List[float]
+    """Gradient for the bias term."""
 
 
 class FitRequestDataSampleOutput(BaseModel):
+    """
+    Data transfer object (DTO) for a sample of the training data used in a fit request.
+    """
+
     X_train_sample_columns: Annotated[List[str], NoDecode]
+    """List of column names for the sample of training features (X)."""
     X_train_sample_rows: List[List[serializable]]
+    """List of rows for the sample of training features (X). Each row is a list of serializable values."""
     y_train_sample_columns: Annotated[List[str], NoDecode]
+    """List of column names for the sample of training labels (y)."""
     y_train_sample_rows: List[List[serializable]]
+    """List of rows for the sample of training labels (y). Each row is a list of serializable values."""
 
     @field_validator(
         "X_train_sample_columns", "y_train_sample_columns", mode="before"
@@ -121,6 +141,22 @@ def load_csv_as_fit_input(x_train_path: str, y_train_path: str) -> FitInput:
 def load_csv_sample(
     x_train_path: str, y_train_path: str
 ) -> FitRequestDataSampleOutput:
+    """
+    Loads a sample of training data from CSV files and converts it into a
+    FitRequestDataSampleOutput DTO.  This function attempts to load progressively
+    smaller samples of the data until a successful load occurs.
+
+    Args:
+        x_train_path: Path to the CSV file containing training features (X).
+        y_train_path: Path to the CSV file containing training labels (y).
+
+    Returns:
+        A FitRequestDataSampleOutput DTO containing a sample of the training data.
+
+    Raises:
+        ReadError: If all attempts to load a sample of the specified size fail.  This indicates a problem with the input CSV files.
+    """
+
     rows = [200, 100, 50, 25, 10, 5, 2]
 
     for row in rows:
