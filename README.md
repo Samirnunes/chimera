@@ -71,11 +71,11 @@ In distributed SGD, the summarized steps are:
 
     - fit: trains the distributed model. Worker has a copy of the model on its memory. Then, for a predefined number of iterations or until convergence:
         - 1. Worker calculates the gradient considering only its local dataset;
-        - 2. Worker communicates through message passing its gradient to Master, which aggregates the gradients by calculating the mean, updates the model's weights and passes these weights to each Worker through message passing, so they update their local models.
+        - 2. Worker communicates through REST API its gradient to Master, which aggregates the gradients by calculating the mean, updates the model's parameters and passes these parameters back to each Worker through REST API, so they update their local models.
 
-    When convergence is reached, Master sends an ending message to Workers, then stops the message passing and stores the final model. Finally, it communicates an "ok" to Client.
+    When convergence is reached, Master stops sending the parameters to Workers and stores the final model. Finally, it communicates an "ok" to Client.
 
-    - predict: makes inference on new data using the final model available in Master.
+    - predict: makes inference on new data using the final model available in the Master.
 
 <p align="center">
     <img width="900" src="./images/distributed_sgd.png" alt="Distributed SGD">
