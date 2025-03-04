@@ -45,7 +45,7 @@ The client-master and master-workers communications are made via REST APIs.
    
 ## Examples
 
-### Distributed Bagging (Bootstrap Aggregating)
+### I) Distributed Bagging (Bootstrap Aggregating)
 
 In distributed bagging, the steps are:
 
@@ -61,7 +61,7 @@ In distributed bagging, the steps are:
     <img width="900" src="./images/distributed_bagging.png" alt="Distributed Bagging">
 <p>
 
-### Distributed SGD (Stochastic Gradient Descent)
+### II) Distributed SGD (Stochastic Gradient Descent)
 
 In distributed SGD, the summarized steps are:
 
