@@ -47,7 +47,7 @@ The client-master and master-workers communications are made via REST APIs.
 
 ### I) Distributed Bagging (Bootstrap Aggregating)
 
-In distributed bagging, the steps are:
+In distributed bagging, the summarized steps are:
 
 1. Client makes a request to Aggregation Master, which redirects it to each Worker.
 
