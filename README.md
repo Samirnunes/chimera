@@ -11,7 +11,7 @@
 
 - Hybrid Parallelism: data and model distributed between the workers. This case includes Distributed Bagging (Bootstrap Aggregating) with generic weak learners from the `scikit-learn` package.
 
-Docker containers act as Workers. To run the created distributed system, it will be given a standardized interface named `Chimera`, on which a Master type and a port must be selected for the server in the host machine.
+Docker containers act as Workers. To run the created distributed system, it will be given a standardized function named `run`, on which a Master type and a port must be selected for the server in the host machine.
 
 The client-master and master-workers communications are made via REST APIs.
 
