@@ -88,7 +88,7 @@ The following variables control the behavior of worker nodes in chimera:
 
 - `CHIMERA_WORKERS_CPU_SHARES` (default: `[2]`)
     - A list of CPU shares assigned to each worker.
-    - Each value must be an integer ≥ 2.
+    - Each value must be an integer ≥ `2`.
     - Example: `[2, 4, 4]` assigns different CPU shares to three workers.
 
 - `CHIMERA_WORKERS_MAPPED_PORTS` (default: `[101]`)
