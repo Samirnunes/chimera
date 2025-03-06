@@ -3,9 +3,9 @@
 
 As a distributed computing framework, `chimera` aims to simplify the creation, in a local environment, of distributed machine learning models by streamlining the creation of a master node on the host machine and worker nodes on separate virtual machines using Docker containers. By providing a standardized API-based communication framework, `chimera` enables researchers and practitioners to test, evaluate, and optimize distributed learning algorithms with minimal configuration effort.
 
-## The Package
+## DML Environment
 
-`chimera` supports the following types of DML:
+`chimera` supports the following types of DML techniques:
 
 - Data Parallelism: data distributed between the workers. Each worker has a copy of the model. This case includes Distributed SGD (Stochastic Gradient Descent) for models like linear regression, logistic regression and others, depending on the loss function.
 
@@ -57,6 +57,60 @@ The client-master and master-workers communications are made via REST APIs.
 2. Before running the master's file, you must specify the local training dataset for each worker. This is made by creating a folder called `chimera_train_data` containing folders with the same name as the worker's files (clearly without the `.py`). Each folder must have a `X_train.csv` file containing the features and a `y_train.csv` containing the labels. Whether `X_train.csv` and `y_train.csv` are the same or not for all the workers is up to you. Keep in mind what algorithm you want to create in the distributed environment!
 
 3. Finally, you can run the master's file using: `poetry run python {your_master_filename.py}`. This should initialize all the worker's containers in your Docker environment and the master server in the host machine (the machine running the code).
+
+## Environment Variables
+
+The following environment variables allow users to configure the chimera distributed machine learning system. These variables define network settings, worker configurations, and resource allocations, ensuring flexibility to different environments.
+
+### Network Configuration
+
+The following variables define the Docker network settings for chimera:
+
+- `CHIMERA_NETWORK_NAME` (default: `"chimera-network"`)
+        - The name of the Docker network where chimera runs.
+
+- `CHIMERA_NETWORK_PREFIX` (default: `"192.168.10"`)
+        - The IP network prefix for the Docker network.
+        - Must be a valid IPv4 network prefix (e.g., `"192.168.10"`).
+
+- `CHIMERA_NETWORK_SUBNET_MASK` (default: `24`)
+        - The subnet mask for the Docker network, defining how many bits are reserved for the network.
+        - Must be an integer between `0` and `32`.
+
+### Workers Configuration
+
+The following variables control the behavior of worker nodes in chimera:
+
+- `CHIMERA_WORKERS_NODES_NAMES`
+    - A list of worker node names.
+    - Must be unique across all workers.
+    - Example: `["worker1", "worker2", "worker3"]`.
+
+- `CHIMERA_WORKERS_CPU_SHARES` (default: `[2]`)
+    - A list of CPU shares assigned to each worker.
+    - Each value must be an integer ≥ 2.
+    - Example: `[2, 4, 4]` assigns different CPU shares to three workers.
+
+- `CHIMERA_WORKERS_MAPPED_PORTS` (default: `[101]`)
+    - A list of host ports mapped to each worker’s container.
+    - Must be unique across all workers.
+    - Example: `[5001, 5002, 5003]` assigns distinct ports to three workers.
+
+- `CHIMERA_WORKERS_HOST` (default: `"0.0.0.0"`)
+    - The host IP address that binds worker ports.
+    - `"0.0.0.0"` allows connections from any IP address.
+
+- `CHIMERA_WORKERS_PORT` (default: `80`)
+    - The internal container port that workers listen on.
+    - This is the port inside the worker's container, not the exposed host port.
+
+- `CHIMERA_WORKERS_ENDPOINTS_MAX_RETRIES` (default: `0`)
+    - The maximum number of retry attempts when communicating with worker nodes.
+
+- `CHIMERA_WORKERS_ENDPOINTS_TIMEOUT` (default: `100.0`)
+    - The timeout (in seconds) for worker API endpoints.
+
+These environment variables give users full control over how chimera distributes models, manages worker nodes, and configures networking in a flexible and simple manner.
 
 ## Examples
 
