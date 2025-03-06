@@ -71,7 +71,7 @@ In distributed bagging, the summarized steps are:
     - predict: makes inference on new data by calculating, in the Master, the mean of the predictions of each Worker's local model's predictions.
 
 <p align="center">
-    <img width="900" src="./images/distributed_bagging.png" alt="Distributed Bagging">
+    <img width="700" src="./images/distributed_bagging.png" alt="Distributed Bagging">
 <p>
 
 ### Distributed SGD (Stochastic Gradient Descent)
@@ -91,5 +91,5 @@ In distributed SGD, the summarized steps are:
     - predict: makes inference on new data using the final model available in the Master.
 
 <p align="center">
-    <img width="900" src="./images/distributed_sgd.png" alt="Distributed SGD">
+    <img width="700" src="./images/distributed_sgd.png" alt="Distributed SGD">
 <p>
