@@ -1,12 +1,14 @@
 # Chimera: A Framework for Education and Prototyping in Distributed Machine Learning
 
+<p align="center">
+    <img width="500" src="./images/logo.png" alt="Chimera Logo">
+<p>
+
 ## Introduction
 
 `chimera` is a Python package for distributed machine learning (DML) designed for both educational and prototyping purposes. It provides a structured environment to experiment with key DML techniques, including Data Parallelism, Model Parallelism, and Hybrid Parallelism.
 
 As a distributed computing framework, `chimera` aims to simplify the creation, in a local environment, of distributed machine learning models by streamlining the creation of a master node on the host machine and worker nodes on separate virtual machines using Docker containers. By providing a standardized API-based communication framework, `chimera` enables researchers and practitioners to test, evaluate, and optimize distributed learning algorithms with minimal configuration effort.
-
-## Techniques
 
 `chimera` supports the following types of DML techniques:
 
@@ -152,3 +154,17 @@ In distributed SGD, the summarized steps are:
 <p align="center">
     <img width="600" src="./images/distributed_sgd.png" alt="Distributed SGD">
 <p>
+
+## References
+
+- https://studytrails.com/2021/02/10/distributed-machine-learning-2-architecture/
+
+- https://dl.acm.org/doi/fullHtml/10.1145/3631461.3632516
+
+- https://www.almabetter.com/bytes/tutorials/mlops/distributed-computing-for-ml
+
+- https://neptune.ai/blog/distributed-training
+
+- https://learn.microsoft.com/en-us/azure/machine-learning/concept-distributed-training?view=azureml-api-2
+
+- https://github.com/Shenggan/awesome-distributed-ml
