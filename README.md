@@ -1,7 +1,7 @@
 # Chimera: A Framework for Education and Prototyping in Distributed Machine Learning
 
 <p align="center">
-    <img width="500" src="./images/logo.png" alt="Chimera Logo">
+    <img width="500" src="./images/logo.jpg" alt="Chimera Logo">
 <p>
 
 ## Introduction
