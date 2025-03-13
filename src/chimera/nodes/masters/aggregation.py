@@ -18,9 +18,11 @@ from ...api.dto import FitOutput, PredictInput, PredictOutput
 from ...api.exception import ResponseException
 from ...api.response import (
     build_error_response,
-    build_json_response,  # type: ignore
+    build_json_response,
+    get_error_response_message,  # type: ignore
 )
 from ...containers.configs import WorkersConfig
+from ...utils import logger
 from .base import Master
 
 
@@ -67,6 +69,7 @@ class AggregationMaster(Master):
         app = FastAPI()
         app.include_router(self._predict_router())
         app.include_router(self._fit_router())
+        logger.info(f"Serving {self.__class__.__name__} at port {port}...")
         uvicorn.run(app, host=self._workers_config.CHIMERA_WORKERS_HOST, port=port)
 
     def _predict_router(self) -> APIRouter:
@@ -94,10 +97,15 @@ class AggregationMaster(Master):
                 if response.status_code == 200:
                     results.append(response.json()["y_pred_rows"])
                 else:
+                    logger.error(
+                        f"Error at {self.__class__.__name__}: {get_error_response_message(response)}"
+                    )
                     raise ResponseException(response)
 
             except Exception as e:
-                print(f"Error fetching prediction from worker at port {port}: {e}")
+                logger.error(
+                    f"Error fetching prediction from worker at port {port}: {e}, at {self.__class__.__name__}"
+                )
 
         @router.post(CHIMERA_AGGREGATION_MASTER_PREDICT_PATH)
         def predict(predict_input: PredictInput) -> JSONResponse:
@@ -118,12 +126,14 @@ class AggregationMaster(Master):
 
                 if len(results) == 0:
                     message = "All predict responses from workers failed."
+                    logger.error(f"Error at {self.__class__.__name__}: {message}")
                     raise ResponseException(requests.Response(), message)
 
                 return build_json_response(
                     PredictOutput(y_pred_rows=self._aggregator.run(results))
                 )
             except Exception as e:
+                logger.error(f"Error at {self.__class__.__name__}: {e}")
                 return build_error_response(e)
 
         return router
@@ -150,9 +160,14 @@ class AggregationMaster(Master):
                 if response.status_code == 200:
                     results.append("ok")
                 else:
+                    logger.error(
+                        f"Error at {self.__class__.__name__}: {get_error_response_message(response)}"
+                    )
                     raise ResponseException(response)
             except Exception as e:
-                print(f"Error fetching fit from worker at port {port}: {e}")
+                logger.error(
+                    f"Error fetching fit from worker at port {port}: {e} at {self.__class__.__name__}"
+                )
 
         @router.post(CHIMERA_AGGREGATION_MASTER_FIT_PATH)
         def fit() -> JSONResponse:
@@ -172,10 +187,12 @@ class AggregationMaster(Master):
 
                 if len(results) == 0:
                     message = "All fit responses from workers failed."
+                    logger.error(f"Error at {self.__class__.__name__}: {message}")
                     raise ResponseException(requests.Response(), message)
 
                 return build_json_response(FitOutput(fit="ok"))
             except Exception as e:
+                logger.error(f"Error at {self.__class__.__name__}: {e}")
                 return build_error_response(e)
 
         return router

@@ -20,6 +20,7 @@ from ...containers.configs import (
     CHIMERA_TRAIN_LABELS_FILENAME,
     WorkersConfig,
 )
+from ...utils import logger
 
 
 class _Bootstrapper:
@@ -90,6 +91,7 @@ class _ModelWorker(ABC):
         app = FastAPI()
         app.include_router(self._fit_router())
         app.include_router(self._predict_router())
+        logger.info(f"Serving {self.__class__.__name__}...")
         uvicorn.run(
             app,
             host=self._workers_config.CHIMERA_WORKERS_HOST,
@@ -130,6 +132,7 @@ class _ModelWorker(ABC):
 
                 return build_json_response(FitOutput(fit="ok"))
             except Exception as e:
+                logger.error(f"Error at {self.__class__.__name__}: {e}")
                 return build_error_response(e)
 
         return router
@@ -188,6 +191,7 @@ class RegressionWorker(_ModelWorker):
                     )
                 )
             except Exception as e:
+                logger.error(f"Error at {self.__class__.__name__}: {e}")
                 return build_error_response(e)
 
         return router
@@ -236,6 +240,7 @@ class ClassificationWorker(_ModelWorker):
                     )
                 )
             except Exception as e:
+                logger.error(f"Error at {self.__class__.__name__}: {e}")
                 return build_error_response(e)
 
         return router

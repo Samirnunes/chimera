@@ -20,9 +20,11 @@ from ...api.dto import FitOutput, FitStepInput, PredictInput, PredictOutput
 from ...api.exception import ResponseException
 from ...api.response import (
     build_error_response,
-    build_json_response,  # type: ignore
+    build_json_response,
+    get_error_response_message,  # type: ignore
 )
 from ...containers.configs import WorkersConfig
+from ...utils import logger
 from ..workers.sgd import MODEL_TYPE, MODELS_MAP
 from .base import Master
 
@@ -66,6 +68,7 @@ class ParameterServerMaster(Master):
         app = FastAPI()
         app.include_router(self._predict_router())
         app.include_router(self._fit_router())
+        logger.info(f"Serving {self.__class__.__name__} at port {port}...")
         uvicorn.run(app, host=self._workers_config.CHIMERA_WORKERS_HOST, port=port)
 
     def _predict_router(self) -> APIRouter:
@@ -89,6 +92,7 @@ class ParameterServerMaster(Master):
                     )
                 )
             except Exception as e:
+                logger.error(f"Error at {self.__class__.__name__}: {e}")
                 return build_error_response(e)
 
         return router
@@ -126,9 +130,14 @@ class ParameterServerMaster(Master):
                     weights_gradients.append(response_json["weights_gradients"])
                     bias_gradients.append(response_json["bias_gradient"])
                 else:
+                    logger.error(
+                        f"Error at {self.__class__.__name__}: {get_error_response_message(response)}"
+                    )
                     raise ResponseException(response)
             except Exception as e:
-                print(f"Error fetching fit from worker at port {port}: {e}")
+                logger.error(
+                    f"Error fetching fit from worker at port {port}: {e}, at {self.__class__.__name__}"
+                )
 
         def _request_data_sample() -> Tuple:
             """Requests a data sample from a worker."""
@@ -154,6 +163,9 @@ class ParameterServerMaster(Master):
                         response_json["y_train_sample_columns"],
                         response_json["y_train_sample_rows"],
                     )
+            logger.error(
+                f"Error at {self.__class__.__name__}: {get_error_response_message(response)}"
+            )
             raise ResponseException(response)
 
         @router.post(CHIMERA_PARAMETER_SERVER_MASTER_FIT_PATH)
@@ -178,6 +190,7 @@ class ParameterServerMaster(Master):
 
                 if len(weights_gradients) == 0:
                     message = "All fit iterations responses from workers failed."
+                    logger.error(f"Error at {self.__class__.__name__}: {message}")
                     raise ResponseException(requests.Response(), message)
 
                 return np.mean(np.array(weights_gradients), axis=0), np.mean(
@@ -211,6 +224,9 @@ class ParameterServerMaster(Master):
                         + list(mean_bias_gradient)
                     ]
                 ):
+                    logger.info(
+                        f"Computing SGD iteration {current_iter + 1} at {self.__class__.__name__}"
+                    )
                     self._model.coef_ = self._model.coef_ - mean_weights_gradients
                     self._model.intercept_ = (
                         self._model.intercept_ - mean_bias_gradient
@@ -220,6 +236,7 @@ class ParameterServerMaster(Master):
 
                 return build_json_response(FitOutput(fit="ok"))
             except Exception as e:
+                logger.error(f"Error at {self.__class__.__name__}: {e}")
                 return build_error_response(e)
 
         return router
