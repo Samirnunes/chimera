@@ -97,7 +97,7 @@ class ParameterServerMaster(Master):
                 )
                 end_master = time.time()
                 time_logger.info(
-                    f"http://localhost:{self._port}/{CHIMERA_PARAMETER_SERVER_MASTER_PREDICT_PATH} master endpoint latency: {round(end_master - start_master, 4)} s"
+                    f"http://localhost:{self._port}{CHIMERA_PARAMETER_SERVER_MASTER_PREDICT_PATH} master endpoint latency = {round(end_master - start_master, 4)} s"
                 )
                 return response
 
@@ -139,7 +139,7 @@ class ParameterServerMaster(Master):
                 )
                 end_worker = time.time()
                 time_logger.info(
-                    f"{url} worker endpoint latency: {round(end_worker - start_worker, 4)} s"
+                    f"{url} worker endpoint latency = {round(end_worker - start_worker, 4)} s"
                 )
 
                 response_json = response.json()
@@ -177,7 +177,7 @@ class ParameterServerMaster(Master):
                 )
                 end_worker = time.time()
                 time_logger.info(
-                    f"{url} worker endpoint latency: {round(end_worker - start_worker, 4)} s"
+                    f"{url} worker endpoint latency = {round(end_worker - start_worker, 4)} s"
                 )
 
                 response_json = response.json()
@@ -266,7 +266,7 @@ class ParameterServerMaster(Master):
                 response = build_json_response(FitOutput(fit="ok"))
                 end_master = time.time()
                 time_logger.info(
-                    f"http://localhost:{self._port}/{CHIMERA_PARAMETER_SERVER_MASTER_FIT_PATH} master endpoint latency: {round(end_master - start_master, 4)} s"
+                    f"http://localhost:{self._port}{CHIMERA_PARAMETER_SERVER_MASTER_FIT_PATH} master endpoint latency = {round(end_master - start_master, 4)} s"
                 )
                 return response
             except Exception as e:
