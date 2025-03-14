@@ -1,4 +1,5 @@
 import threading
+import time
 from copy import deepcopy
 from typing import Any, List, Literal, Tuple
 
@@ -24,7 +25,7 @@ from ...api.response import (
     get_error_response_message,  # type: ignore
 )
 from ...containers.configs import WorkersConfig
-from ...utils import logger
+from ...utils import status_logger, time_logger
 from ..workers.sgd import MODEL_TYPE, MODELS_MAP
 from .base import Master
 
@@ -57,6 +58,7 @@ class ParameterServerMaster(Master):
         self._workers_config = WorkersConfig()
         self._model: MODEL_TYPE = MODELS_MAP[model](*args, **kwargs, eta0=1e-20)
         self._epsilon = epsilon
+        self._port: int
 
     def serve(self, port: int = 8080) -> None:
         """
@@ -65,10 +67,11 @@ class ParameterServerMaster(Master):
         Args:
             port: The port number to listen on.  Defaults to 8080.
         """
+        self._port = port
         app = FastAPI()
         app.include_router(self._predict_router())
         app.include_router(self._fit_router())
-        logger.info(f"Serving {self.__class__.__name__} at port {port}...")
+        status_logger.info(f"Serving {self.__class__.__name__} at port {port}...")
         uvicorn.run(app, host=self._workers_config.CHIMERA_WORKERS_HOST, port=port)
 
     def _predict_router(self) -> APIRouter:
@@ -79,7 +82,8 @@ class ParameterServerMaster(Master):
         def predict(predict_input: PredictInput) -> JSONResponse:
             """Handles prediction requests."""
             try:
-                return build_json_response(
+                start_master = time.time()
+                response = build_json_response(
                     PredictOutput(
                         y_pred_rows=list(
                             self._model.predict(
@@ -91,8 +95,14 @@ class ParameterServerMaster(Master):
                         )
                     )
                 )
+                end_master = time.time()
+                time_logger.info(
+                    f"http://localhost:{self._port}/{CHIMERA_PARAMETER_SERVER_MASTER_PREDICT_PATH} master endpoint latency: {round(end_master - start_master, 4)} s"
+                )
+                return response
+
             except Exception as e:
-                logger.error(f"Error at {self.__class__.__name__}: {e}")
+                status_logger.error(f"Error at {self.__class__.__name__}: {e}")
                 return build_error_response(e)
 
         return router
@@ -116,26 +126,34 @@ class ParameterServerMaster(Master):
                         max_retries=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_MAX_RETRIES
                     ),
                 )
+                url = f"{prefix}{CHIMERA_SGD_WORKER_FIT_STEP_PATH}"
+
+                start_worker = time.time()
                 response = s.post(
-                    url=f"{prefix}{CHIMERA_SGD_WORKER_FIT_STEP_PATH}",
+                    url=url,
                     timeout=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_TIMEOUT,
                     json=FitStepInput(
                         weights=deepcopy(list(self._model.coef_)),
                         bias=deepcopy(list(self._model.intercept_)),
                     ).model_dump(),
                 )
+                end_worker = time.time()
+                time_logger.info(
+                    f"{url} worker endpoint latency: {round(end_worker - start_worker, 4)} s"
+                )
+
                 response_json = response.json()
 
                 if response.status_code == 200:
                     weights_gradients.append(response_json["weights_gradients"])
                     bias_gradients.append(response_json["bias_gradient"])
                 else:
-                    logger.error(
+                    status_logger.error(
                         f"Error at {self.__class__.__name__}: {get_error_response_message(response)}"
                     )
                     raise ResponseException(response)
             except Exception as e:
-                logger.error(
+                status_logger.error(
                     f"Error fetching fit from worker at port {port}: {e}, at {self.__class__.__name__}"
                 )
 
@@ -150,10 +168,18 @@ class ParameterServerMaster(Master):
                         max_retries=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_MAX_RETRIES
                     ),
                 )
+                url = f"{prefix}{CHIMERA_SGD_WORKER_FIT_REQUEST_DATA_SAMPLE_PATH}"
+
+                start_worker = time.time()
                 response = s.get(
-                    url=f"{prefix}{CHIMERA_SGD_WORKER_FIT_REQUEST_DATA_SAMPLE_PATH}",
+                    url=url,
                     timeout=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_TIMEOUT,
                 )
+                end_worker = time.time()
+                time_logger.info(
+                    f"{url} worker endpoint latency: {round(end_worker - start_worker, 4)} s"
+                )
+
                 response_json = response.json()
 
                 if response.status_code == 200:
@@ -163,7 +189,7 @@ class ParameterServerMaster(Master):
                         response_json["y_train_sample_columns"],
                         response_json["y_train_sample_rows"],
                     )
-            logger.error(
+            status_logger.error(
                 f"Error at {self.__class__.__name__}: {get_error_response_message(response)}"
             )
             raise ResponseException(response)
@@ -190,7 +216,9 @@ class ParameterServerMaster(Master):
 
                 if len(weights_gradients) == 0:
                     message = "All fit iterations responses from workers failed."
-                    logger.error(f"Error at {self.__class__.__name__}: {message}")
+                    status_logger.error(
+                        f"Error at {self.__class__.__name__}: {message}"
+                    )
                     raise ResponseException(requests.Response(), message)
 
                 return np.mean(np.array(weights_gradients), axis=0), np.mean(
@@ -198,6 +226,7 @@ class ParameterServerMaster(Master):
                 )
 
             try:
+                start_master = time.time()
                 (
                     X_train_sample_columns,
                     X_train_sample_rows,
@@ -224,7 +253,7 @@ class ParameterServerMaster(Master):
                         + list(mean_bias_gradient)
                     ]
                 ):
-                    logger.info(
+                    status_logger.info(
                         f"Computing SGD iteration {current_iter + 1} at {self.__class__.__name__}"
                     )
                     self._model.coef_ = self._model.coef_ - mean_weights_gradients
@@ -234,9 +263,14 @@ class ParameterServerMaster(Master):
                     current_iter += 1
                     mean_weights_gradients, mean_bias_gradient = _fit_step()
 
-                return build_json_response(FitOutput(fit="ok"))
+                response = build_json_response(FitOutput(fit="ok"))
+                end_master = time.time()
+                time_logger.info(
+                    f"http://localhost:{self._port}/{CHIMERA_PARAMETER_SERVER_MASTER_FIT_PATH} master endpoint latency: {round(end_master - start_master, 4)} s"
+                )
+                return response
             except Exception as e:
-                logger.error(f"Error at {self.__class__.__name__}: {e}")
+                status_logger.error(f"Error at {self.__class__.__name__}: {e}")
                 return build_error_response(e)
 
         return router

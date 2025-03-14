@@ -1,4 +1,5 @@
 import threading
+import time
 from typing import Any, List
 
 import numpy as np
@@ -22,7 +23,7 @@ from ...api.response import (
     get_error_response_message,  # type: ignore
 )
 from ...containers.configs import WorkersConfig
-from ...utils import logger
+from ...utils import status_logger, time_logger
 from .base import Master
 
 
@@ -58,6 +59,7 @@ class AggregationMaster(Master):
         """Initializes the AggregationMaster."""
         self._workers_config = WorkersConfig()
         self._aggregator = _MeanAggregator()
+        self._port: int
 
     def serve(self, port: int = 8080) -> None:
         """
@@ -66,10 +68,11 @@ class AggregationMaster(Master):
         Args:
             port: Port number to listen on (default: 8080).
         """
+        self._port = port
         app = FastAPI()
         app.include_router(self._predict_router())
         app.include_router(self._fit_router())
-        logger.info(f"Serving {self.__class__.__name__} at port {port}...")
+        status_logger.info(f"Serving {self.__class__.__name__} at port {port}...")
         uvicorn.run(app, host=self._workers_config.CHIMERA_WORKERS_HOST, port=port)
 
     def _predict_router(self) -> APIRouter:
@@ -89,21 +92,29 @@ class AggregationMaster(Master):
                         max_retries=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_MAX_RETRIES
                     ),
                 )
+                url = f"{prefix}{CHIMERA_MODEL_WORKER_PREDICT_PATH}"
+
+                start_worker = time.time()
                 response = requests.post(
-                    url=f"{prefix}{CHIMERA_MODEL_WORKER_PREDICT_PATH}",
+                    url=url,
                     json=predict_input.model_dump(),
                     timeout=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_TIMEOUT,
                 )
+                end_worker = time.time()
+                time_logger.info(
+                    f"{url} worker endpoint latency: {round(end_worker - start_worker, 4)} s"
+                )
+
                 if response.status_code == 200:
                     results.append(response.json()["y_pred_rows"])
                 else:
-                    logger.error(
+                    status_logger.error(
                         f"Error at {self.__class__.__name__}: {get_error_response_message(response)}"
                     )
                     raise ResponseException(response)
 
             except Exception as e:
-                logger.error(
+                status_logger.error(
                     f"Error fetching prediction from worker at port {port}: {e}, at {self.__class__.__name__}"
                 )
 
@@ -111,6 +122,7 @@ class AggregationMaster(Master):
         def predict(predict_input: PredictInput) -> JSONResponse:
             """Handles prediction requests by aggregating results from workers."""
             try:
+                start_master = time.time()
                 threads: List[threading.Thread] = []
                 results: List[Any] = []
                 for port in self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS:
@@ -126,14 +138,21 @@ class AggregationMaster(Master):
 
                 if len(results) == 0:
                     message = "All predict responses from workers failed."
-                    logger.error(f"Error at {self.__class__.__name__}: {message}")
+                    status_logger.error(
+                        f"Error at {self.__class__.__name__}: {message}"
+                    )
                     raise ResponseException(requests.Response(), message)
 
-                return build_json_response(
+                response = build_json_response(
                     PredictOutput(y_pred_rows=self._aggregator.run(results))
                 )
+                end_master = time.time()
+                time_logger.info(
+                    f"http://localhost:{self._port}/{CHIMERA_AGGREGATION_MASTER_PREDICT_PATH} master endpoint latency: {round(end_master - start_master, 4)} s"
+                )
+                return response
             except Exception as e:
-                logger.error(f"Error at {self.__class__.__name__}: {e}")
+                status_logger.error(f"Error at {self.__class__.__name__}: {e}")
                 return build_error_response(e)
 
         return router
@@ -153,19 +172,27 @@ class AggregationMaster(Master):
                         max_retries=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_MAX_RETRIES
                     ),
                 )
+                url = f"{prefix}{CHIMERA_MODEL_WORKER_FIT_PATH}"
+
+                start_worker = time.time()
                 response = s.post(
-                    url=f"{prefix}{CHIMERA_MODEL_WORKER_FIT_PATH}",
+                    url=url,
                     timeout=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_TIMEOUT,
                 )
+                end_worker = time.time()
+                time_logger.info(
+                    f"{url} worker endpoint latency: {round(end_worker - start_worker, 4)} s"
+                )
+
                 if response.status_code == 200:
                     results.append("ok")
                 else:
-                    logger.error(
+                    status_logger.error(
                         f"Error at {self.__class__.__name__}: {get_error_response_message(response)}"
                     )
                     raise ResponseException(response)
             except Exception as e:
-                logger.error(
+                status_logger.error(
                     f"Error fetching fit from worker at port {port}: {e} at {self.__class__.__name__}"
                 )
 
@@ -173,6 +200,7 @@ class AggregationMaster(Master):
         def fit() -> JSONResponse:
             """Handles fit requests by forwarding them to workers."""
             try:
+                start_master = time.time()
                 threads: List[threading.Thread] = []
                 results: List = []
                 for port in self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS:
@@ -187,12 +215,19 @@ class AggregationMaster(Master):
 
                 if len(results) == 0:
                     message = "All fit responses from workers failed."
-                    logger.error(f"Error at {self.__class__.__name__}: {message}")
+                    status_logger.error(
+                        f"Error at {self.__class__.__name__}: {message}"
+                    )
                     raise ResponseException(requests.Response(), message)
 
-                return build_json_response(FitOutput(fit="ok"))
+                response = build_json_response(FitOutput(fit="ok"))
+                end_master = time.time()
+                time_logger.info(
+                    f"http://localhost:{self._port}/{CHIMERA_AGGREGATION_MASTER_FIT_PATH} master endpoint latency: {round(end_master - start_master, 4)} s"
+                )
+                return response
             except Exception as e:
-                logger.error(f"Error at {self.__class__.__name__}: {e}")
+                status_logger.error(f"Error at {self.__class__.__name__}: {e}")
                 return build_error_response(e)
 
         return router

@@ -25,7 +25,7 @@ from ...containers.configs import (
     CHIMERA_TRAIN_LABELS_FILENAME,
     WorkersConfig,
 )
-from ...utils import logger
+from ...utils import status_logger
 
 MODELS_MAP = {
     "regressor": SGDRegressor,
@@ -70,7 +70,7 @@ class SGDWorker:
         """
         app = FastAPI()
         app.include_router(self._fit_router())
-        logger.info(f"Serving {self.__class__.__name__}...")
+        status_logger.info(f"Serving {self.__class__.__name__}...")
         uvicorn.run(
             app,
             host=self._workers_config.CHIMERA_WORKERS_HOST,
@@ -105,7 +105,7 @@ class SGDWorker:
                     )
                 )
             except Exception as e:
-                logger.error(f"Error at {self.__class__.__name__}: {e}")
+                status_logger.error(f"Error at {self.__class__.__name__}: {e}")
                 return build_error_response(e)
 
         @router.post(CHIMERA_SGD_WORKER_FIT_STEP_PATH)
@@ -156,7 +156,7 @@ class SGDWorker:
                     )
                 )
             except Exception as e:
-                logger.error(f"Error at {self.__class__.__name__}: {e}")
+                status_logger.error(f"Error at {self.__class__.__name__}: {e}")
                 return build_error_response(e)
 
         return router

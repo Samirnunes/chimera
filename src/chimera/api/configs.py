@@ -1,9 +1,9 @@
-CHIMERA_MODEL_WORKER_FIT_PATH = "/v1/chimera-model-worker/fit"
-CHIMERA_MODEL_WORKER_PREDICT_PATH = "/v1/chimera-model-worker/predict"
+CHIMERA_MODEL_WORKER_FIT_PATH = "/v1/chimera-model/fit"
+CHIMERA_MODEL_WORKER_PREDICT_PATH = "/v1/chimera-model/predict"
 
-CHIMERA_SGD_WORKER_FIT_STEP_PATH = "/v1/chimera-sgd-worker/fit-step"
+CHIMERA_SGD_WORKER_FIT_STEP_PATH = "/v1/chimera-sgd/fit-step"
 CHIMERA_SGD_WORKER_FIT_REQUEST_DATA_SAMPLE_PATH = (
-    "/v1/chimera-sgd-worker/request-data-sample"
+    "/v1/chimera-sgd/request-data-sample"
 )
 
 CHIMERA_AGGREGATION_MASTER_FIT_PATH = "/v1/chimera-aggregation/fit"

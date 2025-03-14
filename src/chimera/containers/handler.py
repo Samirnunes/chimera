@@ -1,6 +1,6 @@
 import subprocess
 
-from ..utils import logger
+from ..utils import status_logger
 from .configs import (
     CHIMERA_DOCKERFILE_NAME,
     CHIMERA_TRAIN_DATA_FOLDER,
@@ -62,7 +62,7 @@ class ContainersHandler:
         result = subprocess.run(check_cmd, capture_output=True, text=True)
 
         if self._network_config.CHIMERA_NETWORK_NAME in result.stdout.split():
-            logger.info(
+            status_logger.info(
                 f"Network {self._network_config.CHIMERA_NETWORK_NAME} already exists. Skipping creation."
             )
             return
@@ -77,7 +77,7 @@ class ContainersHandler:
             self._network_config.CHIMERA_NETWORK_NAME,
         ]
         subprocess.run(cmd, check=True)
-        logger.info(
+        status_logger.info(
             f"Successfully created '{self._network_config.CHIMERA_NETWORK_NAME}' network."
         )
 
@@ -120,7 +120,7 @@ class ContainersHandler:
             ".",
         ]
         subprocess.run(cmd, check=True)
-        logger.info(f"Successfully built '{image_name}' docker image.")
+        status_logger.info(f"Successfully built '{image_name}' docker image.")
 
     def _run_container(self, i: int) -> None:
         """
@@ -155,7 +155,7 @@ class ContainersHandler:
             image_name,
         ]
         subprocess.run(cmd, check=True)
-        logger.info(f"Successfully ran '{container_name}' container.")
+        status_logger.info(f"Successfully ran '{container_name}' container.")
 
     def _add_dns_entries_to_container(self, i: int) -> None:
         """
@@ -182,6 +182,6 @@ class ContainersHandler:
                 f"echo '{other_container_ip} {other_dns_name}' >> /etc/hosts",
             ]
             subprocess.run(cmd, check=True)
-            logger.info(
+            status_logger.info(
                 f"Added DNS entry '{other_dns_name}:{other_container_ip}' to container '{container_name}'."
             )
