@@ -1,9 +1,8 @@
-from logging import INFO, FileHandler, StreamHandler, getLogger
-from sys import stdout
+from logging import INFO, FileHandler, getLogger
 
 status_logger = getLogger("chimera_status")
 status_logger.setLevel(INFO)
-status_logger.addHandler(StreamHandler(stdout))
+status_logger.addHandler(FileHandler("chimera_status.log"))
 
 time_logger = getLogger("chimera_time")
 time_logger.setLevel(INFO)
