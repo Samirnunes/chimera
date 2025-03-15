@@ -15,6 +15,7 @@ fastapi = "^0.115.8"
 pandas = "^2.2.3"
 uvicorn = "^0.34.0"
 requests = "^2.32.3"
+ucimlrepo = "^0.0.7"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.2"
