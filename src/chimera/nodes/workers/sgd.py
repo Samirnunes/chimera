@@ -12,7 +12,7 @@ from ...api.configs import (
     CHIMERA_SGD_WORKER_FIT_REQUEST_DATA_SAMPLE_PATH,
     CHIMERA_SGD_WORKER_FIT_STEP_PATH,
 )
-from ...api.dto import FitStepInput, FitStepOutput, load_csv_sample, load_fit_input
+from ...api.dto import FitStepInput, FitStepOutput, load_fit_input, load_fit_samples
 from ...api.response import build_error_response, build_json_response
 from ...containers.configs import (
     CHIMERA_TRAIN_DATA_FOLDER,
@@ -58,6 +58,10 @@ class SGDWorker:
         self._bias: float
         self._workers_config = WorkersConfig()
         self._partially_fitted = False
+        self._X_train, self._y_train = load_fit_input(
+            f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_FEATURES_FILENAME}",
+            f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}",
+        )
 
     def serve(self) -> None:
         """
@@ -94,7 +98,7 @@ class SGDWorker:
             """
             try:
                 return build_json_response(
-                    load_csv_sample(
+                    load_fit_samples(
                         f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_FEATURES_FILENAME}",
                         f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}",
                     )
@@ -110,38 +114,35 @@ class SGDWorker:
             """
             try:
                 if not self._partially_fitted:
-                    samples = load_csv_sample(
+                    samples = load_fit_samples(
                         f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_FEATURES_FILENAME}",
                         f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}",
                     )
+                    y_train_samples = np.array(samples.y_train_sample_rows).ravel()
                     self._model.partial_fit(
                         pd.DataFrame(
                             samples.X_train_sample_rows,
                             columns=samples.X_train_sample_columns,
                         ),
-                        np.array(samples.y_train_sample_rows).ravel(),
+                        y_train_samples,
+                        classes=np.unique(y_train_samples),
                     )
                     self._partially_fitted = True
                 else:
                     self._model.coef_ = np.array(fit_step_input.weights)
                     self._model.intercept_ = np.array(fit_step_input.bias)
 
-                X_train, y_train = load_fit_input(
-                    f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_FEATURES_FILENAME}",
-                    f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}",
-                )
-
                 weights: np.ndarray = deepcopy(self._model.coef_)
                 bias: np.ndarray = deepcopy(self._model.intercept_)
 
-                self._model.partial_fit(X_train, y_train)
+                self._model.partial_fit(self._X_train, self._y_train)
 
                 weights_gradients: np.ndarray = weights - self._model.coef_
                 bias_gradient: np.ndarray = bias - self._model.intercept_
 
                 return build_json_response(
                     FitStepOutput(
-                        weights_gradients=list(weights_gradients),
+                        weights_gradients=list(weights_gradients.flatten()),
                         bias_gradient=list(bias_gradient),
                     )
                 )

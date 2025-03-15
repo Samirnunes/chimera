@@ -31,4 +31,4 @@ def load_diabetes(num_partitions: int) -> None:
         start_index = end_index
 
 
-load_diabetes(1)
+load_diabetes(3)

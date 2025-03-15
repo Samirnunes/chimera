@@ -56,6 +56,7 @@ class ParameterServerMaster(Master):
         """
         kwargs.pop("eta0", None)
         self._workers_config = WorkersConfig()
+        self._model_type = model
         self._model: MODEL_TYPE = MODELS_MAP[model](*args, **kwargs, eta0=1e-20)
         self._epsilon = epsilon
         self._port: int
@@ -83,17 +84,27 @@ class ParameterServerMaster(Master):
             """Handles prediction requests."""
             try:
                 start_master = time.time()
-                response = build_json_response(
-                    PredictOutput(
-                        y_pred_rows=list(
-                            self._model.predict(
-                                pd.DataFrame(
-                                    predict_input.X_pred_rows,
-                                    columns=predict_input.X_pred_columns,
-                                )
-                            )
+
+                if self._model_type == "regressor":
+                    prediction = self._model.predict(
+                        pd.DataFrame(
+                            predict_input.X_pred_rows,
+                            columns=predict_input.X_pred_columns,
                         )
                     )
+                else:
+                    prediction = [
+                        probas[1]
+                        for probas in self._model.predict_proba(
+                            pd.DataFrame(
+                                predict_input.X_pred_rows,
+                                columns=predict_input.X_pred_columns,
+                            )
+                        )
+                    ]
+
+                response = build_json_response(
+                    PredictOutput(y_pred_rows=list(prediction))
                 )
                 end_master = time.time()
                 time_logger.info(
@@ -133,8 +144,8 @@ class ParameterServerMaster(Master):
                     url=url,
                     timeout=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_TIMEOUT,
                     json=FitStepInput(
-                        weights=deepcopy(list(self._model.coef_)),
-                        bias=deepcopy(list(self._model.intercept_)),
+                        weights=list(deepcopy(self._model.coef_.flatten())),
+                        bias=list(deepcopy(self._model.intercept_)),
                     ).model_dump(),
                 )
                 end_worker = time.time()
@@ -235,12 +246,18 @@ class ParameterServerMaster(Master):
                 ) = _request_data_sample()
 
                 max_iter = self._model.get_params()["max_iter"]
+                y_train_samples = np.array(y_train_sample_rows).ravel()
+
+                kwargs = {}
+                if self._model_type == "classifier":
+                    kwargs = {"classes": np.unique(y_train_samples)}
 
                 self._model.partial_fit(
                     pd.DataFrame(
                         X_train_sample_rows, columns=X_train_sample_columns
                     ),
-                    np.array(y_train_sample_rows).ravel(),
+                    y_train_samples,
+                    **kwargs,
                 )
 
                 mean_weights_gradients, mean_bias_gradient = _fit_step()
