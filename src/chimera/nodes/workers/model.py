@@ -12,7 +12,7 @@ from ...api.configs import (
     CHIMERA_MODEL_WORKER_FIT_PATH,
     CHIMERA_MODEL_WORKER_PREDICT_PATH,
 )
-from ...api.dto import FitOutput, PredictInput, PredictOutput, load_csv_as_fit_input
+from ...api.dto import FitOutput, PredictInput, PredictOutput, load_fit_input
 from ...api.response import build_error_response, build_json_response
 from ...containers.configs import (
     CHIMERA_TRAIN_DATA_FOLDER,
@@ -113,22 +113,15 @@ class _ModelWorker(ABC):
             Fits the model using training data loaded from CSV files.
             """
             try:
-                fit_input = load_csv_as_fit_input(
+                X_train, y_train = load_fit_input(
                     f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_FEATURES_FILENAME}",
                     f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}",
-                )
-
-                X_train = pd.DataFrame(
-                    fit_input.X_train_rows, columns=fit_input.X_train_columns
-                )
-                y_train = pd.DataFrame(
-                    fit_input.y_train_rows, columns=fit_input.y_train_columns
                 )
 
                 if self._bootstrap:
                     X_train, y_train = self._bootstrapper.run(X_train, y_train)
 
-                self._model.fit(X_train, y_train)
+                self._model.fit(X_train, np.array(y_train).ravel())
 
                 return build_json_response(FitOutput(fit="ok"))
             except Exception as e:
@@ -230,14 +223,15 @@ class ClassificationWorker(_ModelWorker):
                 X_pred_rows = predict_input.X_pred_rows
                 X_pred_columns = predict_input.X_pred_columns
 
-                y_pred: np.ndarray = self._model.predict_proba(
-                    pd.DataFrame(X_pred_rows, columns=X_pred_columns)
-                )
+                y_pred: List = [
+                    probas[1]
+                    for probas in self._model.predict_proba(
+                        pd.DataFrame(X_pred_rows, columns=X_pred_columns)
+                    )
+                ]
 
                 return build_json_response(
-                    PredictOutput(
-                        y_pred_rows=list(y_pred), y_pred_columns=X_pred_columns
-                    )
+                    PredictOutput(y_pred_rows=y_pred, y_pred_columns=X_pred_columns)
                 )
             except Exception as e:
                 status_logger.error(f"Error at {self.__class__.__name__}: {e}")

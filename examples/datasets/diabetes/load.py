@@ -8,9 +8,6 @@ def load_diabetes(num_partitions: int) -> None:
     Args:
         num_partitions: The number of partitions to create. Must be >= 2.
     """
-    if num_partitions < 2:
-        raise ValueError("num_partitions must be at least 2.")
-
     cdc_diabetes_health_indicators = fetch_ucirepo(id=891)
     X = cdc_diabetes_health_indicators.data.features
     y = cdc_diabetes_health_indicators.data.targets
@@ -32,3 +29,6 @@ def load_diabetes(num_partitions: int) -> None:
         y_part.to_csv(f"y_train_{i}.csv", index=False)
 
         start_index = end_index
+
+
+load_diabetes(1)

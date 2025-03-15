@@ -12,12 +12,7 @@ from ...api.configs import (
     CHIMERA_SGD_WORKER_FIT_REQUEST_DATA_SAMPLE_PATH,
     CHIMERA_SGD_WORKER_FIT_STEP_PATH,
 )
-from ...api.dto import (
-    FitStepInput,
-    FitStepOutput,
-    load_csv_as_fit_input,
-    load_csv_sample,
-)
+from ...api.dto import FitStepInput, FitStepOutput, load_csv_sample, load_fit_input
 from ...api.response import build_error_response, build_json_response
 from ...containers.configs import (
     CHIMERA_TRAIN_DATA_FOLDER,
@@ -131,15 +126,10 @@ class SGDWorker:
                     self._model.coef_ = np.array(fit_step_input.weights)
                     self._model.intercept_ = np.array(fit_step_input.bias)
 
-                fit_input = load_csv_as_fit_input(
+                X_train, y_train = load_fit_input(
                     f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_FEATURES_FILENAME}",
                     f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}",
                 )
-
-                X_train = pd.DataFrame(
-                    fit_input.X_train_rows, columns=fit_input.X_train_columns
-                )
-                y_train = np.array(fit_input.y_train_rows).ravel()
 
                 weights: np.ndarray = deepcopy(self._model.coef_)
                 bias: np.ndarray = deepcopy(self._model.intercept_)
