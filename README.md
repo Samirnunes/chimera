@@ -157,14 +157,18 @@ In distributed SGD, the summarized steps are:
 
 ## References
 
-- https://studytrails.com/2021/02/10/distributed-machine-learning-2-architecture/
+### Papers
 
-- https://dl.acm.org/doi/fullHtml/10.1145/3631461.3632516
+- "A Survey on Distributed Machine Learning": https://dl.acm.org/doi/pdf/10.1145/3377454
+
+- "Distributed Machine Learning": https://dl.acm.org/doi/fullHtml/10.1145/3631461.3632516
+
+### Websites
+
+- https://studytrails.com/2021/02/10/distributed-machine-learning-2-architecture/
 
 - https://www.almabetter.com/bytes/tutorials/mlops/distributed-computing-for-ml
 
 - https://neptune.ai/blog/distributed-training
 
 - https://learn.microsoft.com/en-us/azure/machine-learning/concept-distributed-training?view=azureml-api-2
-
-- https://github.com/Shenggan/awesome-distributed-ml
