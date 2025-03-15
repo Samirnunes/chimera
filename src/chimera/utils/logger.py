@@ -13,7 +13,7 @@ time_logger.setLevel(INFO)
 time_logger.addHandler(FileHandler(_TIME_FILE))
 
 
-def parse_chimera_times_file() -> Dict:
+def parse_times_file() -> Dict:
     times: Dict[str, Dict] = {}
     workers_times: Dict[str, List[float]] = {}
     masters_times: Dict[str, List[float]] = {}
