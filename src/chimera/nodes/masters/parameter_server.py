@@ -1,5 +1,5 @@
-import threading
 import time
+from concurrent.futures import ThreadPoolExecutor
 from copy import deepcopy
 from typing import Any, List, Literal, Tuple
 
@@ -211,19 +211,21 @@ class ParameterServerMaster(Master):
 
             def _fit_step() -> Tuple[np.ndarray, np.ndarray]:
                 """Performs a single step of the iterative fitting process."""
-                threads: List[threading.Thread] = []
                 weights_gradients: List[List[float]] = []
                 bias_gradients: List[float] = []
-                for port in self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS:
-                    thread = threading.Thread(
-                        target=_fetch_fit_step_from_worker,
-                        args=(port, weights_gradients, bias_gradients),
-                    )
-                    threads.append(thread)
-                    thread.start()
 
-                for thread in threads:
-                    thread.join()
+                with ThreadPoolExecutor() as executor:
+                    futures = [
+                        executor.submit(
+                            _fetch_fit_step_from_worker,
+                            port,
+                            weights_gradients,
+                            bias_gradients,
+                        )
+                        for port in self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS
+                    ]
+                    for future in futures:
+                        future.result()
 
                 if len(weights_gradients) == 0:
                     message = "All fit iterations responses from workers failed."

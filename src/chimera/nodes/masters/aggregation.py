@@ -1,5 +1,5 @@
-import threading
 import time
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any, List
 
 import numpy as np
@@ -123,18 +123,19 @@ class AggregationMaster(Master):
             """Handles prediction requests by aggregating results from workers."""
             try:
                 start_master = time.time()
-                threads: List[threading.Thread] = []
                 results: List[Any] = []
-                for port in self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS:
-                    thread = threading.Thread(
-                        target=_fetch_predict_from_worker,
-                        args=(port, predict_input, results),
-                    )
-                    threads.append(thread)
-                    thread.start()
-
-                for thread in threads:
-                    thread.join()
+                with ThreadPoolExecutor() as executor:
+                    futures = [
+                        executor.submit(
+                            _fetch_predict_from_worker,
+                            port,
+                            predict_input,
+                            results,
+                        )
+                        for port in self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS
+                    ]
+                    for future in futures:
+                        results.append(future.result())
 
                 if len(results) == 0:
                     message = "All predict responses from workers failed."
@@ -201,17 +202,19 @@ class AggregationMaster(Master):
             """Handles fit requests by forwarding them to workers."""
             try:
                 start_master = time.time()
-                threads: List[threading.Thread] = []
                 results: List = []
-                for port in self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS:
-                    thread = threading.Thread(
-                        target=_fetch_fit_from_worker, args=(port, results)
-                    )
-                    threads.append(thread)
-                    thread.start()
 
-                for thread in threads:
-                    thread.join()
+                with ThreadPoolExecutor() as executor:
+                    futures = [
+                        executor.submit(
+                            _fetch_fit_from_worker,
+                            port,
+                            results,
+                        )
+                        for port in self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS
+                    ]
+                    for future in futures:
+                        future.result()
 
                 if len(results) == 0:
                     message = "All fit responses from workers failed."
