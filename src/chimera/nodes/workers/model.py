@@ -83,6 +83,10 @@ class _ModelWorker(ABC):
         self._bootstrapper = _Bootstrapper()
 
         self._fit_columns: List[str] = []
+        self._X_train, self._y_train = load_fit_input(
+            f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_FEATURES_FILENAME}",
+            f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}",
+        )
 
     def serve(self) -> None:
         """
@@ -113,15 +117,13 @@ class _ModelWorker(ABC):
             Fits the model using training data loaded from CSV files.
             """
             try:
-                X_train, y_train = load_fit_input(
-                    f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_FEATURES_FILENAME}",
-                    f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}",
-                )
-
                 if self._bootstrap:
-                    X_train, y_train = self._bootstrapper.run(X_train, y_train)
-
-                self._model.fit(X_train, np.array(y_train).ravel())
+                    X_train, y_train = self._bootstrapper.run(
+                        self._X_train, self._y_train
+                    )
+                    self._model.fit(X_train, np.array(y_train).ravel())
+                else:
+                    self._model.fit(self._X_train, np.array(self._y_train).ravel())
 
                 return build_json_response(FitOutput(fit="ok"))
             except Exception as e:
