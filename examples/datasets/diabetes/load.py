@@ -29,6 +29,3 @@ def load_diabetes(num_partitions: int) -> None:
         y_part.to_csv(f"y_train_{i}.csv", index=False)
 
         start_index = end_index
-
-
-load_diabetes(3)
