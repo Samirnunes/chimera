@@ -135,7 +135,7 @@ class AggregationMaster(Master):
                         for port in self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS
                     ]
                     for future in futures:
-                        results.append(future.result())
+                        future.result()
 
                 if len(results) == 0:
                     message = "All predict responses from workers failed."
