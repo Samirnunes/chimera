@@ -1,3 +1,0 @@
-docker stop $(docker ps -aq) ; docker rm $(docker ps -aq) ; docker rmi $(docker images -aq) -f ; poetry run python master_rand_forest.py
-
-docker stop $(docker ps -aq) ; docker rm $(docker ps -aq) ; docker rmi $(docker images -aq) -f ; poetry run python master_lin_reg.py

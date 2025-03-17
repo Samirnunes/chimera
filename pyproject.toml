@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "chimera"
+name = "chimera-distributed-ml"
 version = "0.1.0"
 description = ""
 authors = ["Samir Nunes da Silva"]
