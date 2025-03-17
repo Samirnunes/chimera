@@ -114,7 +114,7 @@ class ContainersHandler:
             "--build-arg",
             f"CHIMERA_WORKERS_HOST={self._workers_config.CHIMERA_WORKERS_HOST}",
             "-f",
-            CHIMERA_DOCKERFILE_NAME,
+            "./" + CHIMERA_DOCKERFILE_NAME,
             "-t",
             image_name,
             ".",
