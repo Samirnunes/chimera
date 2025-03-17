@@ -75,7 +75,7 @@ jobs:
         run: poetry run pre-commit run -a -v
 
   pypi-publish:
-    name: Upload release to PyPI
+    needs: pre-commit
     runs-on: ubuntu-latest
     environment:
       name: pypi
