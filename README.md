@@ -22,7 +22,7 @@ Docker containers act as Workers. To run the created distributed system, it will
 
 The client-master and master-workers communications are made via REST APIs.
 
-## Running as a Package
+## Running as a Pypi Package
 
 1. Install Poetry following the documentation: https://python-poetry.org/docs/#installing-with-the-official-installer
 
