@@ -51,7 +51,7 @@ The client-master and master-workers communications are made via REST APIs.
 ## Creating and Running a Distributed Model with `chimera`
 
 <p align="center">
-    <img width="200" src="./images/chimera_files.png" alt="Chimera Files">
+    <img width="250" src="./images/chimera_files.png" alt="Chimera Files">
 <p>
 
 1. After installing `chimera`, you need to create a `Master` and its `Workers`:
