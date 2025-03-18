@@ -51,14 +51,14 @@ The client-master and master-workers communications are made via REST APIs.
 ## Creating and Running a Distributed Model with `chimera`
 
 <p align="center">
-    <img width="500" src="./images/chimera_files.png" alt="Master Example">
+    <img width="300" src="./images/chimera_files.png" alt="Chimera Files">
 <p>
 
 1. After installing `chimera`, you need to create a `Master` and its `Workers`:
      - Master: create a `.py` file in your root directory. This file must specify the environment variables necessary to run the code in string format (in the case of Lists, you must follow the JSON string format for Lists) and run a `chimera` master server with `chimera.run`. For example: `chimera.run(AggregationMaster(), 8080)`. The available configuration environment variables are in the classes `NetworkConfig` and `WorkersConfig`, inside `src/chimera/containers/config.py`.
 
     <p align="center">
-        <img width="575" src="./images/master_example.png" alt="Master Example">
+        <img width="600" src="./images/master_example.png" alt="Master Example">
     <p>
 
      - Workers: create a folder called `chimera_workers` and create `.py` files which are going to represent your workers. Each file must initialize a `chimera` worker and call `worker.serve()` inside an `if __name__ == "__main__":` block, which will initialize the worker server when `chimera.run` is called in the master's file. Note that the environment variable `CHIMERA_WORKERS_NODES_NAMES` in the master's file must contain all the workers' file names, without the `.py` suffix.
