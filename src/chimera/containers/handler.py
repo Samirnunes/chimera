@@ -1,4 +1,5 @@
 import subprocess
+from pathlib import Path
 
 from ..utils import status_logger
 from .configs import (
@@ -114,7 +115,7 @@ class ContainersHandler:
             "--build-arg",
             f"CHIMERA_WORKERS_HOST={self._workers_config.CHIMERA_WORKERS_HOST}",
             "-f",
-            "./" + CHIMERA_DOCKERFILE_NAME,
+            str(Path(__file__).resolve().parent / CHIMERA_DOCKERFILE_NAME),
             "-t",
             image_name,
             ".",
