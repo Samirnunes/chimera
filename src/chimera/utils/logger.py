@@ -13,11 +13,11 @@ time_logger.setLevel(INFO)
 time_logger.addHandler(FileHandler(_TIME_FILE))
 
 
-def parse_times_file() -> Dict:
+def parse_times_file(filepath: str) -> Dict:
     times: Dict[str, Dict] = {}
     workers_times: Dict[str, List[float]] = {}
     masters_times: Dict[str, List[float]] = {}
-    with open(_TIME_FILE, "r") as f:
+    with open(filepath, "r") as f:
         for line in f:
             line_split = line.split("=")
             name = line_split[0].strip()
