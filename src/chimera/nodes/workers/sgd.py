@@ -102,6 +102,7 @@ class SGDWorker:
                     load_fit_samples(
                         f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_FEATURES_FILENAME}",
                         f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}",
+                        self._model_type,
                     )
                 )
             except Exception as e:
@@ -118,6 +119,7 @@ class SGDWorker:
                     samples = load_fit_samples(
                         f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_FEATURES_FILENAME}",
                         f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}",
+                        self._model_type,
                     )
                     y_train_samples = np.array(samples.y_train_sample_rows).ravel()
 

@@ -1,5 +1,5 @@
 from shutil import ReadError
-from typing import List, Tuple
+from typing import List, Literal, Tuple
 
 import pandas as pd
 from pydantic import BaseModel, field_validator
@@ -112,7 +112,9 @@ class PredictOutput(BaseModel):
 
 
 def load_fit_samples(
-    x_train_path: str, y_train_path: str
+    x_train_path: str,
+    y_train_path: str,
+    model_type: Literal["regressor", "classifier"],
 ) -> FitRequestDataSampleOutput:
     """
     Loads a sample of training data from CSV files and converts it into a
@@ -131,9 +133,18 @@ def load_fit_samples(
         ReadError: If all attempts to load a sample of the specified size fail.  This indicates a problem with the input CSV files.
     """
 
-    rows_to_try = [200, 100, 50, 25, 10, 5, 2]
-
     y_train_full = pd.read_csv(y_train_path)
+    if model_type == "regressor":
+        X_train_sample = pd.read_csv(x_train_path, nrows=1)
+        y_train_sample = pd.read_csv(y_train_path, nrows=1)
+        return FitRequestDataSampleOutput(
+            X_train_sample_columns=list(X_train_sample.columns),
+            X_train_sample_rows=list(X_train_sample.values),
+            y_train_sample_columns=list(y_train_sample.columns),
+            y_train_sample_rows=list(y_train_sample.values),
+        )
+
+    rows_to_try = [1000, 500, 200, 100, 50, 25, 10, 5, 2]
     unique_classes = y_train_full.iloc[:, 0].unique()
 
     for num_rows in rows_to_try:
