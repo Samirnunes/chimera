@@ -53,6 +53,7 @@ class SGDWorker:
             *args: Additional positional arguments passed to the model constructor.
             **kwargs: Additional keyword arguments passed to the model constructor.
         """
+        self._model_type = model
         self._model: MODEL_TYPE = MODELS_MAP[model](*args, **kwargs)
         self._weights: np.ndarray
         self._bias: float
@@ -119,13 +120,18 @@ class SGDWorker:
                         f"{CHIMERA_TRAIN_DATA_FOLDER}/{CHIMERA_TRAIN_LABELS_FILENAME}",
                     )
                     y_train_samples = np.array(samples.y_train_sample_rows).ravel()
+
+                    kwargs = {}
+                    if self._model_type == "classifier":
+                        kwargs = {"classes": np.unique(y_train_samples)}
+
                     self._model.partial_fit(
                         pd.DataFrame(
                             samples.X_train_sample_rows,
                             columns=samples.X_train_sample_columns,
                         ),
                         y_train_samples,
-                        classes=np.unique(y_train_samples),
+                        **kwargs,
                     )
                     self._partially_fitted = True
                 else:
