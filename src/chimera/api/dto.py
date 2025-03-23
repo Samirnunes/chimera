@@ -1,4 +1,3 @@
-from shutil import ReadError
 from typing import List, Literal, Tuple
 
 import pandas as pd
@@ -144,48 +143,22 @@ def load_fit_samples(
             y_train_sample_rows=list(y_train_sample.values),
         )
 
-    rows_to_try = [1000, 500, 200, 100, 50, 25, 10, 5, 2]
     unique_classes = y_train_full.iloc[:, 0].unique()
-
-    for num_rows in rows_to_try:
-        try:
-            X_train_sample = pd.read_csv(x_train_path, nrows=num_rows)
-            y_train_sample = pd.read_csv(y_train_path, nrows=num_rows)
-
-            if all(
-                cls in y_train_sample.iloc[:, 0].values for cls in unique_classes
-            ):
-                break
-            else:
-                continue
-
-        except Exception:
-            if num_rows == rows_to_try[-1]:
-                raise ReadError(
-                    f"Failed to load a sample with at least one instance of each class from {y_train_path} even with {num_rows} rows"
-                )
-            continue
-
-    if not all(cls in y_train_sample.iloc[:, 0].values for cls in unique_classes):
-        X_train_sample = pd.DataFrame(
-            columns=pd.read_csv(x_train_path, nrows=1).columns
+    X_train_sample = pd.DataFrame(columns=pd.read_csv(x_train_path, nrows=1).columns)
+    y_train_sample = pd.DataFrame(columns=pd.read_csv(y_train_path, nrows=1).columns)
+    rows_to_add = []
+    for cls in unique_classes:
+        indices = y_train_full.index[y_train_full.iloc[:, 0] == cls].tolist()
+        if len(indices) > 0:
+            index = indices[0]
+            rows_to_add.append(index)
+    for index in rows_to_add:
+        X_train_sample = pd.concat(
+            [X_train_sample, pd.read_csv(x_train_path, skiprows=index, nrows=1)]
         )
-        y_train_sample = pd.DataFrame(
-            columns=pd.read_csv(y_train_path, nrows=1).columns
+        y_train_sample = pd.concat(
+            [y_train_sample, pd.read_csv(y_train_path, skiprows=index, nrows=1)]
         )
-        rows_to_add = []
-        for cls in unique_classes:
-            indices = y_train_full.index[y_train_full.iloc[:, 0] == cls].tolist()
-            if len(indices) > 0:
-                index = indices[0]
-                rows_to_add.append(index)
-        for index in rows_to_add:
-            X_train_sample = pd.concat(
-                [X_train_sample, pd.read_csv(x_train_path, skiprows=index, nrows=1)]
-            )
-            y_train_sample = pd.concat(
-                [y_train_sample, pd.read_csv(y_train_path, skiprows=index, nrows=1)]
-            )
 
     return FitRequestDataSampleOutput(
         X_train_sample_columns=list(X_train_sample.columns),
