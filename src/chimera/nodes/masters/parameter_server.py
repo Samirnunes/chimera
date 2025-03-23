@@ -38,9 +38,9 @@ class _FitStepFromWorkersHandler:
 
     def fetch(
         self,
+        port: int,
         weights: np.ndarray,
         bias: np.ndarray,
-        port: int,
         weights_gradients: List[List[float]],
         bias_gradients: List[float],
     ) -> None:
@@ -241,9 +241,9 @@ class ParameterServerMaster(Master):
                     futures = [
                         executor.submit(
                             self._fit_step_from_workers_handler.fetch,
+                            port,
                             self._model.coef_.flatten(),
                             self._model.intercept_,
-                            port,
                             weights_gradients,
                             bias_gradients,
                         )
