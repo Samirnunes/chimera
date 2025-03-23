@@ -1,4 +1,4 @@
-from ..containers.handler import ContainersHandler
+from ..containers.workers import WorkersServer
 from ..nodes.masters import AggregationMaster, ParameterServerMaster
 
 
@@ -25,5 +25,5 @@ def run(master: AggregationMaster | ParameterServerMaster, port: int = 8081) -> 
         >>> run(master, 8082) # Starts an AggregationMaster on port 8082.
     """
 
-    ContainersHandler().serve_all()
+    WorkersServer().serve_all()
     master.serve(port)
