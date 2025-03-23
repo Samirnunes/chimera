@@ -30,6 +30,105 @@ from ..workers.sgd import MODEL_TYPE, MODELS_MAP
 from .base import Master
 
 
+class _FitStepFromWorkersHandler:
+    """Handles fit requests from workers."""
+
+    def __init__(self, workers_config: WorkersConfig) -> None:
+        self._workers_config = workers_config
+
+    def fetch(
+        self,
+        model: MODEL_TYPE,
+        port: int,
+        weights_gradients: List[List[float]],
+        bias_gradients: List[float],
+    ) -> None:
+        """Fetches a single fit step from a worker."""
+        try:
+            s = requests.Session()
+            prefix = f"http://localhost:{port}"
+            s.mount(
+                prefix,
+                HTTPAdapter(
+                    max_retries=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_MAX_RETRIES
+                ),
+            )
+            url = f"{prefix}{CHIMERA_SGD_WORKER_FIT_STEP_PATH}"
+
+            start_worker = time.time()
+            response = s.post(
+                url=url,
+                timeout=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_TIMEOUT,
+                json=FitStepInput(
+                    weights=list(deepcopy(model.coef_.flatten())),
+                    bias=list(deepcopy(model.intercept_)),
+                ).model_dump(),
+            )
+            end_worker = time.time()
+            time_logger.info(
+                f"{url} worker endpoint latency = {round(end_worker - start_worker, 4)} s"
+            )
+
+            response_json = response.json()
+
+            if response.status_code == 200:
+                weights_gradients.append(response_json["weights_gradients"])
+                bias_gradients.append(response_json["bias_gradient"])
+            else:
+                status_logger.error(
+                    f"Error at {self.__class__.__name__}: {get_error_response_message(response)}"
+                )
+                raise ResponseException(response)
+        except Exception as e:
+            status_logger.error(
+                f"Error fetching fit from worker at port {port}: {e}, at {self.__class__.__name__}"
+            )
+
+
+class _DataSampleFromWorkersHandler:
+    """Handles data sample requests from workers."""
+
+    def __init__(self, workers_config: WorkersConfig) -> None:
+        self._workers_config = workers_config
+
+    def fetch(self) -> Tuple:
+        """Requests a data sample from a worker."""
+        for port in self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS:
+            s = requests.Session()
+            prefix = f"http://localhost:{port}"
+            s.mount(
+                prefix,
+                HTTPAdapter(
+                    max_retries=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_MAX_RETRIES
+                ),
+            )
+            url = f"{prefix}{CHIMERA_SGD_WORKER_FIT_REQUEST_DATA_SAMPLE_PATH}"
+
+            start_worker = time.time()
+            response = s.get(
+                url=url,
+                timeout=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_TIMEOUT,
+            )
+            end_worker = time.time()
+            time_logger.info(
+                f"{url} worker endpoint latency = {round(end_worker - start_worker, 4)} s"
+            )
+
+            response_json = response.json()
+
+            if response.status_code == 200:
+                return (
+                    response_json["X_train_sample_columns"],
+                    response_json["X_train_sample_rows"],
+                    response_json["y_train_sample_columns"],
+                    response_json["y_train_sample_rows"],
+                )
+        status_logger.error(
+            f"Error at {self.__class__.__name__}: {get_error_response_message(response)}"
+        )
+        raise ResponseException(response)
+
+
 class ParameterServerMaster(Master):
     """
     Implements a Parameter Server master node for Chimera.
@@ -40,7 +139,7 @@ class ParameterServerMaster(Master):
 
     def __init__(
         self,
-        model: Literal["regressor", "classifier"],
+        model_type: Literal["regressor", "classifier"],
         epsilon: float = 10e-12,
         *args: Any,
         **kwargs: Any,
@@ -56,8 +155,14 @@ class ParameterServerMaster(Master):
         """
         kwargs.pop("eta0", None)
         self._workers_config = WorkersConfig()
-        self._model_type = model
-        self._model: MODEL_TYPE = MODELS_MAP[model](*args, **kwargs, eta0=1e-20)
+        self._fit_step_from_workers_handler = _FitStepFromWorkersHandler(
+            self._workers_config
+        )
+        self._data_sample_from_workers_handler = _DataSampleFromWorkersHandler(
+            self._workers_config
+        )
+        self._model_type = model_type
+        self._model: MODEL_TYPE = MODELS_MAP[model_type](*args, **kwargs, eta0=1e-20)
         self._epsilon = epsilon
         self._port: int
 
@@ -122,89 +227,6 @@ class ParameterServerMaster(Master):
         """Creates the FastAPI router for the /fit endpoint."""
         router = APIRouter()
 
-        def _fetch_fit_step_from_worker(
-            port: int,
-            weights_gradients: List[List[float]],
-            bias_gradients: List[float],
-        ) -> None:
-            """Fetches a single fit step from a worker."""
-            try:
-                s = requests.Session()
-                prefix = f"http://localhost:{port}"
-                s.mount(
-                    prefix,
-                    HTTPAdapter(
-                        max_retries=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_MAX_RETRIES
-                    ),
-                )
-                url = f"{prefix}{CHIMERA_SGD_WORKER_FIT_STEP_PATH}"
-
-                start_worker = time.time()
-                response = s.post(
-                    url=url,
-                    timeout=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_TIMEOUT,
-                    json=FitStepInput(
-                        weights=list(deepcopy(self._model.coef_.flatten())),
-                        bias=list(deepcopy(self._model.intercept_)),
-                    ).model_dump(),
-                )
-                end_worker = time.time()
-                time_logger.info(
-                    f"{url} worker endpoint latency = {round(end_worker - start_worker, 4)} s"
-                )
-
-                response_json = response.json()
-
-                if response.status_code == 200:
-                    weights_gradients.append(response_json["weights_gradients"])
-                    bias_gradients.append(response_json["bias_gradient"])
-                else:
-                    status_logger.error(
-                        f"Error at {self.__class__.__name__}: {get_error_response_message(response)}"
-                    )
-                    raise ResponseException(response)
-            except Exception as e:
-                status_logger.error(
-                    f"Error fetching fit from worker at port {port}: {e}, at {self.__class__.__name__}"
-                )
-
-        def _request_data_sample() -> Tuple:
-            """Requests a data sample from a worker."""
-            for port in self._workers_config.CHIMERA_WORKERS_MAPPED_PORTS:
-                s = requests.Session()
-                prefix = f"http://localhost:{port}"
-                s.mount(
-                    prefix,
-                    HTTPAdapter(
-                        max_retries=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_MAX_RETRIES
-                    ),
-                )
-                url = f"{prefix}{CHIMERA_SGD_WORKER_FIT_REQUEST_DATA_SAMPLE_PATH}"
-
-                start_worker = time.time()
-                response = s.get(
-                    url=url,
-                    timeout=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_TIMEOUT,
-                )
-                end_worker = time.time()
-                time_logger.info(
-                    f"{url} worker endpoint latency = {round(end_worker - start_worker, 4)} s"
-                )
-
-                response_json = response.json()
-
-                if response.status_code == 200:
-                    return (
-                        response_json["X_train_sample_columns"],
-                        response_json["X_train_sample_rows"],
-                        response_json["y_train_sample_columns"],
-                        response_json["y_train_sample_rows"],
-                    )
-            status_logger.error(
-                f"Error at {self.__class__.__name__}: {get_error_response_message(response)}"
-            )
-            raise ResponseException(response)
-
         @router.post(CHIMERA_PARAMETER_SERVER_MASTER_FIT_PATH)
         def fit() -> JSONResponse:
             """Handles the complete fit process."""
@@ -217,7 +239,8 @@ class ParameterServerMaster(Master):
                 with ThreadPoolExecutor() as executor:
                     futures = [
                         executor.submit(
-                            _fetch_fit_step_from_worker,
+                            self._fit_step_from_workers_handler.fetch,
+                            self._model,
                             port,
                             weights_gradients,
                             bias_gradients,
@@ -245,7 +268,7 @@ class ParameterServerMaster(Master):
                     X_train_sample_rows,
                     _,
                     y_train_sample_rows,
-                ) = _request_data_sample()
+                ) = self._data_sample_from_workers_handler.fetch()
 
                 max_iter = self._model.get_params()["max_iter"]
                 y_train_samples = np.array(y_train_sample_rows).ravel()

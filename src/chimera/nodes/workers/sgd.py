@@ -41,7 +41,7 @@ class SGDWorker:
 
     def __init__(
         self,
-        model: Literal["regressor", "classifier"],
+        model_type: Literal["regressor", "classifier"],
         *args: Any,
         **kwargs: Any,
     ) -> None:
@@ -53,8 +53,8 @@ class SGDWorker:
             *args: Additional positional arguments passed to the model constructor.
             **kwargs: Additional keyword arguments passed to the model constructor.
         """
-        self._model_type = model
-        self._model: MODEL_TYPE = MODELS_MAP[model](*args, **kwargs)
+        self._model_type = model_type
+        self._model: MODEL_TYPE = MODELS_MAP[model_type](*args, **kwargs)
         self._weights: np.ndarray
         self._bias: float
         self._workers_config = WorkersConfig()
@@ -76,12 +76,6 @@ class SGDWorker:
             host=self._workers_config.CHIMERA_WORKERS_HOST,
             port=self._workers_config.CHIMERA_WORKERS_PORT,
         )
-
-    def _receive_parameters(self) -> None:
-        """
-        (Not implemented)  Placeholder for receiving parameters from the master.
-        """
-        pass
 
     def _fit_router(self) -> APIRouter:
         """
