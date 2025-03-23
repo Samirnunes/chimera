@@ -38,7 +38,8 @@ class _FitStepFromWorkersHandler:
 
     def fetch(
         self,
-        model: MODEL_TYPE,
+        weights: np.ndarray,
+        bias: np.ndarray,
         port: int,
         weights_gradients: List[List[float]],
         bias_gradients: List[float],
@@ -60,8 +61,8 @@ class _FitStepFromWorkersHandler:
                 url=url,
                 timeout=self._workers_config.CHIMERA_WORKERS_ENDPOINTS_TIMEOUT,
                 json=FitStepInput(
-                    weights=list(deepcopy(model.coef_.flatten())),
-                    bias=list(deepcopy(model.intercept_)),
+                    weights=list(deepcopy(weights)),
+                    bias=list(deepcopy(bias)),
                 ).model_dump(),
             )
             end_worker = time.time()
@@ -240,7 +241,8 @@ class ParameterServerMaster(Master):
                     futures = [
                         executor.submit(
                             self._fit_step_from_workers_handler.fetch,
-                            self._model,
+                            self._model.coef_.flatten(),
+                            self._model.intercept_,
                             port,
                             weights_gradients,
                             bias_gradients,
