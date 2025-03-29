@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.1.1 Chrome/132.0.6834.210 Electron/34.3.3 Safari/537.36" version="26.1.1">
   <diagram name="Página-1" id="nI-Yvf2fHHE0HuBe5KnH">
-    <mxGraphModel dx="1434" dy="836" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1050" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -10,10 +10,10 @@
         <mxCell id="yYhdbrsTAs3XfcKX1CrM-2" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;i style=&quot;&quot;&gt;&lt;b style=&quot;&quot;&gt;A&lt;/b&gt;&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="160" y="70" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="yYhdbrsTAs3XfcKX1CrM-3" value="Receive Client&#39;s HTTP request&lt;div&gt;by the endpoint &lt;u&gt;/v1/chimera-aggregation/predict&lt;/u&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+        <mxCell id="yYhdbrsTAs3XfcKX1CrM-3" value="Receive Client&#39;s HTTP request&lt;div&gt;by the endpoint &lt;u&gt;/v1/chimera/aggregation/predict&lt;/u&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="370" y="90" width="210" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="yYhdbrsTAs3XfcKX1CrM-4" value="Requests predict to each worker through the endpoint &lt;u&gt;/v1/chimera-model/predict&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+        <mxCell id="yYhdbrsTAs3XfcKX1CrM-4" value="Request predict to each worker through the endpoint &lt;u&gt;/v1/chimera/model/predict&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="370" y="240" width="210" height="80" as="geometry" />
         </mxCell>
         <mxCell id="yYhdbrsTAs3XfcKX1CrM-5" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="yYhdbrsTAs3XfcKX1CrM-1" target="yYhdbrsTAs3XfcKX1CrM-3" edge="1">
@@ -77,8 +77,8 @@
             <mxPoint x="6" y="-8" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="yYhdbrsTAs3XfcKX1CrM-18" value="Return error message as JSON-formatted response through the endpoint&amp;nbsp;&lt;u&gt;/v1/chimera-aggregation/predict&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
-          <mxGeometry x="660" y="555" width="210" height="80" as="geometry" />
+        <mxCell id="yYhdbrsTAs3XfcKX1CrM-18" value="Return error message as JSON-formatted response through the endpoint&amp;nbsp;&lt;u&gt;/v1/chimera/aggregation/predict&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="660" y="555" width="240" height="80" as="geometry" />
         </mxCell>
         <mxCell id="yYhdbrsTAs3XfcKX1CrM-19" value="&lt;font face=&quot;Verdana&quot;&gt;End&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="435" y="890" width="80" height="80" as="geometry" />
@@ -88,7 +88,7 @@
             <mxPoint x="390" y="750" as="sourcePoint" />
             <mxPoint x="765" y="1650" as="targetPoint" />
             <Array as="points">
-              <mxPoint x="765" y="930" />
+              <mxPoint x="780" y="930" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -98,8 +98,8 @@
         <mxCell id="yYhdbrsTAs3XfcKX1CrM-22" value="Aggregate results by calculating the arithmetic mean" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="85" y="730" width="210" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="yYhdbrsTAs3XfcKX1CrM-23" value="Return result as JSON-formatted response through the endpoint&amp;nbsp;&lt;u&gt;/v1/chimera-aggregation/predict&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
-          <mxGeometry x="85" y="890" width="210" height="80" as="geometry" />
+        <mxCell id="yYhdbrsTAs3XfcKX1CrM-23" value="Return result as JSON-formatted response through the endpoint&amp;nbsp;&lt;u&gt;/v1/chimera/aggregation/predict&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="72.5" y="890" width="235" height="80" as="geometry" />
         </mxCell>
         <mxCell id="yYhdbrsTAs3XfcKX1CrM-24" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="yYhdbrsTAs3XfcKX1CrM-23" target="yYhdbrsTAs3XfcKX1CrM-19" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -126,7 +126,7 @@
           <mxGeometry x="375" y="530" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="yYhdbrsTAs3XfcKX1CrM-31" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;i style=&quot;&quot;&gt;&lt;b style=&quot;&quot;&gt;I&lt;/b&gt;&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="50" y="860" width="60" height="30" as="geometry" />
+          <mxGeometry x="40" y="860" width="60" height="30" as="geometry" />
         </mxCell>
         <mxCell id="yYhdbrsTAs3XfcKX1CrM-32" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;i style=&quot;&quot;&gt;&lt;b style=&quot;&quot;&gt;J&lt;/b&gt;&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="410" y="870" width="60" height="30" as="geometry" />

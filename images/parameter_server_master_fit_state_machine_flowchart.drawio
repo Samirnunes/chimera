@@ -1,9 +1,153 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.1.1 Chrome/132.0.6834.210 Electron/34.3.3 Safari/537.36" version="26.1.1">
   <diagram name="Página-1" id="Yi0tFVA1XR9o1bBozKhX">
-    <mxGraphModel dx="1098" dy="604" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1050" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-1" target="IeyCGgNiQ-ZwHu9C-8gu-3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="130" />
+              <mxPoint x="330" y="130" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-1" value="&lt;font face=&quot;Verdana&quot;&gt;Beginning&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="180" y="90" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-2" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;i style=&quot;&quot;&gt;&lt;b style=&quot;&quot;&gt;A&lt;/b&gt;&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="160" y="70" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-3" target="IeyCGgNiQ-ZwHu9C-8gu-9" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-3" value="Receive Client&#39;s HTTP request&lt;div&gt;by the endpoint &lt;u&gt;/v1/chimera/parameter-server/fit&lt;/u&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="370" y="90" width="210" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-4" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;i style=&quot;&quot;&gt;&lt;b style=&quot;&quot;&gt;B&lt;/b&gt;&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="330" y="70" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-6" target="IeyCGgNiQ-ZwHu9C-8gu-8" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475" y="560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-6" value="Request a fit step to each worker through the endpoint &lt;u&gt;/v1/chimera/sgd/fit-step&lt;/u&gt;&amp;nbsp;and sends to each one initial coeficients and intercept" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="370" y="400" width="210" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-8" target="IeyCGgNiQ-ZwHu9C-8gu-31" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="475.0050000000001" y="680" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-8" value="Receive responses with gradients from each worker and aggregate them by taking the arithmetic mean" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="370" y="530" width="210" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-9" target="IeyCGgNiQ-ZwHu9C-8gu-6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-9" value="Make an initial fit through sample data from workers. The sample data is requested to any of the workers through the endpoint &lt;u&gt;/v1/chimera/sgd/request-data-sample&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="370" y="250" width="210" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-16" target="IeyCGgNiQ-ZwHu9C-8gu-25" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="660" y="920" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-20" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="IeyCGgNiQ-ZwHu9C-8gu-19" vertex="1" connectable="0">
+          <mxGeometry x="-0.0147" y="-1" relative="1" as="geometry">
+            <mxPoint y="-11" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-22" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-16" target="IeyCGgNiQ-ZwHu9C-8gu-21" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-23" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="IeyCGgNiQ-ZwHu9C-8gu-22" vertex="1" connectable="0">
+          <mxGeometry x="-0.1396" relative="1" as="geometry">
+            <mxPoint x="-5" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-16" value="Master&#39;s model reached convergence or maximum iterations?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="383.13" y="850" width="183.75" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0.465;exitY=0.011;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-21" target="IeyCGgNiQ-ZwHu9C-8gu-6" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="414" y="440" as="targetPoint" />
+            <mxPoint x="174" y="745" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="174" y="440" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-21" value="Update model&#39;s coeficients and intercept" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="90" y="875" width="180.63" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-25" target="IeyCGgNiQ-ZwHu9C-8gu-38" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-25" value="Return an &quot;ok&quot; JSON-formatted&amp;nbsp;response through the endpoint&amp;nbsp;&lt;u&gt;/v1/chimera/sgd/fit&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="680" y="880" width="210" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-35" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-31" target="IeyCGgNiQ-ZwHu9C-8gu-16" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-36" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="IeyCGgNiQ-ZwHu9C-8gu-35" vertex="1" connectable="0">
+          <mxGeometry x="-0.0008" y="3" relative="1" as="geometry">
+            <mxPoint x="12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-31" value="All workers failed?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="386.25" y="680" width="177.5" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-32" target="IeyCGgNiQ-ZwHu9C-8gu-38" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-32" value="Return error message as JSON-formatted response through the endpoint&amp;nbsp;&lt;u&gt;/v1/chimera/sgd/fit&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="680" y="695" width="210" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-33" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-31" target="IeyCGgNiQ-ZwHu9C-8gu-32" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="590" y="745" as="sourcePoint" />
+            <mxPoint x="640" y="740" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-34" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="IeyCGgNiQ-ZwHu9C-8gu-33" vertex="1" connectable="0">
+          <mxGeometry x="-0.3506" y="3" relative="1" as="geometry">
+            <mxPoint x="15" y="-7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-38" value="&lt;font face=&quot;Verdana&quot;&gt;End&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="980" y="790" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-42" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;i style=&quot;&quot;&gt;&lt;b style=&quot;&quot;&gt;C&lt;/b&gt;&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="330" y="220" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-43" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;i style=&quot;&quot;&gt;&lt;b style=&quot;&quot;&gt;D&lt;/b&gt;&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="330" y="370" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-44" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;i style=&quot;&quot;&gt;&lt;b style=&quot;&quot;&gt;E&lt;/b&gt;&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="330" y="500" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-45" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;i style=&quot;&quot;&gt;&lt;b style=&quot;&quot;&gt;F&lt;/b&gt;&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="380" y="665" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-46" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;i style=&quot;&quot;&gt;&lt;b style=&quot;&quot;&gt;H&lt;/b&gt;&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="380" y="840" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-49" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;i style=&quot;&quot;&gt;&lt;b style=&quot;&quot;&gt;G&lt;/b&gt;&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="640" y="665" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-50" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;i style=&quot;&quot;&gt;&lt;b style=&quot;&quot;&gt;K&lt;/b&gt;&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="960" y="760" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-51" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;i style=&quot;&quot;&gt;&lt;b style=&quot;&quot;&gt;J&lt;/b&gt;&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="640" y="845" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-52" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;i style=&quot;&quot;&gt;&lt;b style=&quot;&quot;&gt;I&lt;/b&gt;&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="50" y="840" width="60" height="30" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
