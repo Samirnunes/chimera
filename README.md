@@ -127,6 +127,8 @@ These environment variables give users full control over how chimera distributes
 
 ## Examples
 
+For more examples, see: https://github.com/Samirnunes/chimera-examples
+
 ### Distributed Bagging (Bootstrap Aggregating)
 
 In distributed bagging, the summarized steps are:
