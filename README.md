@@ -144,6 +144,7 @@ In distributed bagging, the summarized steps are:
 <p align="center">
     <img width="600" src="./images/distributed_bagging.png" alt="Distributed Bagging">
 <p>
+<p align="center"><strong>Figure:</strong> Distributed Bagging communication schema. </p>
 
 <p align="center">
     <img width="600" src="./images/aggregation_master_fit_state_machine_flowchart.drawio.png" alt="Distributed Bagging">
@@ -174,6 +175,7 @@ In distributed SGD, the summarized steps are:
 <p align="center">
     <img width="600" src="./images/distributed_sgd.png" alt="Distributed SGD">
 <p>
+<p align="center"><strong>Figure:</strong> Distributed SGD communication schema. </p>
 
 <p align="center">
     <img width="600" src="./images/parameter_server_master_predict_state_machine_flowchart.drawio.png" alt="Distributed Bagging">
