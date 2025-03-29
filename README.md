@@ -145,6 +145,16 @@ In distributed bagging, the summarized steps are:
     <img width="600" src="./images/distributed_bagging.png" alt="Distributed Bagging">
 <p>
 
+<p align="center">
+    <img width="600" src="./images/aggregation_master_fit_state_machine_flowchart.drawio.png" alt="Distributed Bagging">
+<p>
+<p align="center"><strong>Figure:</strong> State machine flowchart of Aggregation Master's /v1/chimera-aggregation/fit endpoint. </p>
+
+<p align="center">
+    <img width="600" src="./images/aggregation_master_predict_state_machine_flowchart.drawio.png" alt="Distributed Bagging">
+<p>
+<p align="center"><strong>Figure:</strong> State machine flowchart of Aggregation Master's /v1/chimera-aggregation/predict endpoint. </p>
+
 ### Distributed SGD (Stochastic Gradient Descent)
 
 In distributed SGD, the summarized steps are:
@@ -164,6 +174,11 @@ In distributed SGD, the summarized steps are:
 <p align="center">
     <img width="600" src="./images/distributed_sgd.png" alt="Distributed SGD">
 <p>
+
+<p align="center">
+    <img width="600" src="./images/parameter_server_master_predict_state_machine_flowchart.drawio.png" alt="Distributed Bagging">
+<p>
+<p align="center"><strong>Figure:</strong> State machine flowchart of Parameter Server Master's /v1/chimera-parameter-server/predict endpoint. </p>
 
 ## References
 
