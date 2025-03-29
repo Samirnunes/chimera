@@ -191,23 +191,13 @@ class ParameterServerMaster(Master):
             try:
                 start_master = time.time()
 
-                if self._model_type == "regressor":
-                    prediction = self._model.predict(
-                        pd.DataFrame(
-                            predict_input.X_pred_rows,
-                            columns=predict_input.X_pred_columns,
-                        )
+                # SGD Classifier doesn't have a predict_proba method
+                prediction = self._model.predict(
+                    pd.DataFrame(
+                        predict_input.X_pred_rows,
+                        columns=predict_input.X_pred_columns,
                     )
-                else:
-                    prediction = [
-                        probas[1]
-                        for probas in self._model.predict_proba(
-                            pd.DataFrame(
-                                predict_input.X_pred_rows,
-                                columns=predict_input.X_pred_columns,
-                            )
-                        )
-                    ]
+                )
 
                 response = build_json_response(
                     PredictOutput(y_pred_rows=list(prediction))
