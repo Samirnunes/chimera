@@ -134,8 +134,8 @@ def load_fit_samples(
 
     y_train_full = pd.read_csv(y_train_path)
     if model_type == "regressor":
-        X_train_sample = pd.read_csv(x_train_path, nrows=1)
-        y_train_sample = pd.read_csv(y_train_path, nrows=1)
+        X_train_sample = pd.read_csv(x_train_path, nrows=2)
+        y_train_sample = pd.read_csv(y_train_path, nrows=2)
         return FitRequestDataSampleOutput(
             X_train_sample_columns=list(X_train_sample.columns),
             X_train_sample_rows=list(X_train_sample.values),
@@ -144,8 +144,8 @@ def load_fit_samples(
         )
 
     unique_classes = y_train_full.iloc[:, 0].unique()
-    X_train_sample = pd.DataFrame(columns=pd.read_csv(x_train_path, nrows=1).columns)
-    y_train_sample = pd.DataFrame(columns=pd.read_csv(y_train_path, nrows=1).columns)
+    X_train_sample = pd.DataFrame(columns=pd.read_csv(x_train_path, nrows=2).columns)
+    y_train_sample = pd.DataFrame(columns=pd.read_csv(y_train_path, nrows=2).columns)
     rows_to_add = []
     for cls in unique_classes:
         indices = y_train_full.index[y_train_full.iloc[:, 0] == cls].tolist()
