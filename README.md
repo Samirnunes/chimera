@@ -187,9 +187,6 @@ In distributed SGD, the summarized steps are:
 <p>
 <p align="center"><strong>Figure:</strong> State machine flowchart of Parameter Server Master's /v1/chimera/parameter-server/predict endpoint. </p>
 
-
-parameter_server_master_fit_state_machine_flowchart
-
 ## References
 
 ### Papers
