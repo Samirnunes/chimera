@@ -73,7 +73,7 @@ The client-master and master-workers communications are made via REST APIs.
 
 ## Environment Variables
 
-The following environment variables allow users to configure the chimera distributed machine learning system. These variables define network settings, worker configurations, and resource allocations, ensuring flexibility to different environments.
+The following environment variables allow users to configure the `Chimera` distributed machine learning system. These variables define network settings, worker configurations, and resource allocations, ensuring flexibility to different environments.
 
 ### Network Configuration
 
