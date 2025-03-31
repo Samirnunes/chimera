@@ -142,7 +142,7 @@ In distributed bagging, the summarized steps are:
     - predict: makes inference on new data by calculating, in the Master, the mean of the predictions of each Worker's local model's predictions.
 
 <p align="center">
-    <img width="600" src="./images/distributed_bagging.png" alt="Distributed Bagging">
+    <img width="600" src="./images/distributed_bagging_connections_network.png" alt="Distributed Bagging">
 <p>
 <p align="center"><strong>Figure:</strong> Distributed Bagging communication schema. </p>
 
@@ -173,7 +173,7 @@ In distributed SGD, the summarized steps are:
     - predict: makes inference on new data using the final model available in the Master.
 
 <p align="center">
-    <img width="600" src="./images/distributed_sgd.png" alt="Distributed SGD">
+    <img width="600" src="./images/distributed_sgd_connections_network.png" alt="Distributed SGD">
 <p>
 <p align="center"><strong>Figure:</strong> Distributed SGD communication schema. </p>
 
