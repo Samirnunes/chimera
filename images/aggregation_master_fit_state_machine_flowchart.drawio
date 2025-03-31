@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.1.1 Chrome/132.0.6834.210 Electron/34.3.3 Safari/537.36" version="26.1.1">
   <diagram name="Página-1" id="SnzrzuKSvGVmnRIXuAzR">
-    <mxGraphModel dx="1050" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="836" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -94,7 +94,7 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="---KHNWKHkRvu1wgQ-nq-37" value="Return an &quot;ok&quot; JSON-formatted&amp;nbsp;response through the endpoint&amp;nbsp;&lt;u&gt;/v1/chimera/aggregation/fit&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+        <mxCell id="---KHNWKHkRvu1wgQ-nq-37" value="Return an JSON-formatted &quot;ok&quot;&amp;nbsp; response through the endpoint&amp;nbsp;&lt;u&gt;/v1/chimera/aggregation/fit&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
           <mxGeometry x="85" y="780" width="210" height="80" as="geometry" />
         </mxCell>
         <mxCell id="---KHNWKHkRvu1wgQ-nq-42" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="---KHNWKHkRvu1wgQ-nq-37" target="---KHNWKHkRvu1wgQ-nq-33" edge="1">
