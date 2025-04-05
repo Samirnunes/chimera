@@ -4,6 +4,11 @@
     <img width="500" src="./images/logo.jpg" alt="Chimera Logo">
 <p>
 
+<p align="center">
+    <img width="500" src="./images/client/client_interactions.png" alt="Client interactions">
+<p>
+<p align="center"><strong>Figure:</strong> Diagram of Client interactions with a Chimera Distributed System. </p>
+
 ## Introduction
 
 `chimera` is a Python package for distributed machine learning (DML) designed for both educational and prototyping purposes. It provides a structured environment to experiment with key DML techniques, including Data Parallelism, Model Parallelism, and Hybrid Parallelism.
@@ -129,7 +134,7 @@ These environment variables give users full control over how chimera distributes
 
 For more examples, see: https://github.com/Samirnunes/chimera-examples
 
-### Distributed Bagging (Bootstrap Aggregating)
+### Hybrid Parallelism: Distributed Bagging (Bootstrap Aggregating)
 
 In distributed bagging, the summarized steps are:
 
@@ -142,21 +147,16 @@ In distributed bagging, the summarized steps are:
     - predict: makes inference on new data by calculating, in the Master, the mean of the predictions of each Worker's local model's predictions.
 
 <p align="center">
-    <img width="600" src="./images/distributed_bagging_communication_schema.png" alt="Distributed Bagging">
-<p>
-<p align="center"><strong>Figure:</strong> Distributed Bagging communication schema. </p>
-
-<p align="center">
-    <img width="600" src="./images/aggregation_master_fit_state_machine_flowchart.drawio.png" alt="Distributed Bagging">
+    <img width="600" src="./images/master/aggregation_master_fit_state_machine_flowchart.png" alt="Distributed Bagging">
 <p>
 <p align="center"><strong>Figure:</strong> State machine flowchart of Aggregation Master's /v1/chimera/aggregation/fit endpoint. </p>
 
 <p align="center">
-    <img width="600" src="./images/aggregation_master_predict_state_machine_flowchart.drawio.png" alt="Distributed Bagging">
+    <img width="600" src="./images/master/aggregation_master_predict_state_machine_flowchart.png" alt="Distributed Bagging">
 <p>
 <p align="center"><strong>Figure:</strong> State machine flowchart of Aggregation Master's /v1/chimera/aggregation/predict endpoint. </p>
 
-### Distributed SGD (Stochastic Gradient Descent)
+### Data Parallelism: Distributed SGD (Stochastic Gradient Descent)
 
 In distributed SGD, the summarized steps are:
 
@@ -173,17 +173,12 @@ In distributed SGD, the summarized steps are:
     - predict: makes inference on new data using the final model available in the Master.
 
 <p align="center">
-    <img width="600" src="./images/distributed_sgd_communication_schema.png" alt="Distributed SGD">
-<p>
-<p align="center"><strong>Figure:</strong> Distributed SGD communication schema. </p>
-
-<p align="center">
-    <img width="600" src="./images/parameter_server_master_fit_state_machine_flowchart.drawio.png" alt="Distributed SGD">
+    <img width="600" src="./images/master/parameter_server_master_fit_state_machine_flowchart.png" alt="Distributed SGD">
 <p>
 <p align="center"><strong>Figure:</strong> State machine flowchart of Parameter Server Master's /v1/chimera/parameter-server/fit endpoint. </p>
 
 <p align="center">
-    <img width="600" src="./images/parameter_server_master_predict_state_machine_flowchart.drawio.png" alt="Distributed SGD">
+    <img width="600" src="./images/master/parameter_server_master_predict_state_machine_flowchart.png" alt="Distributed SGD">
 <p>
 <p align="center"><strong>Figure:</strong> State machine flowchart of Parameter Server Master's /v1/chimera/parameter-server/predict endpoint. </p>
 
