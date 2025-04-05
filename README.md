@@ -77,7 +77,7 @@ The client-master and master-workers communications are made via REST APIs.
 <p align="center">
     <img width="900" src="./images/client/client_interactions.png" alt="Client interactions">
 <p>
-<p align="center"><strong>Figure:</strong> Diagram of Client interactions with a chimera Distributed System. It summarizes how to create a distributed model with `chimera`. </p>
+<p align="center"><strong>Figure:</strong> Diagram of Client interactions with a chimera Distributed System. It summarizes how to create a distributed model with chimera. </p>
 
 ## Environment Variables
 
