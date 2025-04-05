@@ -4,11 +4,6 @@
     <img width="500" src="./images/logo.jpg" alt="Chimera Logo">
 <p>
 
-<p align="center">
-    <img width="900" src="./images/client/client_interactions.png" alt="Client interactions">
-<p>
-<p align="center"><strong>Figure:</strong> Diagram of Client interactions with a Chimera Distributed System. </p>
-
 ## Introduction
 
 `chimera` is a Python package for distributed machine learning (DML) designed for both educational and prototyping purposes. It provides a structured environment to experiment with key DML techniques, including Data Parallelism, Model Parallelism, and Hybrid Parallelism.
@@ -26,6 +21,11 @@ As a distributed computing framework, `chimera` aims to simplify the creation, i
 Docker containers act as Workers. To run the created distributed system, it will be given a standardized function named `run`, on which a Master type and a port must be selected for the server in the host machine.
 
 The client-master and master-workers communications are made via REST APIs.
+
+<p align="center">
+    <img width="900" src="./images/client/client_interactions.png" alt="Client interactions">
+<p>
+<p align="center"><strong>Figure:</strong> Diagram of Client interactions with a Chimera Distributed System. </p>
 
 ## Running as a Pypi Package
 
