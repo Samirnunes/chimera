@@ -18,7 +18,7 @@ As a distributed computing framework, `chimera` aims to simplify the creation, i
 
 - Hybrid Parallelism: data and model distributed between the workers. This case includes Distributed Bagging (Bootstrap Aggregating) with generic weak learners from the `scikit-learn` package.
 
-Docker containers act as Workers. To run the created distributed system, it will be given a standardized function named `run`, on which a Master type and a port must be selected for the server in the host machine.
+Docker containers act as Workers. To run the created distributed system, it will be given a standardized function named `run`, on which a Master type and a port must be selected for the server in the host machine. The `run` function starts the Chimera master server and handles worker containers, then initializing the necessary components for the distributed system to work.
 
 The client-master and master-workers communications are made via REST APIs.
 
