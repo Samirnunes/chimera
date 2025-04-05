@@ -5,7 +5,7 @@
 <p>
 
 <p align="center">
-    <img width="500" src="./images/client/client_interactions.png" alt="Client interactions">
+    <img width="900" src="./images/client/client_interactions.png" alt="Client interactions">
 <p>
 <p align="center"><strong>Figure:</strong> Diagram of Client interactions with a Chimera Distributed System. </p>
 
