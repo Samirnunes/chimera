@@ -1,10 +1,10 @@
 <mxfile host="65bd71144e">
     <diagram name="Página-1" id="Yi0tFVA1XR9o1bBozKhX">
-        <mxGraphModel dx="2428" dy="1823" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="971" dy="609" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="2" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="2" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="20" y="60" width="1070" height="1170" as="geometry"/>
                 </mxCell>
                 <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-1" target="IeyCGgNiQ-ZwHu9C-8gu-3" edge="1">
@@ -37,7 +37,7 @@
                         <mxPoint x="475" y="560" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-6" value="Request a fit step to each worker through the endpoint &lt;u&gt;/v1/chimera/sgd/fit-step&lt;/u&gt;&amp;nbsp;and sends to each one initial coeficients and intercept" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-6" value="Request a fit step to each worker through the endpoint &lt;u&gt;/v1/chimera/sgd/fit-step&lt;/u&gt;&amp;nbsp;and sends to each one its model&#39;s coeficients and intercept" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="370" y="380" width="210" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-8" target="IeyCGgNiQ-ZwHu9C-8gu-31" edge="1">
@@ -124,7 +124,7 @@
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-38" value="&lt;font face=&quot;Verdana&quot;&gt;End&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
-                    <mxGeometry x="980" y="790" width="80" height="80" as="geometry"/>
+                    <mxGeometry x="980" y="860" width="80" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-42" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;i style=&quot;&quot;&gt;&lt;b style=&quot;&quot;&gt;C&lt;/b&gt;&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="330" y="210" width="60" height="30" as="geometry"/>
@@ -169,7 +169,7 @@
                     <mxGeometry x="50" y="1049" width="60" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="4cSCMWNI5rtw1yq7UyB7-12" value="&lt;font face=&quot;Helvetica&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;i style=&quot;&quot;&gt;&lt;b style=&quot;&quot;&gt;M&lt;/b&gt;&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-                    <mxGeometry x="950" y="770" width="60" height="30" as="geometry"/>
+                    <mxGeometry x="950" y="835" width="60" height="30" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
