@@ -53,7 +53,7 @@ The client-master and master-workers communications are made via REST APIs.
 <p align="center">
     <img width="250" src="./images/chimera_files.png" alt="Chimera Files">
 <p>
-<p align="center"><strong>Figure:</strong> Example of `Chimera` files. </p>
+<p align="center"><strong>Figure:</strong> Example of Chimera files. </p>
 
 1. After installing `chimera`, you need to create a `Master` and its `Workers`:
      - Master: create a `.py` file in your root directory. This file must specify the environment variables necessary to run the code in string format (in the case of Lists, you must follow the JSON string format for Lists) and run a `chimera` master server with `chimera.run`. For example: `chimera.run(AggregationMaster(), 8080)`. The available configuration environment variables are in the classes `NetworkConfig` and `WorkersConfig`, inside `src/chimera/containers/config.py`.
@@ -77,7 +77,7 @@ The client-master and master-workers communications are made via REST APIs.
 <p align="center">
     <img width="900" src="./images/client/client_interactions.png" alt="Client interactions">
 <p>
-<p align="center"><strong>Figure:</strong> Diagram of Client interactions with a `chimera` Distributed System. It summarizes how to create a distributed model with `chimera`. </p>
+<p align="center"><strong>Figure:</strong> Diagram of Client interactions with a chimera Distributed System. It summarizes how to create a distributed model with `chimera`. </p>
 
 ## Environment Variables
 
