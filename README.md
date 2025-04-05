@@ -143,7 +143,7 @@ The framework uses two dedicated loggers to track system's behavior and latency 
 - Time Logger (`chimera_time`):
   Logs latency metrics, then, it's useful for monitoring and debugging time efficiency. These logs are stored in the file `chimera_time.log`.
 
-Both loggers are configured using Python’s built-in logging module, and log messages at the INFO level. Each logger writes to its respective log file through a FileHandler.
+Both loggers are configured using Python’s built-in logging module, and log messages at the INFO level. Each logger writes to its respective log file through a `FileHandler`.
 
 ## Examples
 
