@@ -138,7 +138,7 @@ For more examples, see: https://github.com/Samirnunes/chimera-examples
 
 In distributed bagging, the summarized steps are:
 
-1. Client makes a request to Aggregation Master, which redirects it to Bootstrap Workers, which are a weak learners.
+1. Client makes a request to Aggregation Master, which redirects it to Bootstrap Workers, which contain weak learners from the `scikit-learn` package.
 
 2. Each Bootstrap Worker receives the request for an action:
 
