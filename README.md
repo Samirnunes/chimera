@@ -14,7 +14,7 @@ Considering this context, `chimera` is a Python package for distributed machine 
 
 As a distributed computing framework, `chimera` aims to simplify the creation, in a local environment, of distributed machine learning models by streamlining the creation of a master node on the host machine and worker nodes on separate virtual machines using Docker containers. By providing a standardized API-based communication framework, `chimera` enables researchers and practitioners to test, evaluate, and optimize distributed learning algorithms with minimal configuration effort.
 
-`chimera` supports the following types of DML techniques, which explanations are detailed below (B. Chatterjee, 2024):
+`chimera` supports the following types of DML techniques, whose explanations are detailed below (B. Chatterjee, 2024):
 
 - Data Parallelism: data distributed between the workers. Each worker has a copy of the model. This case includes Distributed SGD (Stochastic Gradient Descent) for models like linear regression, logistic regression and others, depending on the loss function.
 
