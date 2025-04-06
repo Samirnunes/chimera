@@ -6,11 +6,15 @@
 
 ## Introduction
 
-`chimera` is a Python package for distributed machine learning (DML) designed for both educational and prototyping purposes. It provides a structured environment to experiment with key DML techniques, including Data Parallelism, Model Parallelism, and Hybrid Parallelism.
+Distributed Machine Learning arises mainly due two problems: when the runtime of training the model is very high and when a centralized solution is not an option due the large data, which can't be stored on single machines (Verbraeken et al., 2020). The first problem requires increased parallelization and bigger I/O bandwidth, which can be obtained via distributed systems. The second one requires storage, that can be obtained by having data distributed among multiple machines, thus via distributed systems too. Important environments where these problems occur are large enterprises, like big techs, where data is stored in different locations and the processing is done by putting different machines in a distributed system.
+
+Verbraeken et al. explain that, to make these large datasets accessible as training data for machine learning problems, many algorithms have to be chosen and implemented that enable parallel computation, data distribution, and resilience to failures. Specially, parallel computation has been shown as an important tool to reduce computation time, then turning some problems feasible. Data distribution, as said before, is a solution to the large dataset problem, and can be effectively solved by a distributed computing environment. Finally, resilience to failures is a desirable characteristic to distributed systems, which can be implemented in different ways - for example, adding a load balancer and ensuring that the system won't break due to some workers failing.
+
+Considering this context, `chimera` is a Python package for distributed machine learning (DML) designed for both educational and prototyping purposes. It provides a structured environment to experiment with key DML techniques, including Data Parallelism, Model Parallelism, and Hybrid Parallelism.
 
 As a distributed computing framework, `chimera` aims to simplify the creation, in a local environment, of distributed machine learning models by streamlining the creation of a master node on the host machine and worker nodes on separate virtual machines using Docker containers. By providing a standardized API-based communication framework, `chimera` enables researchers and practitioners to test, evaluate, and optimize distributed learning algorithms with minimal configuration effort.
 
-`chimera` supports the following types of DML techniques:
+`chimera` supports the following types of DML techniques, which explanations are detailed below (B. Chatterjee, 2024):
 
 - Data Parallelism: data distributed between the workers. Each worker has a copy of the model. This case includes Distributed SGD (Stochastic Gradient Descent) for models like linear regression, logistic regression and others, depending on the loss function.
 
@@ -231,9 +235,9 @@ If, in step C, the model has not been fitted, an error message is returned to th
 
 ### Papers
 
-- "A Survey on Distributed Machine Learning": https://dl.acm.org/doi/pdf/10.1145/3377454
+- VERBRAEKEN, Joost et al. A survey on distributed machine learning. Acm computing surveys (csur), v. 53, n. 2, p. 1-33, 2020. Disponível em: https://dl.acm.org/doi/pdf/10.1145/3377454
 
-- "Distributed Machine Learning": https://dl.acm.org/doi/fullHtml/10.1145/3631461.3632516
+- B. Chatterjee, "Distributed Machine Learning," in *Proc. 25th Int. Conf. on Distributed Computing and Networking (ICDCN '24)*, Chennai, India, 2024, pp. 4–7. doi: 10.1145/3631461.3632516. Disponível em: https://dl.acm.org/doi/fullHtml/10.1145/3631461.3632516
 
 ### Websites
 
