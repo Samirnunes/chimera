@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="jWBvqmN5eJi4-LHLt54A" name="Page-1">
-        <mxGraphModel dx="2145" dy="701" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="2064" dy="658" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -106,7 +106,7 @@
                     <mxGeometry x="104.35000000000001" y="30.964999999999996" width="214.7" height="31.87" as="geometry"/>
                 </mxCell>
                 <mxCell id="68" value="" style="group;fontSize=14;fillColor=light-dark(#ffffff, #212121);" parent="1" vertex="1" connectable="0">
-                    <mxGeometry x="132.26" y="700" width="120" height="150" as="geometry"/>
+                    <mxGeometry x="150" y="700" width="120" height="150" as="geometry"/>
                 </mxCell>
                 <mxCell id="36" value="chimera_workers" style="swimlane;whiteSpace=wrap;html=1;fontSize=14;fillColor=#EDEDED;" parent="68" vertex="1">
                     <mxGeometry width="120" height="150" as="geometry"/>
@@ -127,22 +127,22 @@
                     <mxGeometry x="7.74" y="70" width="60" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="69" value="" style="group;fontSize=14;fillColor=light-dark(#ffffff, #212121);" parent="1" vertex="1" connectable="0">
-                    <mxGeometry x="290" y="700" width="310" height="230" as="geometry"/>
+                    <mxGeometry x="290" y="700" width="350" height="230" as="geometry"/>
                 </mxCell>
                 <mxCell id="37" value="master.py" style="swimlane;whiteSpace=wrap;html=1;fontSize=14;fillColor=#EDEDED;" parent="69" vertex="1">
-                    <mxGeometry width="310" height="230" as="geometry"/>
+                    <mxGeometry width="349.99999999999994" height="230" as="geometry"/>
                 </mxCell>
                 <mxCell id="59" value="&lt;font&gt;CHIMERA_WORKERS_NODES_NAMES&lt;/font&gt;&lt;div&gt;&lt;font&gt;=&amp;nbsp;[&quot;worker1&quot;, &quot;worker2&quot;, ..., &quot;workerN_1&quot;, &quot;workerN&quot;]&lt;/font&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" parent="37" vertex="1">
-                    <mxGeometry x="10" y="39.99972972972972" width="280" height="37.2972972972973" as="geometry"/>
+                    <mxGeometry x="11.29" y="40" width="328.71" height="37.3" as="geometry"/>
                 </mxCell>
                 <mxCell id="63" value="CHIMERA_WORKERS_MAPPED_PORTS&#xa;= [81, 82. ..., 80 + N - 1, 80 + N]" style="text;whiteSpace=wrap;fontSize=14;" parent="37" vertex="1">
-                    <mxGeometry x="10" y="140.0016216216216" width="260" height="49.729729729729726" as="geometry"/>
+                    <mxGeometry x="11.29032258064516" y="140.0016216216216" width="293.54838709677415" height="49.729729729729726" as="geometry"/>
                 </mxCell>
                 <mxCell id="61" value="CHIMERA_WORKERS_CPU_SHARES &#xa;= [2, 3, ..., 7, 6]" style="text;whiteSpace=wrap;fontSize=14;" parent="69" vertex="1">
-                    <mxGeometry x="10" y="90.13945945945945" width="250" height="49.729729729729726" as="geometry"/>
+                    <mxGeometry x="11.29032258064516" y="90.13945945945945" width="282.258064516129" height="49.729729729729726" as="geometry"/>
                 </mxCell>
                 <mxCell id="72" value="" style="group;fontSize=14;fillColor=default;" parent="1" vertex="1" connectable="0">
-                    <mxGeometry x="632.26" y="700" width="280" height="230" as="geometry"/>
+                    <mxGeometry x="660" y="700" width="280" height="230" as="geometry"/>
                 </mxCell>
                 <mxCell id="35" value="chimera_train_data" style="swimlane;whiteSpace=wrap;html=1;container=0;fontSize=14;fillColor=light-dark(#f5f5f5, #212121);" parent="72" vertex="1">
                     <mxGeometry width="280" height="230" as="geometry"/>
