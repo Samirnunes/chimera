@@ -133,7 +133,7 @@ def load_fit_samples(
         ReadError: If all attempts to load a sample of the specified size fail.  This indicates a problem with the input CSV files.
     """
 
-    rows_to_try = [200, 100, 50, 25, 10, 5, 2]
+    rows_to_try = [2, 5, 10, 20, 50, 100, 200]
 
     y_train_full = pd.read_csv(y_train_path)
 
