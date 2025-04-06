@@ -1,10 +1,10 @@
 <mxfile host="65bd71144e">
     <diagram name="Página-1" id="SnzrzuKSvGVmnRIXuAzR">
-        <mxGraphModel dx="1387" dy="1041" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="971" dy="661" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="2" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <mxCell id="2" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;" parent="1" vertex="1">
                     <mxGeometry x="20" y="20" width="910" height="890" as="geometry"/>
                 </mxCell>
                 <mxCell id="---KHNWKHkRvu1wgQ-nq-1" value="&lt;font face=&quot;Verdana&quot;&gt;Beginning&lt;/font&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
