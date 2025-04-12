@@ -79,7 +79,7 @@ The client-master and master-workers communications are made via REST APIs.
 3. Finally, you can run the master's file using: `poetry run python {your_master_filename.py}`. This should initialize all the worker's containers in your Docker environment and the master server in the host machine (the machine running the code).
 
 <p align="center">
-    <img width="900" src="./images/client/client_interactions.png" alt="Client interactions">
+    <img width="900" src="./images/client/general.png" alt="Client interactions">
 <p>
 <p align="center"><strong>Figure:</strong> General Architecture for a Chimera Distributed System. It summarizes how to create a distributed model with Chimera. </p>
 
@@ -155,6 +155,11 @@ For more examples, see: https://github.com/Samirnunes/chimera-examples
 
 ### Hybrid Parallelism: Distributed Bagging (Bootstrap Aggregating)
 
+<p align="center">
+    <img width="900" src="./images/client/hybrid_parallelism.png" alt="Client interactions">
+<p>
+<p align="center"><strong>Figure:</strong> Architecture for a Chimera Distributed System in the context of Hybrid Parallelism. It summarizes how to create a distributed model with Chimera. </p>
+
 In distributed bagging, the summarized steps are:
 
 1. Client makes a request to Aggregation Master, which redirects it to Bootstrap Workers. Each worker contains a weak learner from the `scikit-learn` package.
@@ -192,6 +197,11 @@ Then, concurrently, the Master waits for either a response, a timeout, or the ma
 If all workers fail in step E, the flow goes to step F, where the Master returns a JSON-formatted error message to the client via the endpoint `/v1/chimera/aggregation/predict`, indicating the issue. Finally, the flow ends at step J.
 
 ### Data Parallelism: Distributed SGD (Stochastic Gradient Descent)
+
+<p align="center">
+    <img width="900" src="./images/client/data_parallelism.png" alt="Client interactions">
+<p>
+<p align="center"><strong>Figure:</strong> Architecture for a Chimera Distributed System in the context of Data Parallelism. It summarizes how to create a distributed model with Chimera. </p>
 
 In distributed SGD, the summarized steps are:
 
