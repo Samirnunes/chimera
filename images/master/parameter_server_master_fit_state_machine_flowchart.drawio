@@ -37,7 +37,7 @@
                         <mxPoint x="475" y="560" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-6" value="Request a fit step to each worker through the endpoint &lt;u&gt;/v1/chimera/sgd/fit-step&lt;/u&gt;&amp;nbsp;and sends to each one its model&#39;s coeficients and intercept" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-6" value="Request a fit step to each Worker through the endpoint &lt;u&gt;/v1/chimera/sgd/fit-step&lt;/u&gt;&amp;nbsp;and sends to each one its model&#39;s coeficients and intercept" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="370" y="380" width="210" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-8" target="IeyCGgNiQ-ZwHu9C-8gu-31" edge="1">
@@ -45,13 +45,13 @@
                         <mxPoint x="475.0050000000001" y="680" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-8" value="Concurrently, for each worker, waits either for response, timeout or reach max retries" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-8" value="Concurrently, for each Worker, waits either for response, timeout or reach max retries" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="370" y="530" width="210" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-9" target="IeyCGgNiQ-ZwHu9C-8gu-6" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-9" value="Make an initial fit through sample data from workers. The sample data is requested to any of the workers through the endpoint &lt;u&gt;/v1/chimera/sgd/request-data-sample&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-9" value="Make an initial fit through sample data from Workers. The sample data is requested to any of the workers through the endpoint &lt;u&gt;/v1/chimera/sgd/request-data-sample&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="370" y="240" width="210" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-16" target="IeyCGgNiQ-ZwHu9C-8gu-25" edge="1">
@@ -103,7 +103,7 @@
                         <mxPoint x="12" y="-10" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-31" value="All workers failed?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-31" value="All Workers failed?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="386.25" y="660" width="177.5" height="110" as="geometry"/>
                 </mxCell>
                 <mxCell id="IeyCGgNiQ-ZwHu9C-8gu-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="IeyCGgNiQ-ZwHu9C-8gu-32" target="IeyCGgNiQ-ZwHu9C-8gu-38" edge="1">

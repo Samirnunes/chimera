@@ -16,7 +16,7 @@
                 <mxCell id="---KHNWKHkRvu1wgQ-nq-3" value="Receive Client&#39;s HTTP request&lt;div&gt;by the endpoint &lt;u&gt;/v1/chimera/aggregation/fit&lt;/u&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="370" y="90" width="210" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="---KHNWKHkRvu1wgQ-nq-4" value="Request fit to each worker through the endpoint &lt;u&gt;/v1/chimera/model/fit&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                <mxCell id="---KHNWKHkRvu1wgQ-nq-4" value="Request fit to each Worker through the endpoint &lt;u&gt;/v1/chimera/model/fit&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="370" y="240" width="210" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="---KHNWKHkRvu1wgQ-nq-9" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="---KHNWKHkRvu1wgQ-nq-1" target="---KHNWKHkRvu1wgQ-nq-3" edge="1">
@@ -51,7 +51,7 @@
                 <mxCell id="---KHNWKHkRvu1wgQ-nq-21" value="All workers failed?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="386.25" y="540" width="177.5" height="110" as="geometry"/>
                 </mxCell>
-                <mxCell id="---KHNWKHkRvu1wgQ-nq-22" value="Concurrently, for each worker, wait either for response, timeout or reach max retries" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                <mxCell id="---KHNWKHkRvu1wgQ-nq-22" value="Concurrently, for each Worker, wait either for response, timeout or reach max retries" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="370" y="390" width="210" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="---KHNWKHkRvu1wgQ-nq-26" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" target="---KHNWKHkRvu1wgQ-nq-21" edge="1">

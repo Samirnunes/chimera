@@ -16,7 +16,7 @@
                 <mxCell id="yYhdbrsTAs3XfcKX1CrM-3" value="Receive Client&#39;s HTTP request&lt;div&gt;by the endpoint &lt;u&gt;/v1/chimera/aggregation/predict&lt;/u&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="370" y="90" width="210" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="yYhdbrsTAs3XfcKX1CrM-4" value="Request predict to each worker through the endpoint &lt;u&gt;/v1/chimera/model/predict&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                <mxCell id="yYhdbrsTAs3XfcKX1CrM-4" value="Request predict to each Worker through the endpoint &lt;u&gt;/v1/chimera/model/predict&lt;/u&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="370" y="240" width="210" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="yYhdbrsTAs3XfcKX1CrM-5" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="yYhdbrsTAs3XfcKX1CrM-1" target="yYhdbrsTAs3XfcKX1CrM-3" edge="1">
@@ -46,10 +46,10 @@
                         <mxPoint x="475" y="390" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="yYhdbrsTAs3XfcKX1CrM-11" value="All workers failed?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                <mxCell id="yYhdbrsTAs3XfcKX1CrM-11" value="All Workers failed?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="386.25" y="540" width="177.5" height="110" as="geometry"/>
                 </mxCell>
-                <mxCell id="yYhdbrsTAs3XfcKX1CrM-12" value="Concurrently, for each worker, waits either for response, timeout or reach max retries" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                <mxCell id="yYhdbrsTAs3XfcKX1CrM-12" value="Concurrently, for each Worker, waits either for response, timeout or reach max retries" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
                     <mxGeometry x="370" y="390" width="210" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="yYhdbrsTAs3XfcKX1CrM-13" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" target="yYhdbrsTAs3XfcKX1CrM-11" edge="1">
