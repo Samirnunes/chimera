@@ -4,23 +4,66 @@
     <img width="500" src="./images/logo.jpg" alt="Chimera Logo">
 <p>
 
+## Paper [WIP]
+
+https://www.overleaf.com/read/hwwmfvgdqnny#01433e
+
 ## Introduction
 
-Distributed Machine Learning arises mainly in two situations: (1) when the runtime of training a model is very high, and (2) when a centralized solution is not feasible due to the size of the data, which cannot be stored on a single machine (Verbraeken et al., 2020). The first situation requires increased parallelization and higher I/O bandwidth, which can be achieved through distributed systems. The second one demands distributed storage, which is addressed by spreading data across multiple machines. These challenges are particularly relevant in large enterprises, such as big tech companies, where data is stored in different locations and processing is carried out by coordinating multiple machines in a distributed system.
+### Contextualization
 
-Verbraeken et al. explain that, to make large datasets accessible as training data for machine learning, various algorithms must be selected and implemented to support parallel computation, data distribution, and resilience to failures. In particular, parallel computation is essential to reduce runtime, making otherwise infeasible problems solvable. As previously mentioned, data distribution addresses the large dataset issue and can be effectively handled through a distributed computing environment. Finally, resilience to failures is a critical attribute of distributed systems and can be achieved in several ways—for example, by incorporating a load balancer to ensure the system remains operational even if some workers fail.
+Machine Learning (ML) is a category of artificial intelligence that enables computers to think and learn on their own. Generically, it is about making computers modify their actions in order to improve these actions to attain more accuracy, where accuracy is measured in terms of the number of times the chosen actions results into correct ones. ML was first defined by Arthur Samuel: “a field of study that provides learning capability to computers without being explicitly programmed”.
 
-Considering this context, `chimera` is a Python package for distributed machine learning (DML) designed for both educational and prototyping purposes. It provides a structured environment to experiment with key DML techniques, including Data Parallelism, Model Parallelism, and Hybrid Parallelism.
+ML is a multi-disciplinary field having a wide-range of research domains reinforcing its existence. It can be applied to various areas of computing to design and program explicit algorithms with high performance output. For example, ML can be applied in email spam filtering, fraud detection on social network, online stock trading, face & shape detection, medical diagnosis, traffic prediction, character recognition and product recommendation.
 
-As a distributed computing framework, `chimera` aims to simplify the creation, in a local environment, of distributed machine learning models by streamlining the creation of a master node on the host machine and worker nodes on separate virtual machines using Docker containers. By providing a standardized API-based communication framework, `chimera` enables researchers and practitioners to test, evaluate, and optimize distributed learning algorithms with minimal configuration effort.
+As ML tasks grow in scale and complexity, they present increasing challenges. While larger datasets and models can lead to more accurate results, they also demand significantly more computational power. Relying solely on centralized computing becomes inefficient and often unfeasible due to limitations in scalability, speed, and resource availability—especially when training models with large architectures.
 
-`chimera` supports the following types of DML techniques, whose explanations are detailed below (B. Chatterjee, 2024):
+To address this, Distributed Machine Learning (DML) has emerged as a powerful approach. It leverages distributed computing, which utilizes multiple interconnected resources across a network. These resources collaborate through a communication infrastructure that enables shared task execution. By combining the principles of ML and distributed systems, DML allows for more efficient processing of large-scale data and complex model architectures. Rather than depending on a single machine, training is distributed across several devices—such as servers, nodes, or edge devices—thus overcoming the bottlenecks of centralized approaches and making it possible to tackle more demanding ML problems.
 
-- Data Parallelism: data distributed between the workers. Each worker has a copy of the model. This case includes Distributed SGD (Stochastic Gradient Descent) for models like linear regression, logistic regression and others, depending on the loss function.
+Fundamentally, DML takes advantage of parallelism. This parallelized strategy accelerates training, improves scalability, enhances fault tolerance, and optimizes resource use. There are two main strategies for distributing work among machines: Data Parallelism and Model Parallelism. In some cases, a combination of both — known as Hybrid Parallelism — is employed.
 
-- Model Parallelism: model distributed between the workers. Each worker has a copy of the dataset. This case includes Distributed SGD (Stochastic Gradient Descent) for generic neural network architectures.
+With Data Parallelism, each worker node trains the same model on a different portion of the dataset. In contrast, Model Parallelism involves splitting the model itself across different nodes, with each one handling a specific part of the model while using the complete dataset. Hybrid parallelism blends both approaches, distributing parts of the model and data simultaneously to balance computational loads and improve training efficiency.
 
-- Hybrid Parallelism: data and model distributed between the workers. This case includes Distributed Bagging (Bootstrap Aggregating) with generic weak learners from the `scikit-learn` package.
+Executing ML algorithms in a distributed setting initially requires transforming single-threaded algorithms into parallel ones. This transformation can be quite challenging, as it depends heavily on the specific algorithm and demands a deep understanding of how it works. The next phase is implementing these parallel versions, which requires knowledge of the system's runtime behavior and semantics to ensure both correctness and efficiency.
+
+### Motivation
+
+The rapid rise in AI demand, driven by advancements in ML and hardware acceleration, has led to a need for large amounts of training data. As data requirements grow faster than computing power, distributing ML workloads across multiple machines becomes essential to move beyond the limitations of centralized systems. Thus, studying DML is essential in today’s data-driven world. Understanding DML not only equips researchers and engineers with the tools to build more powerful AI systems but also helps in overcoming the computational bottlenecks that limit innovation.
+
+Faced by the abundant use of ML in industry and academia, the effective teaching of core concepts in this field becomes very important, as said by Steinbach et al. Marques et al. explains that few understand the technology behind ML and emphasizes the new challenges to extend computing education early to ML concepts helping students to understand its potential and limits.
+
+In the other hand, the work by Correia et al. highlights the need for new methodologies in teaching distributed systems, emphasizing the importance of hands-on, active learning. By using the Hadoop framework, students directly engage with real-world data architectures and infrastructures, helping to reduce the abstraction barriers that often make these systems difficult to understand. This approach underscores the necessity for teaching techniques that make complex distributed systems more accessible and relatable to students. Such methodologies are essential in bridging the gap between theoretical concepts and practical implementation, providing a more effective learning experience in the context of distributed systems.
+
+Considering the context of both ML and distributed systems, there is a gap in DML lecturing that the present work aims to fill, which is related to the inexistence of educational frameworks in the field of DML specifically designed for undergrad students. Some distributed frameworks present educational materials, like Ray. However, these frameworks aren’t developed to depicts the internal working of its systems in a simple way. Besides, they often need many configurations to prototype a system, as shown in Pytorch’s tutorial.
+
+Similarly, other frameworks like MLbase and Apache Mahout provide powerful tools for DML. However, they are primarily designed for researchers and practitioners who are already familiar with the complexities of distributed systems. These frameworks, though highly scalable and feature-rich, do not focus on simplifying the internal workings of DML systems for educational purposes. They require significant expertise to configure and implement, making them less suitable for undergrad students who are just beginning to explore DML.
+
+Finally, as Galakatos et al. state, transposing a machine learning algorithm into its distributed form is challenging and requires deep knowledge in ML and distributed systems. Therefore, a framework that supports both learning about DML and rapid prototyping is really essential.
+
+### Objective
+
+The objective of this work is to develop chimera, a Python package for DML aimed at educational and prototyping use cases. The project seeks to provide a structured and user-friendly framework for implementing key DML techniques, including Data Parallelism, Model Parallelism, and Hybrid Parallelism. By leveraging Docker containers to simulate distributed environments locally, chimera will streamline the setup of Master and Worker nodes, offering an API-based communication system that simplifies the testing, evaluation, and optimization of distributed learning algorithms.
+
+Also, experiments will be conducted to show that the package properly works and to integrate the knowledge of DML into ITA’s Computer Engineering’s Distributed Computing course. Some of the specific topics which will be explored are:
+
+- Parallelism in distributed systems;
+- Performance of distributed systems: latency measurement across Master and Workers;
+- Logging: production of logs to monitor the system’s state;
+- Helper Tools: Docker, FastAPI, Uvicorn and scikit-learn.
+
+Finally, it will be conducted an educational practice with undergraduate students using the developed framework. After the practice, feedbacks will be collected and analysed, so future steps can be designed.
+
+## Overview
+
+The `chimera` framework is a Python package for DML designed for educational and prototyping purposes. It provides a structured environment for experiments with key DML techniques, including Data Parallelism, Model Parallelism, and Hybrid Parallelism.
+
+As a distributed computing framework, `chimera` aims to simplify the creation, in a local environment, of distributed machine learning models by streamlining the construction of a Master node on the host machine and Worker nodes on separate virtual machines using Docker containers. By providing a standardized API-based communication framework, `chimera` enables researchers and practitioners to test, evaluate, and optimize distributed learning algorithms with minimal configuration effort. The framework supports Data, Model and Hybrid Parallelism, whose algorithms are shown below:
+
+- Data Parallelism: Distributed SGD for models such as linear regression, logistic regression, and others, depending on the loss function.
+
+- Model Parallelism: Distributed Bagging using generic weak learners from the scikit-learn package, with the same dataset on each Worker node.
+
+Hybrid Parallelism: Distributed Bagging using generic weak learners from the scikit-learn package, with different datasets on each Worker node.
 
 Docker containers act as Workers. To run the created distributed system, it will be given a standardized function named `run`, on which a Master type and a port must be selected for the server in the host machine. The `run` function starts the Chimera master server and handles worker containers, then initializing the necessary components for the distributed system to work.
 
@@ -247,14 +290,61 @@ If, in step C, the model has not been fitted, an error message is returned to th
 
 - VERBRAEKEN, Joost et al. A survey on distributed machine learning. Acm computing surveys (csur), v. 53, n. 2, p. 1-33, 2020. Disponível em: https://dl.acm.org/doi/pdf/10.1145/3377454
 
-- B. Chatterjee, "Distributed Machine Learning," in *Proc. 25th Int. Conf. on Distributed Computing and Networking (ICDCN '24)*, Chennai, India, 2024, pp. 4–7. doi: 10.1145/3631461.3632516. Disponível em: https://dl.acm.org/doi/fullHtml/10.1145/3631461.3632516
+- Chatterjee, B. (2024). Distributed Machine Learning. In Proceedings of the 25th International Conference on Distributed Computing and Networking (ICDCN '24) (pp. 4–7). Chennai, India: ACM. doi: 10.1145/3631461.3632516. Disponível em: https://dl.acm.org/doi/fullHtml/10.1145/3631461.3632516
+
+- GALAKATOS, Alex; CROTTY, Andrew; KRASKA, Tim. Distributed Machine Learning. IEEE Data Engineering Bulletin, v. 41, n. 4, p. 38-49, 2018. Disponível em: https://sites.cs.ucsb.edu/~almeroth/conf/stats/papers/328.pdf
+
+- RAINIO, Oona; TEUHO, Jarmo; KLÉN, Riku. Evaluation metrics and statistical tests for machine learning. Scientific Reports, v. 14, n. 1, p. 6086, 2024.
+
+- ZHANG, Dabao. A coefficient of determination for generalized linear models. The American Statistician, v. 71, n. 4, p. 310-316, 2017.
+
+- LEE, Tae-Hwy; ULLAH, Aman; WANG, Ran. Bootstrap aggregating and random forest. Macroeconomic forecasting in the era of big data: Theory and practice, p. 389-429, 2020.
+
+- BÜHLMANN, Peter; YU, Bin. Analyzing bagging. The annals of Statistics, v. 30, n. 4, p. 927-961, 2002.
+
+- MORENO-ALVAREZ, Sergio et al. Heterogeneous model parallelism for deep neural networks. Neurocomputing, v. 441, p. 1-12, 2021.
+
+- KRASKA, Tim et al. MLbase: A Distributed Machine-learning System. Cidr, v. 1, p. 2-1, 2013.
+
+- MARQUES, Lívia S.; VON WANGENHEIM, Christiane Gresse; HAUCK, Jean Carlo Rossa. Teaching Machine Learning in School: A Systematic Mapping of the State of the Art. Vilniaus Universiteto Leidykla, 2022.
+
+- STEINBACH, Peter; SEIBOLD, Heidi; GUHR, Oliver. Teaching Machine Learning in 2020. In: Proceedings of the First Teaching Machine Learning and Artificial Intelligence Workshop. PMLR, 2021. p. 1-6.
+
+- CORREIA, Ronaldo C. M. et al. Teaching Distributed Systems Using Hadoop. In: Information Technology - New Generations. Springer, 2017. p. 355-362.
+
+- ALZUBI, Jafar; NAYYAR, Anand; KUMAR, Akshi. Machine Learning from Theory to Algorithms: An Overview. In: Journal of Physics: Conference Series. IOP Publishing, 2018. p. 012012.
+
+- SAMUEL, A. L. Some Studies in Machine Learning Using the Game of Checkers. IBM Journal of Research and Development, v. 3, n. 3, p. 210-229, Jul. 1959.
+
+- HUSSAIN, Hameed et al. A Survey on Resource Allocation in High Performance Distributed Computing Systems. Parallel Computing, v. 39, n. 11, p. 709-736, 2013.
+
+- PETEIRO-BARRAL, Diego; GUIJARRO-BERDIÑAS, Bertha. A Survey of Methods for Distributed Machine Learning. Progress in Artificial Intelligence, v. 2, n. 1, p. 1-11, 2013.
 
 ### Websites
 
 - https://studytrails.com/2021/02/10/distributed-machine-learning-2-architecture/
-
 - https://www.almabetter.com/bytes/tutorials/mlops/distributed-computing-for-ml
-
 - https://neptune.ai/blog/distributed-training
-
 - https://learn.microsoft.com/en-us/azure/machine-learning/concept-distributed-training?view=azureml-api-2
+- https://github.com/Samirnunes/chimera
+- https://github.com/Samirnunes/chimera-examples
+- https://www.ibm.com/think/topics/bagging
+- https://www.uvicorn.org/
+- https://fastapi.tiangolo.com/
+- https://huggingface.co/docs/transformers/v4.15.0/parallelism
+- https://mahout.apache.org/
+- https://ml.cms.waikato.ac.nz/weka/index.html
+- https://github.com/ray-project/ray-educational-materials?tab=readme-ov-file
+- https://github.com/scikit-learn/scikit-learn
+- https://scikit-learn.org/stable/getting_started.html
+- https://pytorch.org/tutorials/intermediate/ddp_tutorial.html
+- https://docs.docker.com/
+- https://www.kaggle.com/datasets/vinayakshanawad/heart-rate-prediction-to-monitor-stress-level
+- https://archive.ics.uci.edu/dataset/891/cdc+diabetes+health+indicators
+- https://archive.ics.uci.edu/dataset/186/wine+quality
+- https://scikit-learn.org/stable/modules/sgd.html
+- https://junwei-lu.github.io/bst236/chapter_optimization/sgd/
+- https://www.atlassian.com/microservices/microservices-architecture/distributed-architecture
+- https://bytegoblin.io/blog/distributed-system-difference-between-rest-and-restfull-api.mdx
+- https://medium.com/@vikalprusia/master-worker-architecture-unleashing-the-power-of-parallel-processing-eed241da30a
+- https://blog.devgenius.io/data-engineering-concepts-4-distributed-systems-and-the-master-worker-architecture-a61dc238b4ba
