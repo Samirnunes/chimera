@@ -8,6 +8,32 @@
 
 https://www.overleaf.com/read/hwwmfvgdqnny#01433e
 
+## Running as a Pypi Package
+
+1. Install Poetry following the documentation: https://python-poetry.org/docs/#installing-with-the-official-installer
+
+2. Initialize a virtual environment running the command `poetry init`
+
+3. Install the latest version of `chimera` running the command `poetry add chimera-distributed-ml`
+
+4. Start the Docker Daemon. You can make it either by opening Docker Desktop or by starting the Daemon via CLI (in Linux: `sudo systemctl start docker`). Docker Daemon makes Docker REST APIs available, so we can run commands like `docker build` and `docker run`, that are called internally by `chimera`.
+
+5. Create and run distributed models with `chimera`!
+
+## Running the Source Code
+
+1. Install Poetry following the documentation: https://python-poetry.org/docs/#installing-with-the-official-installer
+
+2. Clone the `chimera` project via either HTTPS or SSH:
+   - HTTPS: `git clone https://github.com/Samirnunes/chimera.git`
+   - SSH: `git clone git@github.com:Samirnunes/chimera.git`
+
+3. Go to project's root directory (where `pyproject.toml` is located) and run `poetry install`. It will generate a `.venv` file in the root directory with the installed dependencies, and a `poetry.lock` file.
+
+4. Start the Docker Daemon. You can make it either by opening Docker Desktop or by starting the Daemon via CLI (in Linux: `sudo systemctl start docker`). Docker Daemon makes Docker REST APIs available, so we can run commands like `docker build` and `docker run`, that are called internally by `chimera`.
+
+5. Create and run distributed models with `chimera`!
+
 ## Introduction
 
 ### Contextualization
@@ -68,32 +94,6 @@ Hybrid Parallelism: Distributed Bagging using generic weak learners from the sci
 Docker containers act as Workers. To run the created distributed system, it will be given a standardized function named `run`, on which a Master type and a port must be selected for the server in the host machine. The `run` function starts the Chimera master server and handles worker containers, then initializing the necessary components for the distributed system to work.
 
 The client-master and master-workers communications are made via REST APIs.
-
-## Running as a Pypi Package
-
-1. Install Poetry following the documentation: https://python-poetry.org/docs/#installing-with-the-official-installer
-
-2. Initialize a virtual environment running the command `poetry init`
-
-3. Install the latest version of `chimera` running the command `poetry add chimera-distributed-ml`
-
-4. Start the Docker Daemon. You can make it either by opening Docker Desktop or by starting the Daemon via CLI (in Linux: `sudo systemctl start docker`). Docker Daemon makes Docker REST APIs available, so we can run commands like `docker build` and `docker run`, that are called internally by `chimera`.
-
-5. Create and run distributed models with `chimera`!
-
-## Running the Source Code
-
-1. Install Poetry following the documentation: https://python-poetry.org/docs/#installing-with-the-official-installer
-
-2. Clone the `chimera` project via either HTTPS or SSH:
-   - HTTPS: `git clone https://github.com/Samirnunes/chimera.git`
-   - SSH: `git clone git@github.com:Samirnunes/chimera.git`
-
-3. Go to project's root directory (where `pyproject.toml` is located) and run `poetry install`. It will generate a `.venv` file in the root directory with the installed dependencies, and a `poetry.lock` file.
-
-4. Start the Docker Daemon. You can make it either by opening Docker Desktop or by starting the Daemon via CLI (in Linux: `sudo systemctl start docker`). Docker Daemon makes Docker REST APIs available, so we can run commands like `docker build` and `docker run`, that are called internally by `chimera`.
-
-5. Create and run distributed models with `chimera`!
 
 ## Creating and Running a Distributed Model with `chimera`
 
