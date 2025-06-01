@@ -216,7 +216,7 @@ In distributed bagging, the summarized steps are:
 The following state machine flowchart depicts the steps in the fit action for the Aggregation Master:
 
 <p align="center">
-    <img width="600" src="./images/master/aggregation_master_fit_state_machine_flowchart.png" alt="Distributed Bagging">
+    <img width="600" src="./images/master/aggregation_master_fit_state_machine_flowchart.png" alt="Distributed Bagging - Master">
 <p>
 <p align="center"><strong>Figure:</strong> State machine flowchart of Aggregation Master's /v1/chimera/aggregation/fit endpoint. </p>
 
@@ -229,7 +229,7 @@ If all workers fail in step E, the flow moves to step F, where the Master return
 The following state machine flowchart depicts the steps in the predict action for the Aggregation Master:
 
 <p align="center">
-    <img width="600" src="./images/master/aggregation_master_predict_state_machine_flowchart.png" alt="Distributed Bagging">
+    <img width="600" src="./images/master/aggregation_master_predict_state_machine_flowchart.png" alt="Distributed Bagging - Master">
 <p>
 <p align="center"><strong>Figure:</strong> State machine flowchart of Aggregation Master's /v1/chimera/aggregation/predict endpoint. </p>
 
@@ -238,6 +238,28 @@ The prediction process begins at step A, where nothing has happened yet. When th
 Then, concurrently, the Master waits for either a response, a timeout, or the maximum number of retries from each worker—this is represented by step D. If a worker times out or reaches the retry limit, it is considered failed. In the conditional step E, if at least one worker has responded successfully, the flow proceeds to step G. There, the Master receives results from the responsive workers—status code 200 responses containing predictions from each local model. In step H, the Master aggregates these results by computing the arithmetic mean, and in step I, it returns a JSON-formatted response to the client via the endpoint `/v1/chimera/aggregation/predict`, containing the final predictions. The flow then ends at step J.
 
 If all workers fail in step E, the flow goes to step F, where the Master returns a JSON-formatted error message to the client via the endpoint `/v1/chimera/aggregation/predict`, indicating the issue. Finally, the flow ends at step J.
+
+The following state machine flowchart depicts the steps in the fit action for Regression and Classification Workers:
+
+<p align="center">
+    <img width="600" src="./images/worker/regression_classification_worker_fit_state_machine_flowchart.png" alt="Distributed Bagging - Worker">
+<p>
+<p align="center"><strong>Figure:</strong> State machine flowchart of Regression and Classification Worker's /v1/chimera/model/fit endpoint. </p>
+
+The fitting process begins at step A, where nothing has happened yet. When the Master sends a fit request to the endpoint /v1/chimera/model/fit, at step B, the Worker receives the request. At step C, it's verified if the Worker is alive. If it isn't, the flow moves to step F, where the Worker returns a JSON-formatted error message to te Master via the endpoint /v1/chimera/model/fit. Otherwise, if the Worker is alive, it fits the local model in the local dataset.
+
+In the conditional step E, if any error occurs, the flow goes to step F. However, if fit occured without errors, the Worker returns a JSON-formatted "ok" response through the endpoint /v1/chimera/model/fit, as shown in step G. Finally, the flow ends at step H.
+
+The following state machine flowchart depicts the steps in the predict action for Regression and Classification Workers:
+
+<p align="center">
+    <img width="600" src="./images/worker/regression_classification_worker_predict_state_machine_flowchart.png" alt="Distributed Bagging - Worker">
+<p>
+<p align="center"><strong>Figure:</strong> State machine flowchart of Regression and Classification Worker's /v1/chimera/model/predict endpoint. </p>
+
+The prediction process begins at step A, where nothing has happened yet. When the Master sends a prediction request to the endpoint /v1/chimera/model/predict, at step B, the Worker receives the request. At step C, it's verified if the Worker is alive. If it isn't, the flow moves to step F, where the Worker returns a JSON-formatted error message to te Master via the endpoint /v1/chimera/model/predict. Otherwise, if the Worker is alive, it calculates the predictions for the sample received from Master.
+
+In the conditional step E, if any error occurs, the flow goes to step F. However, if fit occured without errors, the Worker returns a JSON-formatted response with the predictions result through the endpoint /v1/chimera/model/predict, as shown in step G. Finally, the flow ends at step H.
 
 ### Data Parallelism: Distributed SGD (Stochastic Gradient Descent)
 
@@ -283,6 +305,28 @@ The following state machine flowchart depicts the steps in the predict action fo
 The prediction process begins at step A, where nothing has happened yet. When the client sends a prediction request to the endpoint `/v1/chimera/parameter-server/predict`, at step B, the Master receives the request. Then, in step C, if the model on the Master has been fitted—that is, if the endpoint `/v1/chimera/parameter-server/fit` was previously called and returned a status code 200—the Master returns the predictions to the client as a JSON-formatted response via the same prediction endpoint. Finally, the flow ends at step F.
 
 If, in step C, the model has not been fitted, an error message is returned to the client through the endpoint `/v1/chimera/parameter-server/predict`. The flow then ends at step F, as before.
+
+The following state machine flowchart depicts the steps in the fit step action for SGDWorker:
+
+<p align="center">
+    <img width="600" src="./images/worker/sgd_worker_fit_step_state_machine_flowchart.png" alt="Distributed Bagging - Worker">
+<p>
+<p align="center"><strong>Figure:</strong> State machine flowchart of SGDWorker's /v1/chimera/sgd/fit-step endpoint. </p>
+
+The fitting process begins at step A, where nothing has happened yet. When the Master sends a fit request to the endpoint /v1/chimera/sgd/fit-step, at step B, the Worker receives the request. At step C, it's verified if the Worker is alive. If it isn't, the flow moves to step F, where the Worker returns a JSON-formatted error message to te Master via the endpoint /v1/chimera/model/fit. Otherwise, if the Worker is alive, it runs a fit step on its local model using the local dataset.
+
+In the conditional step E, if any error occurs, the flow goes to step F. However, if fit occured without errors, the Worker returns a JSON-formatted "ok" response through the endpoint /v1/chimera/sgd/fit-step, as shown in step G. Finally, the flow ends at step H.
+
+The following state machine flowchart depicts the steps in the request data sample action for SGDWorker:
+
+<p align="center">
+    <img width="600" src="./images/worker/sgd_worker_request_data_sample_state_machine_flowchart.png" alt="Distributed Bagging - Worker">
+<p>
+<p align="center"><strong>Figure:</strong> State machine flowchart of SGDWorker's /v1/chimera/sgd/ endpoint. </p>
+
+The fitting process begins at step A, where nothing has happened yet. When the Master sends a fit request to the endpoint /v1/chimera/sgd/request-data-sample, at step B, the Worker receives the request. At step C, it's verified if the Worker is alive. If it isn't, the flow moves to step F, where the Worker returns a JSON-formatted error message to te Master via the endpoint /v1/chimera/sgd/request-data-sample. Otherwise, if the Worker is alive, it gets a data sample from its local dataset. If the problem is a classification one, the data sample necessarily contains all the classes present in the local dataset.
+
+In the conditional step E, if any error occurs, the flow goes to step F. However, if fit occured without errors, the Worker returns a JSON-formatted response with the obtained data sample through the endpoint /v1/chimera/sgd/request-data-sample, as shown in step G. Finally, the flow ends at step H.
 
 ## References
 
